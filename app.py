@@ -1,10 +1,8 @@
-import streamlit as st
 from PIL import Image
-import streamlit as st
-
 import streamlit as st
 from engine import RestaurantSelector, CardRecommender
 
+# Custom modern style
 st.markdown(
     """
     <style>
@@ -14,7 +12,6 @@ st.markdown(
         font-family: 'Noto Sans Thai', sans-serif !important;
     }
 
-    /* โลโก้ตรงกลาง */
     .logo-container {
         display: flex;
         justify-content: center;
@@ -27,93 +24,81 @@ st.markdown(
         max-width: 100%;
     }
 
-    /* ข้อความหลัก "ไปไหนดี" */
     .main-title {
         text-align: center;
-        font-size: 36px;
-        font-weight: bold;
-        margin-top: -5px;
+        font-size: 42px;
+        font-weight: 700;
+        color: #00af87;
+        margin-bottom: 10px;
     }
 
-    /* เมนูตัวเลือก */
     .menu-container {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        margin-top: 10px;
+        gap: 25px;
+        margin: 20px 0;
+        flex-wrap: wrap;
     }
 
     .menu-item {
-        display: flex;
-        align-items: center;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 500;
+        color: #555;
+        padding: 8px 12px;
+        border-radius: 8px;
         cursor: pointer;
-        color: #333;
-        padding-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .menu-item:hover {
+        background-color: #f0f0f0;
     }
 
     .menu-item.active {
-        font-weight: bold;
-        border-bottom: 3px solid black;
+        font-weight: 700;
+        color: white;
+        background-color: #00af87;
+        border-radius: 20px;
+        padding: 8px 16px;
     }
 
-    /* ช่องค้นหา */
+    .card {
+        padding: 20px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+    }
+
     .search-container {
         display: flex;
         align-items: center;
+        justify-content: center;
         background: white;
         padding: 12px;
         border-radius: 50px;
         box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         max-width: 600px;
-        width: 100%;
         margin: 20px auto;
         border: 1px solid #ddd;
     }
-
-    .search-icon {
-        margin-left: 10px;
-        font-size: 20px;
-        color: #777;
-    }
-
-    .search-input {
-        flex: 1;
-        background: transparent;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        padding: 10px;
-    }
-
-    .search-button {
-        background: #00af87;
-        color: white;
-        padding: 10px 24px;
-        border-radius: 25px;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        font-weight: bold;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .search-button:hover {
-        background: #008a6e;
-    }
-
     </style>
     """,
     unsafe_allow_html=True
 )
 
-
+# Logo and title
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image(Image.open("logo.png"))
+st.markdown("<div class='main-title'>ไปไหนดี?</div>", unsafe_allow_html=True)
 
-# 📌 เมนูตัวเลือก
+# Menu
 st.markdown(
     """
     <div class="menu-container">
@@ -127,62 +112,73 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# สร้าง instance ของ Backend
+# Create instance
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
-# ใช้ Session State เก็บสถานะ
+# Use session state
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ ดึงร้านอาหารทั้งหมด
+# Load data
 all_restaurants = restaurant_selector.all_restaurants
-recommended_restaurants = restaurant_selector.recommend_restaurants()  # ✅ 5 ร้านแรก
+recommended_restaurants = restaurant_selector.recommend_restaurants()
 
-# ✅ UI ค้นหาร้านค้า
+# Search UI
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหารที่ต้องการค้นหา", st.session_state["search_query"]).strip()
 
-# ✅ ถ้ายังไม่มีการค้นหา ให้แสดงทุกตัวเลือกใน `selectbox`
+# Filtered list
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
 
-# ✅ แสดง `selectbox` ที่มีทุกร้าน
+# Restaurant selector
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-if selected_restaurant and selected_restaurant == "เลือกจากรายการ":
-# ✅ แสดงผลเฉพาะ 5 ร้านแรกที่แนะนำ
-    st.subheader("⭐ ร้านแนะนำ")
-    for idx, restaurant in enumerate(recommended_restaurants, start=1):
-        st.write(f"**{idx}. {restaurant}**")  # ✅ แสดงเฉพาะ 5 ร้านแรก
+# If no selection, show recommended
+if selected_restaurant == "เลือกจากรายการ":
+    st.markdown("## ⭐ ร้านแนะนำ")
+    cols = st.columns(2)
+    for idx, restaurant in enumerate(recommended_restaurants):
+        with cols[idx % 2]:
+            st.markdown(
+                f"""
+                <div class="card">
+                    <h4>🍽️ {restaurant}</h4>
+                    <p>รีวิวดี / สิทธิประโยชน์มากมาย</p>
+                </div>
+                """, unsafe_allow_html=True
+            )
 
-# ✅ บันทึกค่าร้านที่เลือก
+# If selected, show card
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
-    st.session_state["search_query"] = search_query  # ✅ บันทึกค่าค้นหา
+    st.session_state["search_query"] = search_query
     st.success(f"✅ คุณเลือกร้าน {selected_restaurant}")
 
-    # ✅ **แสดงบัตรเครดิต สำหรับร้านที่เลือก**
     st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
     recommended_card = card_recommender.recommend_cards(selected_restaurant)
 
     if recommended_card:
         st.markdown(f"""
-        **🎉 บัตรเครดิตที่แนะนำสำหรับร้าน {selected_restaurant}**  
-        - 💳 **{recommended_card.card_name}** ({recommended_card.bank})  
-        - 💰 **Cashback**: {recommended_card.cashback}%  
-        - 🎁 **Rewards**: {recommended_card.rewards} points per 100 THB  
-        - 🍽️ **Dining Discount**: {recommended_card.dining_discount}%  
-        - ✈️ **Travel Benefits**: {recommended_card.travel_benefit}  
-        """)
+        <div class="card">
+        <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
+        <ul>
+            <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
+            <li>🎁 <b>Rewards</b>: {recommended_card.rewards} points / 100 THB</li>
+            <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
+            <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.warning(f"❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้าน {selected_restaurant}")
 
-# ✅ ปุ่ม Reset ค้นหาและเลือกใหม่
+# Reset
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
-    st.session_state["search_query"] = ""  # ✅ รีเซ็ตช่องค้นหา
-    st.rerun()  # รีเฟรชหน้าใหม่
+    st.session_state["search_query"] = ""
+    st.rerun()
