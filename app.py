@@ -2,10 +2,10 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ ต้องอยู่บรรทัดแรกสุด
+# ✅ ต้องอยู่บรรทัดแรก
 st.set_page_config(layout="wide")
 
-# ✅ CSS สำหรับการ์ดและ layout
+# ✅ CSS
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -67,7 +67,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ mock data สำหรับการ์ด
+# ✅ Mock ข้อมูลร้าน
 def get_card_data():
     return [
         {
@@ -93,29 +93,28 @@ def get_card_data():
         }
     ]
 
-# ✅ Logo
+# ✅ โลโก้
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
-    st.image(Image.open("logo.png"))
+    st.image(Image.open("logo.png"), width=100)
 
-# ✅ backend
+# ✅ Backend
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
+# ✅ Session state
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ ค้นหาร้าน
+# ✅ UI ค้นหา
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
-
 all_restaurants = restaurant_selector.all_restaurants
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
-
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
 # ✅ แสดงร้านแนะนำ
@@ -137,9 +136,9 @@ if selected_restaurant == "เลือกจากรายการ":
         </div>
         '''
     html += '</div>'
-    st.markdown(html, unsafe_allow_html=True)  # ✅ สำคัญ!
+    st.markdown(html, unsafe_allow_html=True)
 
-# ✅ เลือกร้านแล้ว
+# ✅ ถ้าเลือกร้านแล้ว
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -165,7 +164,7 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
     else:
         st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# ✅ ปุ่ม reset
+# ✅ ปุ่ม Reset
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
