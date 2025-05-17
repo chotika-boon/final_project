@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# 🧪 Sample data for card view
+# 👨‍🍳 Mock data 8 ร้าน
 def get_card_data():
     return [
         {
@@ -13,34 +13,68 @@ def get_card_data():
             "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
         },
         {
+            "name": "The Saucy Kitchen",
+            "category": "อาหารคลีน/สลัด",
+            "rating": 4.4,
+            "reviews": 13,
+            "image_url": "https://img.wongnai.com/p/624x0/2021/06/15/4b8d4e88d3f2406fa5a0f0d83773104a.jpg"
+        },
+        {
             "name": "Burger King",
             "category": "เบอร์เกอร์",
             "rating": 4.4,
             "reviews": 10,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2020/05/08/0b4e2176d17c44d48d0ff22a2b5d167c.jpg"
         },
         {
             "name": "Starbucks River City",
             "category": "ร้านกาแฟ/ชา",
             "rating": 4.6,
+            "reviews": 17,
+            "image_url": "https://img.wongnai.com/p/624x0/2023/11/11/4d7eaa83a0dc4607b2e6edec001f33c4.jpg"
+        },
+        {
+            "name": "Starbucks Lotus's North",
+            "category": "ร้านกาแฟ/ชา",
+            "rating": 4.6,
             "reviews": 14,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2022/04/12/bdb04fdd1e18410f8d90ed73eaa5c3e2.jpg"
+        },
+        {
+            "name": "MOS BURGER",
+            "category": "เบอร์เกอร์",
+            "rating": 4.5,
+            "reviews": 13,
+            "image_url": "https://img.wongnai.com/p/624x0/2019/12/17/a3a24300483f46298b728452dcdddb76.jpg"
+        },
+        {
+            "name": "Starbucks Vichaiyut",
+            "category": "ร้านกาแฟ/ชา",
+            "rating": 5.0,
+            "reviews": 6,
+            "image_url": "https://img.wongnai.com/p/624x0/2021/07/21/0d2a92dbb1dc438cba02a334c0d50355.jpg"
+        },
+        {
+            "name": "Starbucks Index Living",
+            "category": "ร้านกาแฟ/ชา",
+            "rating": 4.6,
+            "reviews": 5,
+            "image_url": "https://img.wongnai.com/p/624x0/2023/02/22/fcc32f22c4cf4c6489c7933df7e0dd88.jpg"
         }
     ]
 
-# 💅 Modern UI CSS
+# 🧼 CSS ปรับ layout เต็มกว้างและจัด 4 คอลัมน์
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-
     html, body, input, button, select, div {
         font-family: 'Noto Sans Thai', sans-serif !important;
     }
     .card-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        padding-top: 20px;
+        padding: 20px 0;
     }
     .card {
         border-radius: 16px;
@@ -62,7 +96,7 @@ st.markdown("""
     }
     .card-title {
         font-weight: 600;
-        font-size: 18px;
+        font-size: 17px;
         margin-bottom: 4px;
     }
     .card-category {
@@ -97,16 +131,17 @@ with col2:
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
+# Session
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# Load restaurant data
+# 📦 Load data
 all_restaurants = restaurant_selector.all_restaurants
 recommended_restaurants = restaurant_selector.recommend_restaurants()
 
-# 🔍 ค้นหาร้าน
+# 🔍 Search
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
 
@@ -116,7 +151,7 @@ filtered_restaurants = all_restaurants if not search_query else [
 
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ⭐ ร้านแนะนำ
+# ⭐ Display recommended restaurants in 2 rows x 4 columns
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -135,9 +170,9 @@ if selected_restaurant == "เลือกจากรายการ":
         </div>
         """
     html += '</div>'
-    st.markdown(html, unsafe_allow_html=True)  # ✅ use only this, don't use st.code()
+    st.markdown(html, unsafe_allow_html=True)
 
-# ✅ ถ้าเลือกร้านแล้ว
+# ✅ Show credit card recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -163,7 +198,7 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
     else:
         st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# 🔄 ปุ่ม Reset
+# 🔄 Reset
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
