@@ -9,13 +9,6 @@ st.markdown("""
     html, body, input, button, select, div {
         font-family: 'Noto Sans Thai', sans-serif !important;
     }
-    .main-title {
-        text-align: center;
-        font-size: 42px;
-        font-weight: 700;
-        color: #00af87;
-        margin-bottom: 10px;
-    }
     .card {
         padding: 20px;
         background: #fff;
@@ -30,11 +23,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 🌟 Logo + Title
+# ✅ โลโก้ด้านบน
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image(Image.open("logo.png"))
-st.markdown("<div class='main-title'>ไปไหนดี?</div>", unsafe_allow_html=True)
 
 # 🧠 Backend
 restaurant_selector = RestaurantSelector()
