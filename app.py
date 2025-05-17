@@ -10,21 +10,21 @@ def get_card_data():
             "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
             "rating": 4.8,
             "reviews": 5,
-            "image_url": "https://via.placeholder.com/400x250.png?text=Thong+Grill"
+            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
         },
         {
             "name": "Burger King",
             "category": "เบอร์เกอร์",
             "rating": 4.4,
             "reviews": 10,
-            "image_url": "https://via.placeholder.com/400x250.png?text=Burger+King"
+            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
         },
         {
             "name": "Starbucks River City",
             "category": "ร้านกาแฟ/ชา",
             "rating": 4.6,
             "reviews": 14,
-            "image_url": "https://via.placeholder.com/400x250.png?text=Starbucks"
+            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
         }
     ]
 
