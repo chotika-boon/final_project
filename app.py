@@ -63,10 +63,11 @@ def get_card_data():
         }
     ]
 
-# 🧼 CSS ปรับ layout เต็มกว้างและจัด 4 คอลัมน์
+# 💅 CSS
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+
     html, body, input, button, select, div {
         font-family: 'Noto Sans Thai', sans-serif !important;
     }
@@ -131,13 +132,12 @@ with col2:
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
-# Session
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# 📦 Load data
+# Load restaurant data
 all_restaurants = restaurant_selector.all_restaurants
 recommended_restaurants = restaurant_selector.recommend_restaurants()
 
@@ -151,7 +151,7 @@ filtered_restaurants = all_restaurants if not search_query else [
 
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ⭐ Display recommended restaurants in 2 rows x 4 columns
+# ⭐ Show recommended cards
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -172,7 +172,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Show credit card recommendation
+# ✅ Selected
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
