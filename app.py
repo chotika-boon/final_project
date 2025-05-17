@@ -2,36 +2,10 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ ต้องเป็นคำสั่งแรกสุด
+# ✅ ต้องอยู่บรรทัดแรกสุด
 st.set_page_config(layout="wide")
 
-# ✅ Mock restaurant data
-def get_card_data():
-    return [
-        {
-            "name": "Thong Grill Hide & Yakiniku",
-            "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
-            "rating": 4.8,
-            "reviews": 5,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
-        },
-        {
-            "name": "Burger King",
-            "category": "เบอร์เกอร์",
-            "rating": 4.4,
-            "reviews": 10,
-            "image_url": "https://img.wongnai.com/p/624x0/2020/05/08/0b4e2176d17c44d48d0ff22a2b5d167c.jpg"
-        },
-        {
-            "name": "Starbucks River City",
-            "category": "ร้านกาแฟ/ชา",
-            "rating": 4.6,
-            "reviews": 14,
-            "image_url": "https://img.wongnai.com/p/624x0/2023/11/11/4d7eaa83a0dc4607b2e6edec001f33c4.jpg"
-        }
-    ]
-
-# ✅ CSS
+# ✅ CSS สำหรับการ์ดและ layout
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -93,12 +67,38 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# ✅ mock data สำหรับการ์ด
+def get_card_data():
+    return [
+        {
+            "name": "Thong Grill Hide & Yakiniku",
+            "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
+            "rating": 4.8,
+            "reviews": 5,
+            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
+        },
+        {
+            "name": "Burger King",
+            "category": "เบอร์เกอร์",
+            "rating": 4.4,
+            "reviews": 10,
+            "image_url": "https://img.wongnai.com/p/624x0/2020/05/08/0b4e2176d17c44d48d0ff22a2b5d167c.jpg"
+        },
+        {
+            "name": "Starbucks River City",
+            "category": "ร้านกาแฟ/ชา",
+            "rating": 4.6,
+            "reviews": 14,
+            "image_url": "https://img.wongnai.com/p/624x0/2023/11/11/4d7eaa83a0dc4607b2e6edec001f33c4.jpg"
+        }
+    ]
+
 # ✅ Logo
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image(Image.open("logo.png"))
 
-# ✅ Backend
+# ✅ backend
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
@@ -107,16 +107,18 @@ if "selected_restaurant" not in st.session_state:
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ Search Section
+# ✅ ค้นหาร้าน
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
+
 all_restaurants = restaurant_selector.all_restaurants
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
+
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ✅ Recommended Cards
+# ✅ แสดงร้านแนะนำ
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -135,9 +137,9 @@ if selected_restaurant == "เลือกจากรายการ":
         </div>
         '''
     html += '</div>'
-    st.markdown(html, unsafe_allow_html=True)
+    st.markdown(html, unsafe_allow_html=True)  # ✅ สำคัญ!
 
-# ✅ Selected Restaurant
+# ✅ เลือกร้านแล้ว
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -163,7 +165,7 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
     else:
         st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# ✅ Reset
+# ✅ ปุ่ม reset
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
