@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ Mock data: 8 ร้าน
+# ✅ Mock 8 restaurant cards
 def get_card_data():
     return [
         {
@@ -67,15 +67,18 @@ def get_card_data():
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+
     html, body, input, button, select, div {
         font-family: 'Noto Sans Thai', sans-serif !important;
     }
+
     .card-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        padding: 20px 0;
+        margin-top: 20px;
     }
+
     .card {
         border-radius: 16px;
         overflow: hidden;
@@ -83,27 +86,33 @@ st.markdown("""
         background: white;
         transition: transform 0.2s ease;
     }
+
     .card:hover {
         transform: translateY(-5px);
     }
+
     .card-img {
         width: 100%;
         height: 160px;
         object-fit: cover;
     }
+
     .card-body {
         padding: 12px 16px;
     }
+
     .card-title {
         font-weight: 600;
         font-size: 17px;
         margin-bottom: 4px;
     }
+
     .card-category {
         font-size: 14px;
         color: #666;
         margin-bottom: 8px;
     }
+
     .card-rating {
         display: flex;
         align-items: center;
@@ -111,6 +120,7 @@ st.markdown("""
         font-size: 14px;
         color: #333;
     }
+
     .rating-badge {
         background-color: #d93025;
         color: white;
@@ -131,30 +141,29 @@ with col2:
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
-# ✅ Session
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ Restaurant Data
+# ✅ Load restaurants
 all_restaurants = restaurant_selector.all_restaurants
 recommended_restaurants = restaurant_selector.recommend_restaurants()
 
-# ✅ Search
+# ✅ Search bar
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
+
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ✅ Show Recommendation
+# ✅ Show card layout
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
-    cards_to_show = get_card_data()
     html = '<div class="card-grid">'
-    for r in cards_to_show:
+    for r in get_card_data():
         html += f"""
         <div class="card">
             <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
@@ -171,7 +180,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Selected Restaurant
+# ✅ Show selected
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
