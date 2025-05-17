@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# Sample mock data for card display (you can replace this with actual backend data)
+# 🧪 Mock function: Replace this with actual logic if using real data/images
 def get_card_data():
     return [
         {
@@ -10,25 +10,25 @@ def get_card_data():
             "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
             "rating": 4.8,
             "reviews": 5,
-            "image_url": "https://path.to/thonggrill.jpg"
+            "image_url": "https://via.placeholder.com/400x250.png?text=Thong+Grill"
         },
         {
             "name": "Burger King",
             "category": "ฟาสต์ฟู้ด/เบอร์เกอร์",
             "rating": 4.4,
             "reviews": 10,
-            "image_url": "https://path.to/burgerking.jpg"
+            "image_url": "https://via.placeholder.com/400x250.png?text=Burger+King"
         },
         {
             "name": "Starbucks River City",
             "category": "ร้านกาแฟ/ชา",
             "rating": 4.6,
             "reviews": 14,
-            "image_url": "https://path.to/starbucks.jpg"
+            "image_url": "https://via.placeholder.com/400x250.png?text=Starbucks"
         }
     ]
 
-# 💅 Custom CSS for modern card layout
+# 💅 Modern CSS
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -36,14 +36,12 @@ st.markdown("""
 html, body, input, button, select, div {
     font-family: 'Noto Sans Thai', sans-serif !important;
 }
-
 .card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     padding-top: 20px;
 }
-
 .card {
     border-radius: 16px;
     overflow: hidden;
@@ -90,26 +88,25 @@ html, body, input, button, select, div {
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ Logo only (no title like "ไปไหนดี?")
+# ✅ Logo only
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image(Image.open("logo.png"))
 
-# 🧠 Backend
+# 🧠 Initialize backend
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
-# 🧠 Session State
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ Load data
+# 📥 Load restaurants
 all_restaurants = restaurant_selector.all_restaurants
 recommended_restaurants = restaurant_selector.recommend_restaurants()
 
-# 🔍 Search
+# 🔍 Search and selection
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหารที่ต้องการค้นหา", st.session_state["search_query"]).strip()
 
@@ -119,7 +116,7 @@ filtered_restaurants = all_restaurants if not search_query else [
 
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ⭐ Show recommended if nothing selected
+# ⭐ Show recommendation cards
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -140,7 +137,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Selected
+# ✅ Show card recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -152,19 +149,21 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
     if recommended_card:
         st.markdown(f"""
         <div class="card">
-        <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
-        <ul>
-            <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
-            <li>🎁 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
-            <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
-            <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
-        </ul>
+        <div class="card-body">
+            <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
+            <ul>
+                <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
+                <li>🎁 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
+                <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
+                <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
+            </ul>
+        </div>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.warning(f"❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้าน {selected_restaurant}")
 
-# 🔄 Reset
+# 🔄 Reset button
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
