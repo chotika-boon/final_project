@@ -2,7 +2,10 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ Mock restaurant data (8 รายการ)
+# ✅ ต้องอยู่บนสุด
+st.set_page_config(layout="wide")
+
+# ✅ Mock restaurant data (8 ร้าน)
 def get_card_data():
     return [
         {
@@ -63,7 +66,7 @@ def get_card_data():
         }
     ]
 
-# ✅ CSS
+# ✅ CSS Styling
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -125,9 +128,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
-# ✅ Display full-width layout
-st.set_page_config(layout="wide")
 
 # ✅ Logo
 col1, col2, col3 = st.columns((1, 0.5, 1))
