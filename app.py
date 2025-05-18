@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 st.set_page_config(layout="wide", page_title="Sign In")
@@ -83,10 +84,11 @@ st.markdown("""
             border: none;
             border-radius: 8px;
             margin-bottom: 20px;
+            cursor: pointer;
         }
 
         .social-btn {
-            background: white;
+            background: #fff;
             padding: 10px;
             text-align: center;
             border-radius: 8px;
@@ -94,6 +96,11 @@ st.markdown("""
             margin-bottom: 10px;
             font-weight: 500;
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
         }
 
         .right-card {
@@ -120,6 +127,7 @@ st.markdown("""
             padding: 10px 20px;
             border-radius: 8px;
             border: none;
+            cursor: pointer;
         }
     </style>
 """, unsafe_allow_html=True)
