@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-from engine import RestaurantSelector, CardRecommender
+from engine import UserManager, BANKS, CARD_TYPES, LIFESTYLES, RestaurantSelector, CardRecommender
 
 # ✅ ต้องอยู่บรรทัดแรก
 st.set_page_config(layout="wide")
@@ -9,11 +9,9 @@ st.set_page_config(layout="wide")
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-
     html, body, input, button, select, div {
         font-family: 'Noto Sans Thai', sans-serif !important;
     }
-
     .card-grid {
         display: flex;
         flex-wrap: nowrap;
@@ -21,7 +19,6 @@ st.markdown("""
         margin-top: 20px;
         overflow-x: auto;
     }
-
     .card {
         flex: 0 0 23%;
         border-radius: 16px;
@@ -30,21 +27,17 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         transition: transform 0.2s ease;
     }
-
     .card:hover {
         transform: translateY(-5px);
     }
-
     .card-img {
         width: 100%;
         height: 160px;
         object-fit: cover;
     }
-
     .card-body {
         padding: 12px 16px;
     }
-
     .card-title {
         font-weight: bold;
         font-size: 16px;
@@ -53,13 +46,11 @@ st.markdown("""
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
     .card-category {
         font-size: 13px;
         color: #666;
         margin-bottom: 8px;
     }
-
     .card-rating {
         display: flex;
         align-items: center;
@@ -67,7 +58,6 @@ st.markdown("""
         font-size: 13px;
         color: #333;
     }
-
     .rating-badge {
         background-color: #d93025;
         color: white;
@@ -79,7 +69,72 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ Mock Data
+# ✅ Initialization
+user_manager = UserManager()
+restaurant_selector = RestaurantSelector()
+card_recommender = CardRecommender()
+
+def init_session_state():
+    if 'logged_in' not in st.session_state:
+        st.session_state.logged_in = False
+    if 'username' not in st.session_state:
+        st.session_state.username = None
+    if 'show_register' not in st.session_state:
+        st.session_state.show_register = False
+    if "selected_restaurant" not in st.session_state:
+        st.session_state["selected_restaurant"] = None
+    if "search_query" not in st.session_state:
+        st.session_state["search_query"] = ""
+
+def login_page():
+    st.title("เข้าสู่ระบบ")
+    with st.form("login_form"):
+        username = st.text_input("ชื่อผู้ใช้", key="login_username")
+        password = st.text_input("รหัสผ่าน", type="password", key="login_password")
+        col1, col2 = st.columns(2)
+        login_btn = col1.form_submit_button("เข้าสู่ระบบ")
+        register_btn = col2.form_submit_button("ลงทะเบียน")
+
+    if login_btn:
+        if user_manager.authenticate_user(username, password):
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.success("เข้าสู่ระบบสำเร็จ!")
+            st.rerun()
+        else:
+            st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+    if register_btn:
+        st.session_state.show_register = True
+        st.rerun()
+
+def register_page():
+    st.title("ลงทะเบียน")
+    with st.form("register_form"):
+        username = st.text_input("ชื่อผู้ใช้", key="register_username")
+        password = st.text_input("รหัสผ่าน", type="password", key="register_password")
+        confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password", key="confirm_password")
+        bank = st.selectbox("ธนาคาร", BANKS)
+        card_type = st.selectbox("ประเภทบัตร", CARD_TYPES)
+        lifestyle = st.selectbox("ไลฟ์สไตล์", LIFESTYLES)
+        col1, col2 = st.columns(2)
+        submit_btn = col1.form_submit_button("ลงทะเบียน")
+        back_btn = col2.form_submit_button("กลับ")
+
+    if submit_btn:
+        if password != confirm_password:
+            st.error("รหัสผ่านไม่ตรงกัน")
+        else:
+            success, msg = user_manager.register_user(username, password, bank, card_type, lifestyle)
+            if success:
+                st.success(msg)
+                st.session_state.show_register = False
+                st.rerun()
+            else:
+                st.error(msg)
+    if back_btn:
+        st.session_state.show_register = False
+        st.rerun()
+
 def get_card_data():
     return [
         {
@@ -112,77 +167,81 @@ def get_card_data():
         }
     ]
 
-# ✅ Logo
-col1, col2, col3 = st.columns((1, 0.5, 1))
-with col2:
-    st.image(Image.open("logo.png"), width=100)
+def restaurant_app():
+    col1, col2, col3 = st.columns((1, 0.5, 1))
+    with col2:
+        st.image(Image.open("logo.png"), width=100)
 
-# ✅ Backend
-restaurant_selector = RestaurantSelector()
-card_recommender = CardRecommender()
+    st.subheader("🔍 ค้นหาร้านอาหาร")
+    search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
+    all_restaurants = restaurant_selector.all_restaurants
+    filtered = all_restaurants if not search_query else [r for r in all_restaurants if search_query.lower() in r.lower()]
+    selected = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered)
 
-if "selected_restaurant" not in st.session_state:
-    st.session_state["selected_restaurant"] = None
-if "search_query" not in st.session_state:
-    st.session_state["search_query"] = ""
+    if selected == "เลือกจากรายการ":
+        st.subheader("⭐ ร้านแนะนำ")
+        html = '<div class="card-grid">'
+        for r in get_card_data():
+            html += f"""
+            <div class="card">
+                <img class="card-img" src="{r['image_url']}">
+                <div class="card-body">
+                    <div class="card-title">{r['name']}</div>
+                    <div class="card-category">{r['category']}</div>
+                    <div class="card-rating">
+                        <span class="rating-badge">{r['rating']} ⭐</span>
+                        <span>{r['reviews']} รีวิว</span>
+                    </div>
+                </div>
+            </div>"""
+        html += '</div>'
+        st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Search
-st.subheader("🔍 ค้นหาร้านอาหาร")
-search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
-all_restaurants = restaurant_selector.all_restaurants
-filtered_restaurants = all_restaurants if not search_query else [
-    r for r in all_restaurants if search_query.lower() in r.lower()
-]
-selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
+    if selected and selected != "เลือกจากรายการ":
+        st.session_state["selected_restaurant"] = selected
+        st.session_state["search_query"] = search_query
+        st.success(f"✅ คุณเลือกร้าน {selected}")
+        st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected}")
+        recommended = card_recommender.recommend_cards(selected)
+        if recommended:
+            st.markdown(f"""
+            <div class="card">
+                <div class="card-body">
+                    <h4>🎉 {recommended.card_name} ({recommended.bank})</h4>
+                    <ul>
+                        <li>💰 <b>Cashback</b>: {recommended.cashback}%</li>
+                        <li>🎁 <b>Rewards</b>: {recommended.rewards} คะแนน/100 บาท</li>
+                        <li>🍽️ <b>Dining Discount</b>: {recommended.dining_discount}%</li>
+                        <li>✈️ <b>Travel Benefits</b>: {recommended.travel_benefit}</li>
+                    </ul>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# ✅ Card Display
-if selected_restaurant == "เลือกจากรายการ":
-    st.subheader("⭐ ร้านแนะนำ")
-    html = '<div class="card-grid">'
-    for r in get_card_data():
-        html += f"""
-<div class="card">
-    <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
-    <div class="card-body">
-        <div class="card-title">{r['name']}</div>
-        <div class="card-category">{r['category']}</div>
-        <div class="card-rating">
-            <span class="rating-badge">{r['rating']} ⭐</span>
-            <span>{r['reviews']} รีวิว</span>
-        </div>
-    </div>
-</div>
-"""
-    html += '</div>'
-    st.markdown(html, unsafe_allow_html=True)
+    if st.button("🔄 เลือกร้านใหม่"):
+        st.session_state["selected_restaurant"] = None
+        st.session_state["search_query"] = ""
+        st.rerun()
 
-# ✅ Credit Card Recommendation
-if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
-    st.session_state["selected_restaurant"] = selected_restaurant
-    st.session_state["search_query"] = search_query
-    st.success(f"✅ คุณเลือกร้าน {selected_restaurant}")
+    st.markdown("---")
+    user_data = user_manager.get_user_data(st.session_state.username)
+    st.caption(f"คุณเข้าสู่ระบบในชื่อ: {st.session_state.username} ({user_data['bank']} - {user_data['card_type']}, ไลฟ์สไตล์: {user_data['lifestyle']})")
+    if st.button("🚪 ออกจากระบบ"):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        st.rerun()
 
-    st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
-    recommended_card = card_recommender.recommend_cards(selected_restaurant)
-    if recommended_card:
-        st.markdown(f"""
-<div class="card">
-    <div class="card-body">
-        <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
-        <ul>
-            <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
-            <li>🎁 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
-            <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
-            <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
-        </ul>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+def main():
+    init_session_state()
+    if not st.session_state.logged_in:
+        if st.session_state.show_register:
+            register_page()
+        else:
+            login_page()
     else:
-        st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
+        restaurant_app()
 
-# ✅ Reset Button
-if st.button("🔄 เลือกร้านใหม่"):
-    st.session_state["selected_restaurant"] = None
-    st.session_state["search_query"] = ""
-    st.rerun()
+if __name__ == "__main__":
+    main()
