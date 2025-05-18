@@ -15,13 +15,15 @@ st.markdown("""
     }
 
     .card-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-wrap: nowrap;
         gap: 20px;
         margin-top: 20px;
+        overflow-x: auto;
     }
 
     .card {
+        flex: 0 0 23%;
         border-radius: 16px;
         overflow: hidden;
         background: white;
@@ -74,13 +76,10 @@ st.markdown("""
         border-radius: 12px;
         font-size: 12px;
     }
-
-    a { text-decoration: none; color: inherit; }
     </style>
 """, unsafe_allow_html=True)
 
 # ✅ Mock Data
-
 def get_card_data():
     return [
         {
@@ -139,32 +138,23 @@ selected_restaurant = st.selectbox("เลือกร้านอาหาร",
 # ✅ Card Display
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
-    st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+    html = '<div class="card-grid">'
     for r in get_card_data():
-        restaurant_name = r['name']
-        st.markdown(f"""
-<a href="?selected={restaurant_name}" style="color: inherit;">
-    <div class="card">
-        <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
-        <div class="card-body">
-            <div class="card-title">{r['name']}</div>
-            <div class="card-category">{r['category']}</div>
-            <div class="card-rating">
-                <span class="rating-badge">{r['rating']} ⭐</span>
-                <span>{r['reviews']} รีวิว</span>
-            </div>
+        html += f"""
+<div class="card">
+    <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
+    <div class="card-body">
+        <div class="card-title">{r['name']}</div>
+        <div class="card-category">{r['category']}</div>
+        <div class="card-rating">
+            <span class="rating-badge">{r['rating']} ⭐</span>
+            <span>{r['reviews']} รีวิว</span>
         </div>
     </div>
-</a>
-""", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ✅ Handle selection via query param
-query_param = st.query_params.get("selected")
-if query_param:
-    selected_restaurant = query_param
-    st.session_state["selected_restaurant"] = selected_restaurant
-    st.experimental_rerun()
+</div>
+"""
+    html += '</div>'
+    st.markdown(html, unsafe_allow_html=True)
 
 # ✅ Credit Card Recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
