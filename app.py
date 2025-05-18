@@ -2,13 +2,14 @@ import streamlit as st
 
 st.set_page_config(layout="wide")
 
+# CSS Styling
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
 html, body, .block-container {
-    margin: 0 !important;
     padding: 0 !important;
+    margin: 0 !important;
     height: 100vh;
     overflow: hidden;
     font-family: 'Noto Sans Thai', sans-serif;
@@ -42,35 +43,34 @@ section.main > div {
     justify-content: center;
 }
 
-input[type="text"], input[type="password"] {
-    width: 100%;
+.stTextInput > div > input {
     padding: 12px;
     border-radius: 10px;
     border: 1px solid #ccc;
-    margin-bottom: 16px;
     font-size: 16px;
+    background-color: #fff;
 }
 
-button {
+.stButton > button {
     background-color: #123d2d;
     color: white;
     padding: 14px;
-    width: 100%;
     border-radius: 12px;
     font-weight: bold;
     font-size: 16px;
     border: none;
-    margin-top: 10px;
+    width: 100%;
 }
 
-.social {
+.social-button {
     background: white;
     color: black;
     padding: 12px;
     border-radius: 12px;
     border: 1px solid #ccc;
-    margin-top: 12px;
     text-align: center;
+    margin-top: 12px;
+    font-size: 15px;
 }
 
 .card-box {
@@ -80,6 +80,7 @@ button {
     border-radius: 20px;
     max-width: 400px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
 }
 
 .earnings {
@@ -91,44 +92,46 @@ button {
     font-weight: bold;
 }
 </style>
-
-<div class="container">
-  <div class="left">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Vanamo_Logo.png/240px-Vanamo_Logo.png" width="100"/>
-    <h1>Sign in</h1>
-    <p>Don’t have an account? <a href="#">Create now</a></p>
-
-    <label>Email</label>
-    <input type="text" placeholder="example@gmail.com" />
-
-    <label>Password</label>
-    <input type="password" placeholder="@#*%" />
-
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <label><input type="checkbox" /> Remember me</label>
-      <a href="#">Forgot Password?</a>
-    </div>
-
-    <button>Sign in</button>
-
-    <div style="text-align: center; margin: 20px 0;">— or —</div>
-
-    <div class="social">🔵 Continue with Google</div>
-    <div class="social">🔷 Continue with Facebook</div>
-  </div>
-
-  <div class="right">
-    <div class="card-box">
-      <h3>Reach financial goals faster</h3>
-      <p>Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.</p>
-      <button style="width:auto; padding:10px 20px; margin-top: 10px;">Learn more</button>
-      <div class="earnings">📈 Earnings: $350.40</div>
-    </div>
-
-    <div style="margin-top: 80px;">
-      <h2>Introducing new features</h2>
-      <p>Analyzing previous trends ensures that businesses always make the right decision. And as the scale of the decision and its impact magnifies…</p>
-    </div>
-  </div>
-</div>
 """, unsafe_allow_html=True)
+
+# Layout แบบ 40% / 60%
+st.markdown('<div class="container">', unsafe_allow_html=True)
+
+with st.container():
+    col1, col2 = st.columns([2, 3])
+
+    with col1:
+        st.markdown('<div class="left">', unsafe_allow_html=True)
+
+        st.markdown("## Sign in")
+        st.markdown("Don't have an account? [Create now](#)")
+
+        email = st.text_input("E-mail", placeholder="example@gmail.com")
+        password = st.text_input("Password", type="password", placeholder="@#*%")
+        remember = st.checkbox("Remember me")
+        st.markdown("[Forgot Password?](#)", unsafe_allow_html=True)
+
+        login_btn = st.button("Sign in")
+
+        st.markdown('<div style="text-align:center;margin:20px 0;">— or —</div>', unsafe_allow_html=True)
+        st.markdown('<div class="social-button">🔵 Continue with Google</div>', unsafe_allow_html=True)
+        st.markdown('<div class="social-button">🔷 Continue with Facebook</div>', unsafe_allow_html=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        st.markdown('<div class="right">', unsafe_allow_html=True)
+
+        st.markdown('<div class="card-box">', unsafe_allow_html=True)
+        st.markdown("### Reach financial goals faster")
+        st.write("Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.")
+        st.button("Learn more")
+        st.markdown('<div class="earnings">📈 Earnings: $350.40</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown("### Introducing new features")
+        st.write("Analyzing previous trends ensures that businesses always make the right decision. And as the scale of the decision and its impact magnifies…")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
