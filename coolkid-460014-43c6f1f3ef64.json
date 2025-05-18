@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "coolkid-460014",
+  "private_key_id": "43c6f1f3ef64a793e96ad2b4686cb5dae0691e3b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9T/yWd0ENDY8+\nXQ54ng1+1gr6jg46WFWJQhCGA43V/MOQvlI51KVukf55KX+BTAG9Nkd980W67tSA\nGgBhaZT6IN76Cp6zd2aPrJSH/BFMIKl0e/ErwBIDVCC0EVp6DH7Lt0wA8RCQRbfV\nthqEbShjr8sGmhtHQjlMexvdcwAza9IDp3sqGuq37fv1hPe9yjPPDXfk4r4yPmdB\nUuREPf1iAOcA6IwAAtYzMe78qrB2q+x6CC8y2ft5OsCVgVkp1nUyJpCrShayBIxk\nQPFZseKI0aQK7mLb15kCVH5k/Rpg2zT3VhUFZ95VlZaLIa+GE/dmOM+0PDgvGC8c\nXQfEWPcdAgMBAAECggEAGrs+qWhxcQxnG6E8N9/pe+1xY2vHqolqmpUPjDzYPE0S\nuE+HgM78BR7sVeN8M5+t5y/Q7IH7aKfsraH+R8MG3ELj+V6ihijn/IWb+4+mSZ+b\nDe2qYkkewgWREJwasH0vMkjRnJhthFGz4aNzHxvixiC+hFIiY+9/88K2bpCciKYE\nEadMezyD8U5mt4uZitID5paTpmCnLZ3mF9vl8Feyv/Vmpesi8woypfdcsmq6EV4f\nnJylowke4Dwi7AGz7ldelmWiLnz09tjpc2N4r2Bte0+MRRYNydFRNu/nwvNgIHPo\nZ+y5X/a+qpgz5UgCI8WztHXkKI4kGc3Rdy4IsImaQQKBgQD+V1tM/Bfv/WWFM2DB\n1c6gzUCrpeaodU6u/2mQriE8JdQZJyXDD4z5yzUIwzMq+bmK3InHy4XKar96rRym\nA1UZ0x1lU8WczcUhKt6IgSYvThhsJzUZrrGgfMXDH+DdZRsNFXh+xr23wn4ERxuZ\nALtNwndBiKFqaW7B1tnSxTY8ZQKBgQC+jA8mh51PcJsp9yLob6hlrVts4/Z0LKsC\n2HUk/nhKn193nS7tEC/FDbF4PVsR2eQ+55HteIPGkbCv92zVrGrB9GnrxGz6JV8c\n+50N+Yue/J4ell34rbLcdrLldgsq5WW6HgfSM1/iQ3OtjnEbc3relWHSYG8h3w8x\ntixKjvqYWQKBgHcoli3LLavSG+371Cj78oKDpvjEEPx7eRGjt+GAszFqx6PBI3/v\nmSyud3pTeXV46eSUzjg8scHToUHoOLPOe+BNeEgwpzR/cwvG+dsaJrmi7O4+sDII\nFlAKJNz14nPXGoVWuc0rb1bYWBHI/rUAEsCrixO432brXmiSMBr/KhnBAoGAfryd\nnxz4bswRCDqOh1ctBGPnuWdulxrWq8/ZKr/utoOGdgKgIaFwhHp1HeqBVkA85fIU\nR4Su8TYZ9RB23TAO2e59PQmrCj4tIxPgBFmEmjyf1uxgmHS/0I9KsgBvsRpfLQmo\nXhE5pz8CA+AILyACC2YEaG8nu7mnW4M1tmmfGBECgYEAxSKm64Q5FCJBmhYEBi9L\n+zpIGk/EHdNvBeaRFwguxhpeEm/vLsRoucd3rXI4MG48ssrk4oahvPcJ6IPJRTDe\n84KBbIDs8znacCUplUr3uSyt88nf4w6GkXsETyTt1iEZQmiqzRxW+oKSXj8dSae8\nViVvvlLB/LAH4BSnO8DWrOY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "coolkid@coolkid-460014.iam.gserviceaccount.com",
+  "client_id": "103897726112063664987",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/coolkid%40coolkid-460014.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
