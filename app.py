@@ -105,57 +105,116 @@ def init_session_state():
 def modern_login_page():
     st.markdown("""
         <style>
-            body {
-                background: linear-gradient(to right, #00c6ff, #0072ff);
-            }
             .login-container {
-                max-width: 400px;
-                margin: 0 auto;
+                display: flex;
+                flex-direction: row;
+                height: 100vh;
+                width: 100%;
+            }
+            .login-left {
+                flex: 1;
+                background-color: #f7f9f9;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 padding: 40px;
-                background: white;
-                border-radius: 16px;
-                box-shadow: 0 0 20px rgba(0,0,0,0.1);
-                margin-top: 100px;
             }
-            .login-title {
-                font-size: 28px;
+            .login-right {
+                flex: 1;
+                background-color: #0d3b2e;
+                color: white;
+                padding: 60px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .form-box {
+                max-width: 400px;
+                width: 100%;
+            }
+            .form-title {
+                font-size: 30px;
                 font-weight: bold;
-                text-align: center;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
             }
-            .login-subtitle {
-                font-size: 16px;
-                color: #888;
-                text-align: center;
-                margin-bottom: 30px;
+            .form-subtitle {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 20px;
             }
             .login-button {
                 width: 100%;
-                padding: 10px;
-                background: linear-gradient(to right, #00c6ff, #0072ff);
+                padding: 12px;
+                background-color: #153f2e;
                 color: white;
                 border: none;
-                border-radius: 8px;
+                border-radius: 10px;
+                font-size: 16px;
                 font-weight: bold;
-                cursor: pointer;
+            }
+            .social-btn {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                margin-top: 10px;
+                text-align: center;
+                font-size: 14px;
+                background-color: white;
+            }
+            .right-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 12px;
+            }
+            .right-desc {
+                font-size: 14px;
+                line-height: 1.5;
+                max-width: 400px;
             }
         </style>
     """, unsafe_allow_html=True)
 
-    with st.container():
-        st.markdown("""<div class='login-container'>""", unsafe_allow_html=True)
-        st.markdown("""<div class='login-title'>Sign Into<br>Your Account</div>""", unsafe_allow_html=True)
-        username = st.text_input("Email / Company ID", placeholder="example@email.com")
-        password = st.text_input("Password", type="password", placeholder="Enter your password")
-        remember = st.checkbox("Remember Me")
-        login = st.button("Sign In", use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("""<div class='login-container'>""", unsafe_allow_html=True)
 
-        if login:
-            if username == "admin" and password == "1234":
-                st.success("Login Success! ✅")
-            else:
-                st.error("Login Failed ❌")
+    with st.container():
+        col1, col2 = st.columns([1, 1])
+
+        with col1:
+            st.markdown("<div class='login-left'>", unsafe_allow_html=True)
+            st.markdown("<div class='form-box'>", unsafe_allow_html=True)
+            st.markdown("<div class='form-title'>Sign in</div>", unsafe_allow_html=True)
+            st.markdown("""<div class='form-subtitle'>Don't have an account? <a href='#'>Create now</a></div>""", unsafe_allow_html=True)
+
+            username = st.text_input("E-mail", placeholder="example@gmail.com")
+            password = st.text_input("Password", type="password", placeholder="@#*%")
+            col_remember, col_forgot = st.columns([1, 1])
+            with col_remember:
+                st.checkbox("Remember me")
+            with col_forgot:
+                st.markdown("<div style='text-align: right;'><a href='#'>Forgot Password?</a></div>", unsafe_allow_html=True)
+
+            login = st.button("Sign in", use_container_width=True)
+
+            st.markdown("""<hr style='margin: 25px 0;'>""", unsafe_allow_html=True)
+            st.markdown("<div class='social-btn'>Continue with Google</div>", unsafe_allow_html=True)
+            st.markdown("<div class='social-btn'>Continue with Facebook</div>", unsafe_allow_html=True)
+            st.markdown("</div></div>", unsafe_allow_html=True)
+
+        with col2:
+            st.markdown("<div class='login-right'>", unsafe_allow_html=True)
+            st.markdown("<div class='right-title'>Reach financial goals faster</div>", unsafe_allow_html=True)
+            st.markdown("<div class='right-desc'>Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.</div>", unsafe_allow_html=True)
+            st.markdown("<div style='margin-top: 30px;'><button class='login-button'>Learn more</button></div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if login:
+        if username == "admin" and password == "1234":
+            st.success("Login Success! ✅")
+        else:
+            st.error("Login Failed ❌")
 
 
 def register_page():
