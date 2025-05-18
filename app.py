@@ -100,6 +100,27 @@ def get_card_data():
             "rating": 4.6,
             "reviews": 14,
             "image_url": "https://img.wongnai.com/p/624x0/2023/11/11/4d7eaa83a0dc4607b2e6edec001f33c4.jpg"
+        },
+        {
+            "name": "MOS BURGER",
+            "category": "เบอร์เกอร์",
+            "rating": 4.5,
+            "reviews": 13,
+            "image_url": "https://img.wongnai.com/p/624x0/2019/12/17/a3a24300483f46298b728452dcdddb76.jpg"
+        },
+        {
+            "name": "The Saucy Kitchen",
+            "category": "อาหารคลีน/สลัด",
+            "rating": 4.4,
+            "reviews": 13,
+            "image_url": "https://img.wongnai.com/p/624x0/2021/06/15/4b8d4e88d3f2406fa5a0f0d83773104a.jpg"
+        },
+        {
+            "name": "Starbucks Vichaiyut",
+            "category": "ร้านกาแฟ/ชา",
+            "rating": 5.0,
+            "reviews": 6,
+            "image_url": "https://img.wongnai.com/p/624x0/2021/07/21/0d2a92dbb1dc438cba02a334c0d50355.jpg"
         }
     ]
 
@@ -112,7 +133,6 @@ with col2:
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
-# ✅ Session state
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
@@ -132,7 +152,7 @@ selected_restaurant = st.selectbox("เลือกร้านอาหาร",
 # ✅ Show recommendations
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
-    html = "<div class='card-grid'>"
+    html = '<div class="card-grid">'
     for r in get_card_data():
         html += f"""
         <div class="card">
@@ -147,7 +167,7 @@ if selected_restaurant == "เลือกจากรายการ":
             </div>
         </div>
         """
-    html += "</div>"
+    html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
 # ✅ Show credit card recommendation
