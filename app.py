@@ -245,11 +245,6 @@ def modern_login_page():
         else:
             st.error("Login Failed ❌")
 
-if __name__ == "__main__":
-    modern_login_page()
-
-
-
 def register_page():
     st.markdown("<h2 style='text-align: center;'>ลงทะเบียน</h2>", unsafe_allow_html=True)
 
