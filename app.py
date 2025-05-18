@@ -3,7 +3,7 @@ from PIL import Image
 
 st.set_page_config(layout="wide")
 
-# Mock data
+# Mock data สำหรับร้านอาหาร
 def get_card_data():
     return [
         {
@@ -76,28 +76,29 @@ st.markdown("""
         font-weight: bold;
         font-size: 12px;
     }
+    a { text-decoration: none; }
     </style>
 """, unsafe_allow_html=True)
 
-# Logo
+# โลโก้ตรงกลาง
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image("logo.png", width=90)
 
-# Search
+# ค้นหาชื่อร้าน
 st.subheader("🔍 ค้นหาร้านอาหาร")
 query = st.text_input("พิมพ์ชื่อร้าน").strip()
 restaurants = get_card_data()
 if query:
     restaurants = [r for r in restaurants if query.lower() in r["name"].lower()]
 
-# Show cards
+# แสดงการ์ด
 st.subheader("⭐ ร้านแนะนำ")
 st.markdown('<div class="card-grid">', unsafe_allow_html=True)
 for r in restaurants:
     link = f"/RestaurantDetail?name={r['name']}"
     st.markdown(f"""
-    <a href="{link}" style="text-decoration: none; color: inherit;">
+    <a href="{link}" style="color: inherit;">
         <div class="card">
             <img src="{r['image_url']}" alt="{r['name']}">
             <div class="card-body">
