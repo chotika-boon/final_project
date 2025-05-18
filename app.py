@@ -154,10 +154,15 @@ def register_page():
                         "credit_name": "",
                         "card_type": card_type
                     }]
+                    print("🚀 Sending to BigQuery:", row)
                     errors = client.insert_rows_json(table_id, row)
+                    print("📥 BigQuery response:", errors)
                     if errors:
                         st.warning(f"BigQuery insert error: {errors}")
+                    else:
+                        st.success("✅ บันทึกข้อมูลลง BigQuery สำเร็จ")
                 except Exception as e:
+                    print("🔥 Exception occurred:", str(e))
                     st.warning(f"BigQuery error: {str(e)}")
 
                 st.session_state.show_register = False
