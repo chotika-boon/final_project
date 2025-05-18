@@ -1,126 +1,120 @@
 import streamlit as st
-import base64
 
-# ✅ ต้องมาก่อนทุกคำสั่ง Streamlit
-st.set_page_config(layout="wide", page_title="เข้าสู่ระบบ")
+# ✅ ต้องอยู่บรรทัดแรก
+st.set_page_config(page_title="Sign In", layout="wide")
 
-# ✅ โหลดฟอนต์
+# ✅ HTML + CSS แบบ full screen ซ้าย-ขวา
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+
     html, body, [class*="css"] {
-        font-family: 'Noto Sans Thai', sans-serif !important;
+        font-family: 'Noto Sans Thai', sans-serif;
         margin: 0;
         padding: 0;
     }
-    .wrapper {
+    .container {
         display: flex;
+        flex-direction: row;
         height: 100vh;
+        width: 100vw;
     }
     .left {
         flex: 1;
-        padding: 4rem;
-        background: #f4f6f5;
+        background-color: #f3f5f4;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 60px;
     }
     .right {
         flex: 1;
-        background: #0e3c2e;
+        background-color: #0e3c2e;
         color: white;
-        padding: 4rem;
+        padding: 60px;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
     .title {
-        font-size: 36px;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 8px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
     }
     .subtitle {
-        color: #6c757d;
-        margin-bottom: 24px;
+        font-size: 1rem;
+        margin-bottom: 30px;
+        color: #666;
     }
     .subtitle a {
         font-weight: bold;
         color: #0e3c2e;
         text-decoration: none;
     }
-    .login-btn, .social-btn {
+    .input {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+    .btn-main {
+        background-color: #0e3c2e;
+        color: white;
+        width: 100%;
         padding: 12px;
         border: none;
         border-radius: 8px;
-        width: 100%;
-        font-weight: 600;
-    }
-    .login-btn {
-        background: #0e3c2e;
-        color: white;
+        font-weight: bold;
         margin-top: 10px;
     }
-    .social-btn {
+    .social {
+        width: 100%;
+        margin-top: 16px;
+        padding: 10px;
+        border-radius: 8px;
         background: white;
         color: #333;
+        font-weight: 500;
         border: 1px solid #ccc;
-        margin-top: 10px;
+        text-align: center;
     }
-    .highlight {
-        font-size: 24px;
-        font-weight: bold;
-    }
-    .learn-btn {
-        margin-top: 20px;
-        padding: 10px 20px;
-        background: white;
-        color: #0e3c2e;
-        border: none;
-        border-radius: 10px;
-        font-weight: bold;
+    .card-right {
+        background-color: white;
+        color: black;
+        padding: 30px;
+        border-radius: 16px;
+        max-width: 400px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ Load logo image
-with open("คู่คิด-removebg-preview.png", "rb") as f:
-    img_data = base64.b64encode(f.read()).decode()
-
-# ✅ เริ่ม Layout
-st.markdown('<div class="wrapper">', unsafe_allow_html=True)
-
-# ⬅️ LEFT SIDE
-st.markdown(f"""
-<div class="left">
-    <img src="data:image/png;base64,{img_data}" width="100">
+st.markdown("""
+<div class="container">
+  <div class="left">
+    <img src="https://i.ibb.co/yhR2r0Z/logo-kooddee.png" width="100" style="margin-bottom: 20px;" />
     <div class="title">Sign in</div>
     <div class="subtitle">ยังไม่มีบัญชี? <a href="#">สร้างบัญชี</a></div>
-""", unsafe_allow_html=True)
+    
+    <div class="input">E-mail</div>
+    <input type="text" class="input" placeholder="example@gmail.com" style="padding:10px;width:100%;border-radius:8px;border:1px solid #ddd;"/>
 
-email = st.text_input("E-mail", placeholder="example@gmail.com", key="email")
-password = st.text_input("Password", placeholder="รหัสผ่าน", type="password", key="pwd")
+    <div class="input">Password</div>
+    <input type="password" class="input" placeholder="รหัสผ่าน" style="padding:10px;width:100%;border-radius:8px;border:1px solid #ddd;"/>
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    st.checkbox("จำฉันไว้", value=False)
-with col2:
-    st.markdown("<div style='text-align:right;'><a href='#'>ลืมรหัสผ่าน?</a></div>", unsafe_allow_html=True)
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div><input type="checkbox"/> จำฉันไว้</div>
+      <a href="#">ลืมรหัสผ่าน?</a>
+    </div>
 
-st.markdown('<button class="login-btn">เข้าสู่ระบบ</button>', unsafe_allow_html=True)
-st.markdown('<div class="social-btn">🔵 เข้าสู่ระบบด้วย Google</div>', unsafe_allow_html=True)
-st.markdown('<div class="social-btn">🔵 เข้าสู่ระบบด้วย Facebook</div>', unsafe_allow_html=True)
+    <button class="btn-main">เข้าสู่ระบบ</button>
+    <div class="social">🔵 เข้าสู่ระบบด้วย Google</div>
+    <div class="social">🔵 เข้าสู่ระบบด้วย Facebook</div>
+  </div>
 
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ➡️ RIGHT SIDE
-st.markdown("""
-<div class="right">
-    <div class="highlight">📈 บรรลุเป้าหมายทางการเงินได้ไวขึ้น</div>
-    <p>ใช้บัตร Venus ของคุณทั่วโลกโดยไม่มีค่าธรรมเนียมแอบแฝง พร้อมโอนและใช้จ่ายได้ทันที</p>
-    <button class="learn-btn">ดูเพิ่มเติม</button>
+  <div class="right">
+    <div class="card-right">
+        <h3>📌 บรรลุเป้าหมายทางการเงินได้ไวขึ้น</h3>
+        <p>ใช้บัตร Venus ของคุณทั่วโลก โดยไม่ต้องกังวลเรื่องแปลงสกุลเงิน พร้อมโอนและใช้จ่ายได้ทันที</p>
+        <button class="btn-main" style="background:white;color:#0e3c2e;margin-top: 10px;">ดูเพิ่มเติม</button>
+    </div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
-
-# ✅ Close wrapper
-st.markdown('</div>', unsafe_allow_html=True)
