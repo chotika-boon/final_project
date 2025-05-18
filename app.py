@@ -1,33 +1,46 @@
 import streamlit as st
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
-body, html, [class*="css"] {
+html, body, [class*="css"] {
     font-family: 'Noto Sans Thai', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.main {
+    padding: 0 !important;
+}
+
+section.main > div {
+    padding: 0 !important;
 }
 
 .container {
     display: flex;
+    width: 100vw;
     height: 100vh;
-    margin: 0;
-    padding: 0;
 }
 
 .left {
-    flex: 1;
+    width: 40%;
     background-color: #f7f9fa;
     padding: 60px 80px;
+    box-sizing: border-box;
 }
 
 .right {
-    flex: 1;
+    width: 60%;
     background-color: #113c2c;
     color: white;
     padding: 60px 80px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -81,7 +94,6 @@ button.signin {
     border-radius: 10px;
     display: inline-block;
 }
-
 </style>
 
 <div class="container">
