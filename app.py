@@ -61,19 +61,19 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ Center content
+# Center content
 st.markdown('<div class="center-wrapper"><div class="login-container">', unsafe_allow_html=True)
 
-# ✅ Logo
+# Logo
 st.image("คู่คิด-removebg-preview.png", width=80)
 
-# ✅ Header
+# Header
 st.markdown("""
 <h2 style="font-weight:700;">Sign in</h2>
 <p style="margin-bottom:25px;">ยังไม่มีบัญชี? <a href="#" style="font-weight:bold;color:#0e3c2e;">สร้างบัญชี</a></p>
 """, unsafe_allow_html=True)
 
-# ✅ Inputs
+# Inputs
 email = st.text_input("E-mail", placeholder="example@gmail.com")
 password = st.text_input("Password", type="password", placeholder="@#*%")
 
@@ -83,13 +83,13 @@ with col1:
 with col2:
     st.markdown("<div style='text-align:right;'><a href='#'>ลืมรหัสผ่าน?</a></div>", unsafe_allow_html=True)
 
-# ✅ Sign-in Button
+# Sign-in Button
 st.markdown('<button class="login-button login-button-primary">เข้าสู่ระบบ</button>', unsafe_allow_html=True)
 
-# ✅ Divider
+# Divider
 st.markdown("<hr><p style='text-align:center;'>หรือ</p>", unsafe_allow_html=True)
 
-# ✅ Google Login
+# Google Login
 st.markdown("""
 <button class="social-button">
     <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
@@ -97,7 +97,7 @@ st.markdown("""
 </button>
 """, unsafe_allow_html=True)
 
-# ✅ Facebook Login
+# Facebook Login
 st.markdown("""
 <button class="social-button">
     <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
@@ -105,5 +105,5 @@ st.markdown("""
 </button>
 """, unsafe_allow_html=True)
 
-# ✅ End center container
+# End container
 st.markdown("</div></div>", unsafe_allow_html=True)
