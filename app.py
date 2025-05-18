@@ -1,96 +1,113 @@
 import streamlit as st
 
-st.set_page_config(layout="wide", page_title="Sign In")
+# ตั้งค่าให้เป็น layout กว้าง
+st.set_page_config(layout="wide")
 
+# นำเข้า font Noto Sans Thai
 st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
-body, html, * {
-    font-family: 'Noto Sans Thai', sans-serif;
-}
+    html, body, [class*="css"] {
+        font-family: 'Noto Sans Thai', sans-serif;
+    }
 
-.container {
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
+    .login-container {
+        display: flex;
+        height: 100vh;
+    }
 
-.left-panel {
-    width: 40%;
-    padding: 4rem;
-    background: #f7f9f8;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+    .left-panel {
+        width: 50%;
+        padding: 80px;
+        background-color: #f8fafa;
+    }
 
-.right-panel {
-    width: 60%;
-    background-color: #0e3c2e;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+    .right-panel {
+        width: 50%;
+        background-color: #123d2d;
+        color: white;
+        padding: 80px;
+    }
 
-input, button {
-    font-family: 'Noto Sans Thai', sans-serif;
-    font-size: 16px;
-    margin-top: 10px;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 100%;
-}
+    .signin-button {
+        background-color: #1d3c2e;
+        color: white;
+        padding: 10px 0;
+        border-radius: 12px;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 20px;
+    }
 
-.login-btn {
-    background: #0e3c2e;
-    color: white;
-    font-weight: bold;
-}
+    .social-button {
+        padding: 10px 0;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+        margin-top: 10px;
+    }
 
-.social-btn {
-    background: white;
-    color: #333;
-    border: 1px solid #ccc;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-}
-</style>
+    .feature-box {
+        background-color: white;
+        color: #123d2d;
+        padding: 20px;
+        border-radius: 12px;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
 
-<div class="container">
-  <div class="left-panel">
-    <img src="https://your-server-path/คู่คิด-removebg-preview.png" width="80" />
-    <h2>Sign in</h2>
-    <p>ยังไม่มีบัญชี? <a href="#">สร้างบัญชี</a></p>
+    .earnings-box {
+        background-color: #f8fafa;
+        color: #123d2d;
+        border-radius: 12px;
+        padding: 10px;
+        margin-top: 10px;
+        display: inline-block;
+    }
 
-    <input type="text" placeholder="example@gmail.com" />
-    <input type="password" placeholder="รหัสผ่าน" />
+    </style>
+""", unsafe_allow_html=True)
 
-    <div style="display: flex; justify-content: space-between;">
-        <label><input type="checkbox" /> จำฉันไว้</label>
-        <a href="#">ลืมรหัสผ่าน?</a>
+# Layout ด้วย HTML/CSS แทน
+st.markdown("""
+<div class="login-container">
+    <div class="left-panel">
+        <h1>Sign in</h1>
+        <p>Don't have an account? <a href="#">Create now</a></p>
+
+        <label for="email">E-mail</label>
+        <input type="text" id="email" placeholder="example@gmail.com" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ccc;margin-bottom:15px;" />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="@#*%" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ccc;margin-bottom:15px;" />
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <label><input type="checkbox" /> Remember me</label>
+            <a href="#">Forgot Password?</a>
+        </div>
+
+        <button class="signin-button">Sign in</button>
+
+        <hr style="margin: 20px 0;" />
+        <div class="social-button">🔵 Continue with Google</div>
+        <div class="social-button">🟦 Continue with Facebook</div>
     </div>
 
-    <button class="login-btn">เข้าสู่ระบบ</button>
-    <div class="social-btn">🔵 เข้าสู่ระบบด้วย Google</div>
-    <div class="social-btn">🔵 เข้าสู่ระบบด้วย Facebook</div>
-  </div>
+    <div class="right-panel">
+        <div class="feature-box">
+            <h3>Reach financial goals faster</h3>
+            <p>Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.</p>
+            <button style="margin-top:10px;padding:10px 20px;border:none;border-radius:10px;background-color:#1d3c2e;color:white;">Learn more</button>
+            <div class="earnings-box">
+                📈 Earnings: <strong>$350.40</strong>
+            </div>
+        </div>
 
-  <div class="right-panel">
-    <div style="max-width: 350px; text-align: center;">
-        <h3>📌 บรรลุเป้าหมายทางการเงินได้ไวขึ้น</h3>
-        <p>ใช้บัตร Venus ของคุณทั่วโลก โดยไม่มีค่าธรรมเนียมแอบแฝง พร้อมโอนและใช้งานได้ทันที</p>
-        <button style="background: white; color: #0e3c2e;">ดูเพิ่มเติม</button>
+        <div style="margin-top: 60px;">
+            <h2>Introducing new features</h2>
+            <p>Analyzing previous trends ensures that businesses always make the right decision. And as the scale of the decision and its impact magnifies...</p>
+        </div>
     </div>
-  </div>
 </div>
 """, unsafe_allow_html=True)
