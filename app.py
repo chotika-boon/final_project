@@ -103,13 +103,29 @@ def init_session_state():
         st.session_state["search_query"] = ""
 
 def login_page():
-    st.title("เข้าสู่ระบบ")
+    st.markdown("<style> .login-box input, .login-box button { width: 100%; } </style>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>เข้าสู่ระบบ</h2>", unsafe_allow_html=True)
+
     with st.form("login_form"):
-        username = st.text_input("ชื่อผู้ใช้", key="login_username")
-        password = st.text_input("รหัสผ่าน", type="password", key="login_password")
-        col1, col2 = st.columns(2)
-        login_btn = col1.form_submit_button("เข้าสู่ระบบ")
-        register_btn = col2.form_submit_button("ลงทะเบียน")
+        st.markdown("<div class='login-box'>", unsafe_allow_html=True)
+        username = st.text_input("เบอร์โทร/อีเมล", key="login_username", placeholder="เบอร์โทร/อีเมล")
+        st.markdown('<div style="margin-top: 10px;"></div>', unsafe_allow_html=True)
+        password = st.text_input("รหัสผ่าน", type="password", key="login_password", placeholder="รหัสผ่าน")
+        st.markdown('<div style="margin-top: 10px;"></div>', unsafe_allow_html=True)
+        login_btn = st.form_submit_button("ถัดไป", use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("<p style='text-align: center; font-size: 13px;'>ยังไม่มีบัญชี? <a href='#'>สมัครสมาชิก</a></p>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("<p style='text-align: center;'>หรือ</p>", unsafe_allow_html=True)
+
+    col_facebook, col_line, col_google = st.columns(3)
+    with col_facebook:
+        st.button("เข้าสู่ระบบด้วย Facebook", use_container_width=True)
+    with col_line:
+        st.button("เข้าสู่ระบบด้วย LINE", use_container_width=True)
+    with col_google:
+        st.button("เข้าสู่ระบบด้วย Google", use_container_width=True)
 
     if login_btn:
         if user_manager.authenticate_user(username, password):
@@ -119,33 +135,39 @@ def login_page():
             st.rerun()
         else:
             st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
-    if register_btn:
-        st.session_state.show_register = True
-        st.rerun()
 
 def register_page():
-    st.title("ลงทะเบียน")
+    st.markdown("<h2 style='text-align: center;'>ลงทะเบียน</h2>", unsafe_allow_html=True)
+
     with st.form("register_form"):
-        username = st.text_input("ชื่อผู้ใช้", key="register_username")
-        password = st.text_input("รหัสผ่าน", type="password", key="register_password")
-        confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password", key="confirm_password")
-        bank = st.selectbox("ธนาคาร", BANKS)
-        card_type = st.selectbox("ประเภทบัตร", CARD_TYPES)
-        lifestyle = st.selectbox("ไลฟ์สไตล์", LIFESTYLES)
-        col1, col2 = st.columns(2)
-        submit_btn = col1.form_submit_button("ลงทะเบียน")
-        back_btn = col2.form_submit_button("กลับ")
+        st.markdown("<div class='login-box'>", unsafe_allow_html=True)
+        username = st.text_input("ชื่อผู้ใช้", key="register_username", placeholder="เบอร์โทร/อีเมล")
+        password = st.text_input("รหัสผ่าน", type="password", key="register_password", placeholder="รหัสผ่าน")
+        confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password", key="confirm_password", placeholder="ยืนยันรหัสผ่าน")
+        bank = st.selectbox("ธนาคารที่ถือบัตรเครดิต", BANKS)
+        card_type = st.selectbox("ประเภทบัตรเครดิตที่ถือ", CARD_TYPES)
+        lifestyle = st.selectbox("ไลฟ์สไตล์ของคุณ", LIFESTYLES)
+        submit_btn = st.form_submit_button("ลงทะเบียน", use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("<p style='text-align: center;'>หรือ</p>", unsafe_allow_html=True)
+
+    col_facebook, col_line, col_google = st.columns(3)
+    with col_facebook:
+        st.button("เข้าสู่ระบบด้วย Facebook", use_container_width=True)
+    with col_line:
+        st.button("เข้าสู่ระบบด้วย LINE", use_container_width=True)
+    with col_google:
+        st.button("เข้าสู่ระบบด้วย Google", use_container_width=True)
 
     if submit_btn:
-        st.write("🟢 Form Submitted")
         if password != confirm_password:
             st.error("รหัสผ่านไม่ตรงกัน")
         else:
             success, msg = user_manager.register_user(username, password, bank, card_type, lifestyle)
-            st.write("✅ Register Function:", success)
             if success:
                 try:
-                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "coolkid-460014-e7e1c656d653.json"
                     client = bigquery.Client()
                     table_id = "coolkid-460014.card_scoring.users"
                     row = [{
@@ -156,9 +178,7 @@ def register_page():
                         "credit_name": "",
                         "card_type": card_type
                     }]
-                    st.write("🚀 Data to insert:", row)
                     errors = client.insert_rows_json(table_id, row)
-                    st.write("📥 Insert result:", errors)
                     if errors:
                         st.warning(f"BigQuery insert error: {errors}")
                     else:
@@ -171,9 +191,6 @@ def register_page():
                 st.rerun()
             else:
                 st.error(msg)
-    if back_btn:
-        st.session_state.show_register = False
-        st.rerun()
 
 def restaurant_app():
     col1, col2, col3 = st.columns((1, 0.5, 1))
