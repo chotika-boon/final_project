@@ -23,7 +23,7 @@ CardRecommender = engine.CardRecommender
 
 st.set_page_config(layout="wide")
 
-# Inject font ผ่าน CSS
+# Inject font 
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
     base64_font = base64.b64encode(font_data).decode()
@@ -40,9 +40,27 @@ st.markdown(f"""
         font-family: 'Noto Sans Thai', sans-serif !important;
     }}
 
-    /* Optional: Set fallback color */
-    h2, h1, h3, h4, h5, h6 {{
-        color: #222;
+    button.login-btn {{
+        background-color: #0e3c2e;
+        color: white;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        border: none;
+        width: 100%;
+    }}
+
+    .social-btn {{
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -82,23 +100,23 @@ def modern_login_page():
         with col2:
             st.markdown("<div style='text-align:right;'><a href='#'>ลืมรหัสผ่าน?</a></div>", unsafe_allow_html=True)
 
-        st.button("เข้าสู่ระบบ", use_container_width=True)
+        st.markdown('<button class="login-btn">เข้าสู่ระบบ</button>', unsafe_allow_html=True)
         st.markdown("<hr><p style='text-align:center;'>หรือ</p>", unsafe_allow_html=True)
 
         # Google button
         st.markdown("""
-        <button style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
+        <div class="social-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20" />
             เข้าสู่ระบบด้วย Google
-        </button>
+        </div>
         """, unsafe_allow_html=True)
 
         # Facebook button
         st.markdown("""
-        <button style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px;">
-            <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
+        <div class="social-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" width="20" />
             เข้าสู่ระบบด้วย Facebook
-        </button>
+        </div>
         """, unsafe_allow_html=True)
 
     with right:
