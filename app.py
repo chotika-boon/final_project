@@ -63,12 +63,12 @@ html, body, input, button, select, div {
 </style>
 """, unsafe_allow_html=True)
 
-# Mock data
+# Mock Data
 def get_card_data():
     return [
         {
             "name": "Thong Grill Hide & Yakiniku",
-            "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
+            "category": "ชาบู/สุกิ้ยากี้/หม้อไฟ",
             "rating": 4.8,
             "reviews": 5,
             "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
@@ -101,7 +101,7 @@ col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image(Image.open("logo.png"), width=100)
 
-# Backend setup
+# Backend
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
@@ -110,16 +110,17 @@ if "selected_restaurant" not in st.session_state:
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# Search
+# Search UI
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
+
 all_restaurants = restaurant_selector.all_restaurants
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# Card Grid HTML
+# Render card view
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -140,7 +141,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
-# Recommendation card
+# Credit card recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -155,7 +156,7 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
                 <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
                 <ul>
                     <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
-                    <li>🎁 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
+                    <li>🏱 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
                     <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
                     <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
                 </ul>
