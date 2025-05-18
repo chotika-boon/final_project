@@ -145,7 +145,7 @@ def register_page():
             st.write("✅ Register Function:", success)
             if success:
                 try:
-                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "coolkid-460014-df5a000a08b1.json"
                     client = bigquery.Client()
                     table_id = "coolkid-460014.card_scoring.users"
                     row = [{
