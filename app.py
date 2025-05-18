@@ -1,3 +1,7 @@
+import streamlit as st
+
+st.set_page_config(layout="wide", page_title="Sign In")
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -58,12 +62,13 @@ input, button {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
 }
 </style>
 
 <div class="container">
   <div class="left-panel">
-    <img src="https://your-path-to/คู่คิด-removebg-preview.png" width="80" />
+    <img src="https://your-server-path/คู่คิด-removebg-preview.png" width="80" />
     <h2>Sign in</h2>
     <p>ยังไม่มีบัญชี? <a href="#">สร้างบัญชี</a></p>
 
