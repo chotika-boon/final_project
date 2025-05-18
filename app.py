@@ -5,7 +5,7 @@ from engine import RestaurantSelector, CardRecommender
 # ต้องอยู่บรรทัดแรก
 st.set_page_config(layout="wide")
 
-# CSS
+# CSS สำหรับการ์ด
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -63,12 +63,13 @@ html, body, input, button, select, div {
 </style>
 """, unsafe_allow_html=True)
 
-# Mock Data
+# ข้อมูลร้านแนะนำ
+
 def get_card_data():
     return [
         {
             "name": "Thong Grill Hide & Yakiniku",
-            "category": "ชาบู/สุกิ้ยากี้/หม้อไฟ",
+            "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
             "rating": 4.8,
             "reviews": 5,
             "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
@@ -78,21 +79,21 @@ def get_card_data():
             "category": "เบอร์เกอร์",
             "rating": 4.4,
             "reviews": 10,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2020/05/08/0b4e2176d17c44d48d0ff22a2b5d167c.jpg"
         },
         {
             "name": "Starbucks River City",
             "category": "ร้านกาแฟ/ชา",
             "rating": 4.6,
             "reviews": 14,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2023/11/11/4d7eaa83a0dc4607b2e6edec001f33c4.jpg"
         },
         {
             "name": "MOS BURGER",
             "category": "เบอร์เกอร์",
             "rating": 4.5,
             "reviews": 13,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2019/12/17/a3a24300483f46298b728452dcdddb76.jpg"
         }
     ]
 
@@ -110,7 +111,7 @@ if "selected_restaurant" not in st.session_state:
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# Search UI
+# Search
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
 
@@ -118,9 +119,10 @@ all_restaurants = restaurant_selector.all_restaurants
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
+
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# Render card view
+# Show Recommended Cards
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -141,7 +143,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
-# Credit card recommendation
+# Credit Card Recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -156,7 +158,7 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
                 <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
                 <ul>
                     <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
-                    <li>🏱 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
+                    <li>🎁 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
                     <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
                     <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
                 </ul>
