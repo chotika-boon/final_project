@@ -6,11 +6,6 @@ from google.cloud import bigquery
 
 st.set_page_config(layout="wide")
 
-# --- AUTH & BIGQUERY ---
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "coolkid-460014-e7e1c656d653.json"
-client = bigquery.Client()
-BQ_TABLE = "coolkid-460014.card_scoring.users"
-
 # --- STYLES ---
 st.markdown("""
     <style>
