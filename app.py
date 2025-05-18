@@ -1,7 +1,4 @@
-from pathlib import Path
-
-# Save the revised code to a .py file for the user to download or use
-revised_code = '''import streamlit as st
+import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
@@ -9,7 +6,7 @@ from engine import RestaurantSelector, CardRecommender
 st.set_page_config(layout="wide")
 
 # ✅ Modern CSS
-st.markdown(\"""
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
@@ -78,7 +75,7 @@ html, body, input, button, select, div {
     font-size: 12px;
 }
 </style>
-\""", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # ✅ Mock card data
 def get_card_data():
@@ -115,6 +112,7 @@ with col2:
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
+# ✅ Session state
 if "selected_restaurant" not in st.session_state:
     st.session_state["selected_restaurant"] = None
 if "search_query" not in st.session_state:
@@ -134,7 +132,7 @@ selected_restaurant = st.selectbox("เลือกร้านอาหาร",
 # ✅ Show recommendations
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
-    html = '<div class="card-grid">'
+    html = "<div class='card-grid'>"
     for r in get_card_data():
         html += f"""
         <div class="card">
@@ -149,7 +147,7 @@ if selected_restaurant == "เลือกจากรายการ":
             </div>
         </div>
         """
-    html += '</div>'
+    html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
 
 # ✅ Show credit card recommendation
@@ -184,9 +182,3 @@ if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
     st.rerun()
-'''
-
-output_path = Path("/mnt/data/revised_streamlit_app.py")
-output_path.write_text(revised_code, encoding="utf-8")
-
-output_path.name
