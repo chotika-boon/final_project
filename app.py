@@ -106,7 +106,7 @@ def modern_login_page():
         # Google button
         st.markdown("""
         <div class="social-btn">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20" />
+            <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
             เข้าสู่ระบบด้วย Google
         </div>
         """, unsafe_allow_html=True)
@@ -114,7 +114,7 @@ def modern_login_page():
         # Facebook button
         st.markdown("""
         <div class="social-btn">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" width="20" />
+            <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
             เข้าสู่ระบบด้วย Facebook
         </div>
         """, unsafe_allow_html=True)
