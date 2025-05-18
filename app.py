@@ -84,8 +84,22 @@ def modern_login_page():
 
         st.button("เข้าสู่ระบบ", use_container_width=True)
         st.markdown("<hr><p style='text-align:center;'>หรือ</p>", unsafe_allow_html=True)
-        st.button("🔵 เข้าสู่ระบบด้วย Google", use_container_width=True)
-        st.button("🔵 เข้าสู่ระบบด้วย Facebook", use_container_width=True)
+
+        # Google button
+        st.markdown("""
+        <button style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
+            เข้าสู่ระบบด้วย Google
+        </button>
+        """, unsafe_allow_html=True)
+
+        # Facebook button
+        st.markdown("""
+        <button style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: white; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px;">
+            <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
+            เข้าสู่ระบบด้วย Facebook
+        </button>
+        """, unsafe_allow_html=True)
 
     with right:
         st.markdown("""
