@@ -1,25 +1,22 @@
 import streamlit as st
 
-st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(layout="wide")
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
-html, body, [class*="css"] {
-    font-family: 'Noto Sans Thai', sans-serif;
-    margin: 0;
-    padding: 0;
+html, body, .block-container {
+    padding: 0 !important;
+    margin: 0 !important;
     overflow-x: hidden;
-    height: 100%;
+    height: 100vh;
+    font-family: 'Noto Sans Thai', sans-serif;
 }
 
-.main {
+section.main {
     padding: 0 !important;
-}
-
-section.main > div {
-    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .container {
