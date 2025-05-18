@@ -1,3 +1,4 @@
+
 BANKS = ["KBank", "SCB", "Krungsri", "KTC"]
 CARD_TYPES = ["Platinum", "Gold", "Classic"]
 LIFESTYLES = ["สายกิน", "สายเที่ยว", "สายช้อป"]
