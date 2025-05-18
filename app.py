@@ -23,12 +23,11 @@ CardRecommender = engine.CardRecommender
 
 st.set_page_config(layout="wide")
 
-# อ่านไฟล์ฟอนต์ TTF
+# Inject font ผ่าน CSS
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
     base64_font = base64.b64encode(font_data).decode()
 
-# Inject font ผ่าน CSS
 st.markdown(f"""
     <style>
     @font-face {{
@@ -37,8 +36,13 @@ st.markdown(f"""
         font-weight: 300 600;
     }}
 
-    html, body, div, span, input, label, textarea, button, select, h1, h2, h3, h4, h5, h6, p, a, ul, li {{
+    html, body, [class*="st-"], [class*="css"], h1, h2, h3, h4, h5, h6, p, span, div, input, button, label {{
         font-family: 'Noto Sans Thai', sans-serif !important;
+    }}
+
+    /* Optional: Set fallback color */
+    h2, h1, h3, h4, h5, h6 {{
+        color: #222;
     }}
     </style>
 """, unsafe_allow_html=True)
