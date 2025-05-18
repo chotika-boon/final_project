@@ -92,21 +92,21 @@ def get_card_data():
             "category": "เบอร์เกอร์",
             "rating": 4.4,
             "reviews": 10,
-            "image_url": "https://img.wongnai.com/p/624x0/2020/05/08/0b4e2176d17c44d48d0ff22a2b5d167c.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2025/04/11/e6b18c24a9914034b14666aba59ecdfd.jpg"
         },
         {
             "name": "Starbucks River City",
             "category": "ร้านกาแฟ/ชา",
             "rating": 4.6,
             "reviews": 14,
-            "image_url": "https://img.wongnai.com/p/624x0/2023/11/11/4d7eaa83a0dc4607b2e6edec001f33c4.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2024/04/17/1e4ec5eae8ad4e2cbcb79fd2753e16f9.jpg"
         },
         {
             "name": "MOS BURGER",
             "category": "เบอร์เกอร์",
             "rating": 4.5,
             "reviews": 13,
-            "image_url": "https://img.wongnai.com/p/624x0/2019/12/17/a3a24300483f46298b728452dcdddb76.jpg"
+            "image_url": "https://img.wongnai.com/p/624x0/2024/09/10/44f2586e3bd84950b34fd074b82e7a85.jpg"
         }
     ]
 
