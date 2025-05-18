@@ -5,6 +5,7 @@ import importlib.util
 import sys
 import os
 import uuid
+import time
 from google.cloud import bigquery
 
 # Load engine.py dynamically
@@ -136,12 +137,13 @@ def register_page():
         back_btn = col2.form_submit_button("กลับ")
 
     if submit_btn:
+        st.write("🟢 Form Submitted")
         if password != confirm_password:
             st.error("รหัสผ่านไม่ตรงกัน")
         else:
             success, msg = user_manager.register_user(username, password, bank, card_type, lifestyle)
+            st.write("✅ Register Function:", success)
             if success:
-                st.success(msg)
                 try:
                     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
                     client = bigquery.Client()
@@ -154,17 +156,17 @@ def register_page():
                         "credit_name": "",
                         "card_type": card_type
                     }]
-                    print("🚀 Sending to BigQuery:", row)
+                    st.write("🚀 Data to insert:", row)
                     errors = client.insert_rows_json(table_id, row)
-                    print("📥 BigQuery response:", errors)
+                    st.write("📥 Insert result:", errors)
                     if errors:
                         st.warning(f"BigQuery insert error: {errors}")
                     else:
                         st.success("✅ บันทึกข้อมูลลง BigQuery สำเร็จ")
                 except Exception as e:
-                    print("🔥 Exception occurred:", str(e))
-                    st.warning(f"BigQuery error: {str(e)}")
+                    st.warning(f"🔥 BigQuery error: {str(e)}")
 
+                time.sleep(2)
                 st.session_state.show_register = False
                 st.rerun()
             else:
