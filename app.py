@@ -1,11 +1,13 @@
+
 import streamlit as st
 from PIL import Image
+import os, sys
+sys.path.append(os.path.dirname(__file__))
+
 from engine import UserManager, BANKS, CARD_TYPES, LIFESTYLES, RestaurantSelector, CardRecommender
 
-# ✅ ต้องอยู่บรรทัดแรก
 st.set_page_config(layout="wide")
 
-# ✅ CSS
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -69,7 +71,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ✅ Initialization
 user_manager = UserManager()
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
@@ -135,42 +136,11 @@ def register_page():
         st.session_state.show_register = False
         st.rerun()
 
-def get_card_data():
-    return [
-        {
-            "name": "Thong Grill Hide & Yakiniku",
-            "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
-            "rating": 4.8,
-            "reviews": 5,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg"
-        },
-        {
-            "name": "Burger King",
-            "category": "เบอร์เกอร์",
-            "rating": 4.4,
-            "reviews": 10,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/04/11/e6b18c24a9914034b14666aba59ecdfd.jpg"
-        },
-        {
-            "name": "Starbucks River City",
-            "category": "ร้านกาแฟ/ชา",
-            "rating": 4.6,
-            "reviews": 14,
-            "image_url": "https://img.wongnai.com/p/624x0/2024/04/17/1e4ec5eae8ad4e2cbcb79fd2753e16f9.jpg"
-        },
-        {
-            "name": "MOS BURGER",
-            "category": "เบอร์เกอร์",
-            "rating": 4.5,
-            "reviews": 13,
-            "image_url": "https://img.wongnai.com/p/624x0/2024/09/10/44f2586e3bd84950b34fd074b82e7a85.jpg"
-        }
-    ]
-
 def restaurant_app():
     col1, col2, col3 = st.columns((1, 0.5, 1))
     with col2:
-        st.image(Image.open("logo.png"), width=100)
+        if os.path.exists("logo.png"):
+            st.image("logo.png", width=100)
 
     st.subheader("🔍 ค้นหาร้านอาหาร")
     search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
@@ -181,7 +151,7 @@ def restaurant_app():
     if selected == "เลือกจากรายการ":
         st.subheader("⭐ ร้านแนะนำ")
         html = '<div class="card-grid">'
-        for r in get_card_data():
+        for r in restaurant_selector.get_sample_data():
             html += f"""
             <div class="card">
                 <img class="card-img" src="{r['image_url']}">
