@@ -70,79 +70,111 @@ def modern_login_page():
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            background: #f0f2f5;
         }
 
         .login-container {
-            max-width: 400px;
             width: 100%;
-            padding: 40px 30px;
-            background: #f9f9f9;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 420px;
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .login-button, .social-button {
+        .login-title {
+            font-weight: 700;
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #0e3c2e;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .login-button {
             width: 100%;
             padding: 12px;
+            background: #0e3c2e;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 999px;
             font-size: 15px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .social-button {
+            width: 100%;
+            padding: 10px;
             border-radius: 999px;
             border: 1px solid #ccc;
-            margin-top: 10px;
             background: white;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            margin-top: 0.5rem;
         }
 
-        .login-button-primary {
-            background-color: #0e3c2e;
-            color: white;
-            font-weight: bold;
-            margin-top: 20px;
+        hr {
             border: none;
+            height: 1px;
+            background: #e5e5e5;
+            margin: 2rem 0 1rem;
         }
+
         </style>
     """, unsafe_allow_html=True)
 
     st.markdown('<div class="center-wrapper"><div class="login-container">', unsafe_allow_html=True)
 
-    st.image("คู่คิด-removebg-preview.png", width=80)
-    st.markdown("""
-        <h2 style="font-weight: 700;">Sign in</h2>
-        <p>ยังไม่มีบัญชี? <a href="#" style="color:#0e3c2e;font-weight:bold;">สร้างบัญชี</a></p>
-    """, unsafe_allow_html=True)
+    st.image("คู่คิด-removebg-preview.png", width=70)
+    st.markdown('<div class="login-title">เข้าสู่ระบบ</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-subtitle">ยังไม่มีบัญชี? <a href="#" style="color:#0e3c2e;font-weight:bold;">สร้างบัญชี</a></div>', unsafe_allow_html=True)
 
     email = st.text_input("E-mail", placeholder="example@gmail.com")
     password = st.text_input("Password", type="password", placeholder="@#*%")
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 1])
     with col1:
         st.checkbox("จำฉันไว้")
     with col2:
         st.markdown("<div style='text-align:right;'><a href='#'>ลืมรหัสผ่าน?</a></div>", unsafe_allow_html=True)
 
-    st.markdown('<button class="login-button login-button-primary">เข้าสู่ระบบ</button>', unsafe_allow_html=True)
-    st.markdown("<hr><p style='text-align:center;'>หรือ</p>", unsafe_allow_html=True)
+    # Primary login button
+    if st.button("เข้าสู่ระบบ", use_container_width=True):
+        # Add login logic here
+        st.session_state.logged_in = True
 
-    # Google Login
-    st.markdown("""
-        <button class="social-button">
-            <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
-            เข้าสู่ระบบด้วย Google
-        </button>
-    """, unsafe_allow_html=True)
+    st.markdown("<hr><p style='text-align:center;'>หรือเข้าสู่ระบบด้วย</p>", unsafe_allow_html=True)
 
-    # Facebook Login
-    st.markdown("""
-        <button class="social-button">
-            <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
-            เข้าสู่ระบบด้วย Facebook
-        </button>
-    """, unsafe_allow_html=True)
+    # Social buttons
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("""
+            <button class="social-button">
+                <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
+                Google
+            </button>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+            <button class="social-button">
+                <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
+                Facebook
+            </button>
+        """, unsafe_allow_html=True)
 
-    st.markdown("</div></div>", unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
+
 
 
 
