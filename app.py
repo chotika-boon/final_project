@@ -5,14 +5,13 @@ import importlib.util
 import sys
 import os
 import uuid
+from google.cloud import bigquery
 
-# 🔧 Load engine.py dynamically
+# Load engine.py dynamically
 spec = importlib.util.spec_from_file_location("engine", os.path.join(os.path.dirname(__file__), "engine.py"))
 engine = importlib.util.module_from_spec(spec)
 sys.modules["engine"] = engine
 spec.loader.exec_module(engine)
-
-from google.cloud import bigquery
 
 UserManager = engine.UserManager
 BANKS = engine.BANKS
@@ -146,14 +145,13 @@ def register_page():
                 try:
                     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
                     client = bigquery.Client()
-                    table_id = "your-project-id.your_dataset.users"  # replace with your project and dataset
-
+                    table_id = "coolkid-460014.card_scoring.users"
                     row = [{
                         "customer_id": str(uuid.uuid4()),
                         "username": username,
                         "password": password,
                         "bank": bank,
-                        "credit_name": "",  # default or fill later
+                        "credit_name": "",
                         "card_type": card_type
                     }]
                     errors = client.insert_rows_json(table_id, row)
