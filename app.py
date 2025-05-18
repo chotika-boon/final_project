@@ -2,25 +2,22 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ ต้องมาก่อนคำสั่งอื่น
+# ต้องอยู่บรรทัดแรก
 st.set_page_config(layout="wide")
 
-# ✅ CSS
+# CSS
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-
 html, body, input, button, select, div {
     font-family: 'Noto Sans Thai', sans-serif !important;
 }
-
 .card-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     margin-top: 20px;
 }
-
 .card {
     border-radius: 16px;
     overflow: hidden;
@@ -28,21 +25,13 @@ html, body, input, button, select, div {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transition: transform 0.2s ease;
 }
-
-.card:hover {
-    transform: translateY(-5px);
-}
-
+.card:hover { transform: translateY(-5px); }
 .card-img {
     width: 100%;
     height: 160px;
     object-fit: cover;
 }
-
-.card-body {
-    padding: 12px 16px;
-}
-
+.card-body { padding: 12px 16px; }
 .card-title {
     font-weight: bold;
     font-size: 16px;
@@ -51,13 +40,11 @@ html, body, input, button, select, div {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .card-category {
     font-size: 13px;
     color: #666;
     margin-bottom: 8px;
 }
-
 .card-rating {
     display: flex;
     align-items: center;
@@ -65,7 +52,6 @@ html, body, input, button, select, div {
     font-size: 13px;
     color: #333;
 }
-
 .rating-badge {
     background-color: #d93025;
     color: white;
@@ -77,7 +63,7 @@ html, body, input, button, select, div {
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ Mock restaurant card data
+# Mock Data
 def get_card_data():
     return [
         {
@@ -107,29 +93,15 @@ def get_card_data():
             "rating": 4.5,
             "reviews": 13,
             "image_url": "https://img.wongnai.com/p/624x0/2019/12/17/a3a24300483f46298b728452dcdddb76.jpg"
-        },
-        {
-            "name": "Starbucks Index Living Mall",
-            "category": "ร้านกาแฟ/ชา",
-            "rating": 4.6,
-            "reviews": 5,
-            "image_url": "https://img.wongnai.com/p/624x0/2023/02/22/fcc32f22c4cf4c6489c7933df7e0dd88.jpg"
-        },
-        {
-            "name": "Starbucks Vichaiyut",
-            "category": "ร้านกาแฟ/ชา",
-            "rating": 5.0,
-            "reviews": 6,
-            "image_url": "https://img.wongnai.com/p/624x0/2021/07/21/0d2a92dbb1dc438cba02a334c0d50355.jpg"
         }
     ]
 
-# ✅ Logo
+# LOGO
 col1, col2, col3 = st.columns((1, 0.5, 1))
 with col2:
     st.image(Image.open("logo.png"), width=100)
 
-# ✅ Backend setup
+# Backend
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
 
@@ -138,7 +110,7 @@ if "selected_restaurant" not in st.session_state:
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ Search UI
+# Search UI
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
 
@@ -146,10 +118,9 @@ all_restaurants = restaurant_selector.all_restaurants
 filtered_restaurants = all_restaurants if not search_query else [
     r for r in all_restaurants if search_query.lower() in r.lower()
 ]
-
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ✅ Show restaurant cards
+# Render card view
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -170,7 +141,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Credit card recommendation
+# Card Recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -178,9 +149,8 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
 
     st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
     recommended_card = card_recommender.recommend_cards(selected_restaurant)
-
     if recommended_card:
-        card_html = f"""
+        st.markdown(f"""
         <div class="card">
             <div class="card-body">
                 <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
@@ -192,12 +162,11 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
                 </ul>
             </div>
         </div>
-        """
-        st.markdown(card_html, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     else:
         st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# ✅ Reset button
+# Reset
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
