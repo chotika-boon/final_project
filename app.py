@@ -1,120 +1,153 @@
 import streamlit as st
 
-# ✅ ต้องอยู่บรรทัดแรก
-st.set_page_config(page_title="Sign In", layout="wide")
+# st.set_page_config must be the first Streamlit command
+st.set_page_config(layout="wide", page_title="Sign In")
 
-# ✅ HTML + CSS แบบ full screen ซ้าย-ขวา
+# Custom CSS styling
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-
-    html, body, [class*="css"] {
-        font-family: 'Noto Sans Thai', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        display: flex;
-        flex-direction: row;
-        height: 100vh;
-        width: 100vw;
-    }
-    .left {
-        flex: 1;
-        background-color: #f3f5f4;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 60px;
-    }
-    .right {
-        flex: 1;
-        background-color: #0e3c2e;
-        color: white;
-        padding: 60px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-    .subtitle {
-        font-size: 1rem;
-        margin-bottom: 30px;
-        color: #666;
-    }
-    .subtitle a {
-        font-weight: bold;
-        color: #0e3c2e;
-        text-decoration: none;
-    }
-    .input {
-        width: 100%;
-        margin-bottom: 16px;
-    }
-    .btn-main {
-        background-color: #0e3c2e;
-        color: white;
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        font-weight: bold;
-        margin-top: 10px;
-    }
-    .social {
-        width: 100%;
-        margin-top: 16px;
-        padding: 10px;
-        border-radius: 8px;
-        background: white;
-        color: #333;
-        font-weight: 500;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-    .card-right {
-        background-color: white;
-        color: black;
-        padding: 30px;
-        border-radius: 16px;
-        max-width: 400px;
-    }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+        html, body, [class*="css"] {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        .left {
+            flex: 0 0 40%;
+            background-color: #f2f6f5;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .right {
+            flex: 0 0 60%;
+            background-color: #0e3c2e;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .logo {
+            width: 60px;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .subtitle a {
+            color: #0e3c2e;
+            font-weight: bold;
+        }
+        .input-label {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .input {
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+        .btn-main {
+            width: 100%;
+            padding: 12px;
+            background-color: #0e3c2e;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 12px;
+        }
+        .social {
+            background-color: white;
+            color: #444;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        .highlight-box {
+            background-color: white;
+            color: #0e3c2e;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: left;
+            max-width: 360px;
+        }
+        .highlight-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .highlight-description {
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
     </style>
 """, unsafe_allow_html=True)
 
+# Layout section
+top, content = st.columns([1, 1])  # just dummy to avoid margin from top
+st.markdown("<div class='container'>", unsafe_allow_html=True)
+
+# Left Panel
 st.markdown("""
-<div class="container">
-  <div class="left">
-    <img src="https://i.ibb.co/yhR2r0Z/logo-kooddee.png" width="100" style="margin-bottom: 20px;" />
-    <div class="title">Sign in</div>
-    <div class="subtitle">ยังไม่มีบัญชี? <a href="#">สร้างบัญชี</a></div>
-    
-    <div class="input">E-mail</div>
-    <input type="text" class="input" placeholder="example@gmail.com" style="padding:10px;width:100%;border-radius:8px;border:1px solid #ddd;"/>
+    <div class='left'>
+        <img class='logo' src='https://i.ibb.co/yPz4Bf4/logo.png'>
+        <div class='title'>Sign in</div>
+        <div class='subtitle'>ยังไม่มีบัญชี? <a href='#'>สร้างบัญชี</a></div>
 
-    <div class="input">Password</div>
-    <input type="password" class="input" placeholder="รหัสผ่าน" style="padding:10px;width:100%;border-radius:8px;border:1px solid #ddd;"/>
+        <div class='input-label'>E-mail</div>
+        <input type='text' class='input' placeholder='example@gmail.com'/>
 
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div><input type="checkbox"/> จำฉันไว้</div>
-      <a href="#">ลืมรหัสผ่าน?</a>
+        <div class='input-label'>Password</div>
+        <input type='password' class='input' placeholder='รหัสผ่าน'/>
+
+        <div class='actions'>
+            <div><input type='checkbox'/> จำฉันไว้</div>
+            <a href='#'>ลืมรหัสผ่าน?</a>
+        </div>
+
+        <button class='btn-main'>เข้าสู่ระบบ</button>
+        <div class='social'>🔵 เข้าสู่ระบบด้วย Google</div>
+        <div class='social'>🔵 เข้าสู่ระบบด้วย Facebook</div>
     </div>
-
-    <button class="btn-main">เข้าสู่ระบบ</button>
-    <div class="social">🔵 เข้าสู่ระบบด้วย Google</div>
-    <div class="social">🔵 เข้าสู่ระบบด้วย Facebook</div>
-  </div>
-
-  <div class="right">
-    <div class="card-right">
-        <h3>📌 บรรลุเป้าหมายทางการเงินได้ไวขึ้น</h3>
-        <p>ใช้บัตร Venus ของคุณทั่วโลก โดยไม่ต้องกังวลเรื่องแปลงสกุลเงิน พร้อมโอนและใช้จ่ายได้ทันที</p>
-        <button class="btn-main" style="background:white;color:#0e3c2e;margin-top: 10px;">ดูเพิ่มเติม</button>
-    </div>
-  </div>
-</div>
 """, unsafe_allow_html=True)
+
+# Right Panel
+st.markdown("""
+    <div class='right'>
+        <div class='highlight-box'>
+            <div class='highlight-title'>📌 บรรลุเป้าหมายทางการเงินได้ไวขึ้น</div>
+            <div class='highlight-description'>ใช้บัตร Venus ของคุณทั่วโลก โดยไม่มีค่าธรรมเนียมแอบแฝง พร้อมโอนและใช้จ่ายได้ทันที</div>
+            <button class='btn-main' style='background:white; color:#0e3c2e;'>ดูเพิ่มเติม</button>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
