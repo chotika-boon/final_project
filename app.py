@@ -23,21 +23,24 @@ CardRecommender = engine.CardRecommender
 
 st.set_page_config(layout="wide")
 
-# Embed custom Thai font
+# อ่านไฟล์ฟอนต์ TTF
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
     base64_font = base64.b64encode(font_data).decode()
 
+# Inject font ผ่าน CSS
 st.markdown(f"""
-<style>
-@font-face {{
-    font-family: 'Noto Sans Thai';
-    src: url(data:font/ttf;base64,{base64_font}) format('truetype');
-}}
-html, body, div, input, button, select {{
-    font-family: 'Noto Sans Thai', sans-serif;
-}}
-</style>
+    <style>
+    @font-face {{
+        font-family: 'Noto Sans Thai';
+        src: url(data:font/ttf;base64,{base64_font}) format('truetype');
+        font-weight: 300 600;
+    }}
+
+    html, body, div, span, input, label, textarea, button, select, h1, h2, h3, h4, h5, h6, p, a, ul, li {{
+        font-family: 'Noto Sans Thai', sans-serif !important;
+    }}
+    </style>
 """, unsafe_allow_html=True)
 
 user_manager = UserManager()
