@@ -125,17 +125,17 @@ def modern_login_page():
             }
             .left {
                 background-color: #f8f9fa;
+                flex-direction: column;
             }
             .right {
                 background-color: #0d3b2e;
                 color: white;
                 flex-direction: column;
-                padding: 40px;
+                padding: 60px;
             }
             .form-box {
                 max-width: 400px;
                 width: 100%;
-                padding: 40px;
             }
             .form-title {
                 font-size: 32px;
@@ -177,40 +177,38 @@ def modern_login_page():
 
     st.markdown("""<div class='container'>""", unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1, 1], gap="medium")
+    st.markdown("<div class='left'>", unsafe_allow_html=True)
+    st.markdown("<div class='form-box'>", unsafe_allow_html=True)
+    st.markdown("<div class='form-title'>Sign in</div>", unsafe_allow_html=True)
+    st.markdown("<div class='form-subtitle'>Don’t have an account? <a href='#'>Create now</a></div>", unsafe_allow_html=True)
 
-    with col1:
-        st.markdown("<div class='left'>", unsafe_allow_html=True)
-        st.markdown("<div class='form-box'>", unsafe_allow_html=True)
-        st.markdown("<div class='form-title'>Sign in</div>", unsafe_allow_html=True)
-        st.markdown("<div class='form-subtitle'>Don’t have an account? <a href='#'>Create now</a></div>", unsafe_allow_html=True)
+    username = st.text_input("E-mail", placeholder="example@gmail.com")
+    password = st.text_input("Password", type="password", placeholder="Enter your password")
 
-        username = st.text_input("E-mail", placeholder="example@gmail.com")
-        password = st.text_input("Password", type="password", placeholder="Enter your password")
+    col_remember, col_forgot = st.columns([1, 1])
+    with col_remember:
+        st.checkbox("Remember me")
+    with col_forgot:
+        st.markdown("<div style='text-align: right;'><a href='#'>Forgot Password?</a></div>", unsafe_allow_html=True)
 
-        col_remember, col_forgot = st.columns([1, 1])
-        with col_remember:
-            st.checkbox("Remember me")
-        with col_forgot:
-            st.markdown("<div style='text-align: right;'><a href='#'>Forgot Password?</a></div>", unsafe_allow_html=True)
+    login = st.button("Sign in", use_container_width=True)
 
-        login = st.button("Sign in", use_container_width=True)
+    st.markdown("""<hr style='margin: 25px 0;'>""", unsafe_allow_html=True)
+    st.markdown("<div class='social-btn'>Continue with Google</div>", unsafe_allow_html=True)
+    st.markdown("<div class='social-btn'>Continue with Facebook</div>", unsafe_allow_html=True)
+    st.markdown("</div></div>", unsafe_allow_html=True)
 
-        st.markdown("""<hr style='margin: 25px 0;'>""", unsafe_allow_html=True)
-        st.markdown("<div class='social-btn'>Continue with Google</div>", unsafe_allow_html=True)
-        st.markdown("<div class='social-btn'>Continue with Facebook</div>", unsafe_allow_html=True)
-        st.markdown("</div></div>", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("<div class='right'>", unsafe_allow_html=True)
-        st.markdown("""
+    st.markdown("<div class='right'>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='max-width: 400px;'>
             <h3 style='font-size: 28px;'>Reach financial goals faster</h3>
-            <p style='font-size: 14px; max-width: 400px;'>
+            <p style='font-size: 14px;'>
                 Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.
             </p>
             <button class='login-button' style='margin-top: 20px;'>Learn more</button>
-        """, unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        </div>
+    """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -219,6 +217,7 @@ def modern_login_page():
             st.success("Login Success! ✅")
         else:
             st.error("Login Failed ❌")
+
 
 def register_page():
     st.markdown("<h2 style='text-align: center;'>ลงทะเบียน</h2>", unsafe_allow_html=True)
