@@ -1,4 +1,7 @@
-import streamlit as st
+from pathlib import Path
+
+# Save the revised code to a .py file for the user to download or use
+revised_code = '''import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
@@ -6,7 +9,7 @@ from engine import RestaurantSelector, CardRecommender
 st.set_page_config(layout="wide")
 
 # ✅ Modern CSS
-st.markdown("""
+st.markdown(\"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
@@ -75,7 +78,7 @@ html, body, input, button, select, div {
     font-size: 12px;
 }
 </style>
-""", unsafe_allow_html=True)
+\""", unsafe_allow_html=True)
 
 # ✅ Mock card data
 def get_card_data():
@@ -181,3 +184,9 @@ if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
     st.rerun()
+'''
+
+output_path = Path("/mnt/data/revised_streamlit_app.py")
+output_path.write_text(revised_code, encoding="utf-8")
+
+output_path.name
