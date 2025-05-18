@@ -53,6 +53,7 @@ st.markdown("""
         width: 100%;
         font-weight: bold;
         margin-bottom: 20px;
+        cursor: pointer;
     }
     .social-btn {
         background: white;
@@ -63,6 +64,7 @@ st.markdown("""
         border-radius: 8px;
         margin-bottom: 10px;
         font-weight: 500;
+        cursor: pointer;
     }
     .right-card {
         max-width: 400px;
@@ -83,14 +85,19 @@ st.markdown("""
         border-radius: 8px;
         border: none;
         font-weight: bold;
+        cursor: pointer;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# HTML layout with both panels
 st.markdown("""
 <div class="container">
     <div class="left-panel">
+        <img src="https://i.ibb.co/3TScZSm/คู่คิด-removebg-preview.png" width="100"/>
+
+        <h2>Sign in</h2>
+        <p>ยังไม่มีบัญชี? <a href="#">สร้างบัญชี</a></p>
+
         <input class="input-box" type="text" placeholder="example@gmail.com" />
         <input class="input-box" type="password" placeholder="รหัสผ่าน" />
 
