@@ -346,7 +346,7 @@ def main():
         if st.session_state.show_register:
             register_page()
         else:
-            login_page()
+            modern_login_page()
     else:
         restaurant_app()
 
