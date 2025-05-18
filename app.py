@@ -102,39 +102,61 @@ def init_session_state():
     if "search_query" not in st.session_state:
         st.session_state["search_query"] = ""
 
-def login_page():
-    st.markdown("<style> .login-box input, .login-box button { width: 100%; } </style>", unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align: center;'>เข้าสู่ระบบ</h2>", unsafe_allow_html=True)
+def modern_login_page():
+    st.markdown("""
+        <style>
+            body {
+                background: linear-gradient(to right, #00c6ff, #0072ff);
+            }
+            .login-container {
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 40px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                margin-top: 100px;
+            }
+            .login-title {
+                font-size: 28px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .login-subtitle {
+                font-size: 16px;
+                color: #888;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .login-button {
+                width: 100%;
+                padding: 10px;
+                background: linear-gradient(to right, #00c6ff, #0072ff);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
-    with st.form("login_form"):
-        st.markdown("<div class='login-box'>", unsafe_allow_html=True)
-        username = st.text_input("เบอร์โทร/อีเมล", key="login_username", placeholder="เบอร์โทร/อีเมล")
-        st.markdown('<div style="margin-top: 10px;"></div>', unsafe_allow_html=True)
-        password = st.text_input("รหัสผ่าน", type="password", key="login_password", placeholder="รหัสผ่าน")
-        st.markdown('<div style="margin-top: 10px;"></div>', unsafe_allow_html=True)
-        login_btn = st.form_submit_button("ถัดไป", use_container_width=True)
+    with st.container():
+        st.markdown("""<div class='login-container'>""", unsafe_allow_html=True)
+        st.markdown("""<div class='login-title'>Sign Into<br>Your Account</div>""", unsafe_allow_html=True)
+        username = st.text_input("Email / Company ID", placeholder="example@email.com")
+        password = st.text_input("Password", type="password", placeholder="Enter your password")
+        remember = st.checkbox("Remember Me")
+        login = st.button("Sign In", use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<p style='text-align: center; font-size: 13px;'>ยังไม่มีบัญชี? <a href='#'>สมัครสมาชิก</a></p>", unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("<p style='text-align: center;'>หรือ</p>", unsafe_allow_html=True)
+        if login:
+            if username == "admin" and password == "1234":
+                st.success("Login Success! ✅")
+            else:
+                st.error("Login Failed ❌")
 
-    col_facebook, col_line, col_google = st.columns(3)
-    with col_facebook:
-        st.button("เข้าสู่ระบบด้วย Facebook", use_container_width=True)
-    with col_line:
-        st.button("เข้าสู่ระบบด้วย LINE", use_container_width=True)
-    with col_google:
-        st.button("เข้าสู่ระบบด้วย Google", use_container_width=True)
-
-    if login_btn:
-        if user_manager.authenticate_user(username, password):
-            st.session_state.logged_in = True
-            st.session_state.username = username
-            st.success("เข้าสู่ระบบสำเร็จ!")
-            st.rerun()
-        else:
-            st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
 
 def register_page():
     st.markdown("<h2 style='text-align: center;'>ลงทะเบียน</h2>", unsafe_allow_html=True)
