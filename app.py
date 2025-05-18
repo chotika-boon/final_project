@@ -102,7 +102,6 @@ def init_session_state():
         st.session_state["selected_restaurant"] = None
     if "search_query" not in st.session_state:
         st.session_state["search_query"] = ""
-st.set_page_config(layout="wide")
 
 def modern_login_page():
     st.markdown("""
