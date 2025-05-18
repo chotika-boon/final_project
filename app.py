@@ -6,6 +6,7 @@ import os
 import uuid
 import time
 from google.cloud import bigquery
+import base64
 
 # Load engine.py dynamically
 spec = importlib.util.spec_from_file_location("engine", os.path.join(os.path.dirname(__file__), "engine.py"))
