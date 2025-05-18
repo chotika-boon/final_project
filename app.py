@@ -1,5 +1,7 @@
 
 import streamlit as st
+st.set_page_config(layout="wide")
+
 from PIL import Image
 import importlib.util
 import sys
@@ -21,7 +23,6 @@ LIFESTYLES = engine.LIFESTYLES
 RestaurantSelector = engine.RestaurantSelector
 CardRecommender = engine.CardRecommender
 
-st.set_page_config(layout="wide")
 
 st.markdown("""
     <style>
