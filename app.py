@@ -1,9 +1,25 @@
+
 import streamlit as st
 from PIL import Image
-import os, sys
-sys.path.append(os.path.dirname(__file__))
+import importlib.util
+import sys
+import os
+import uuid
 
-from engine import UserManager, BANKS, CARD_TYPES, LIFESTYLES, RestaurantSelector, CardRecommender
+# 🔧 Load engine.py dynamically
+spec = importlib.util.spec_from_file_location("engine", os.path.join(os.path.dirname(__file__), "engine.py"))
+engine = importlib.util.module_from_spec(spec)
+sys.modules["engine"] = engine
+spec.loader.exec_module(engine)
+
+from google.cloud import bigquery
+
+UserManager = engine.UserManager
+BANKS = engine.BANKS
+CARD_TYPES = engine.CARD_TYPES
+LIFESTYLES = engine.LIFESTYLES
+RestaurantSelector = engine.RestaurantSelector
+CardRecommender = engine.CardRecommender
 
 st.set_page_config(layout="wide")
 
@@ -127,6 +143,25 @@ def register_page():
             success, msg = user_manager.register_user(username, password, bank, card_type, lifestyle)
             if success:
                 st.success(msg)
+                try:
+                    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+                    client = bigquery.Client()
+                    table_id = "your-project-id.your_dataset.users"  # replace with your project and dataset
+
+                    row = [{
+                        "customer_id": str(uuid.uuid4()),
+                        "username": username,
+                        "password": password,
+                        "bank": bank,
+                        "credit_name": "",  # default or fill later
+                        "card_type": card_type
+                    }]
+                    errors = client.insert_rows_json(table_id, row)
+                    if errors:
+                        st.warning(f"BigQuery insert error: {errors}")
+                except Exception as e:
+                    st.warning(f"BigQuery error: {str(e)}")
+
                 st.session_state.show_register = False
                 st.rerun()
             else:
