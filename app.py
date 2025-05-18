@@ -1,121 +1,79 @@
 import streamlit as st
+
 st.set_page_config(layout="wide")
 
 st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-html, body, .block-container {
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow-x: hidden;
-    height: 100vh;
-    font-family: 'Noto Sans Thai', sans-serif;
-}
-.container {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-}
-.left {
-    width: 40%;
-    background-color: #f7f9fa;
-    padding: 60px 80px;
-    box-sizing: border-box;
-}
-.right {
-    width: 60%;
-    background-color: #113c2c;
-    color: white;
-    padding: 60px 80px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    margin-bottom: 16px;
-    font-size: 16px;
-}
-button.signin {
-    background-color: #143d2c;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    width: 100%;
-    font-weight: bold;
-    font-size: 16px;
-    margin-top: 10px;
-}
-.social {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 15px;
-    background-color: white;
-    color: black;
-}
-.card-box {
-    background-color: white;
-    border-radius: 16px;
-    padding: 24px;
-    color: black;
-    max-width: 400px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-.earnings {
-    margin-top: 16px;
-    background-color: #f0f4f5;
-    padding: 10px;
-    border-radius: 10px;
-    display: inline-block;
-}
-</style>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
-<div class="container">
-  <div class="left">
-    <h1>Sign in</h1>
-    <p>Don't have an account? <a href="#">Create now</a></p>
+    html, body, .block-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow-x: hidden;
+        height: 100vh;
+        font-family: 'Noto Sans Thai', sans-serif;
+    }
 
-    <label>E-mail</label>
-    <input type="text" placeholder="example@gmail.com" />
+    .left, .right {
+        height: 100vh;
+        padding: 60px;
+        box-sizing: border-box;
+    }
 
-    <label>Password</label>
-    <input type="password" placeholder="@#*%" />
+    .left {
+        background-color: #f7f9fa;
+    }
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-      <label><input type="checkbox" /> Remember me</label>
-      <a href="#">Forgot Password?</a>
-    </div>
+    .right {
+        background-color: #113c2c;
+        color: white;
+    }
 
-    <button class="signin">Sign in</button>
+    .card-box {
+        background-color: white;
+        color: black;
+        border-radius: 16px;
+        padding: 24px;
+        max-width: 400px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
 
-    <hr style="margin: 30px 0;"/>
+    .earnings {
+        margin-top: 16px;
+        background-color: #f0f4f5;
+        padding: 10px;
+        border-radius: 10px;
+        display: inline-block;
+    }
 
-    <div class="social">🔵 Continue with Google</div>
-    <div class="social">🔷 Continue with Facebook</div>
-  </div>
-
-  <div class="right">
-    <div class="card-box">
-      <h3>Reach financial goals faster</h3>
-      <p>Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.</p>
-      <button style="background:#143d2c; color:white; padding:10px 20px; border:none; border-radius:8px;">Learn more</button>
-      <div class="earnings">
-        📈 Earnings: <strong>$350.40</strong>
-      </div>
-    </div>
-
-    <div style="margin-top: 60px;">
-      <h2>Introducing new features</h2>
-      <p>Analyzing previous trends ensures that businesses always make the right decision. And as the scale of the decision and its impact magnifies…</p>
-    </div>
-  </div>
-</div>
+    </style>
 """, unsafe_allow_html=True)
+
+col1, col2 = st.columns([2, 3])  # 40% / 60%
+
+with col1:
+    st.markdown("### Sign in")
+    st.write("Don't have an account? [Create now](#)")
+
+    email = st.text_input("E-mail", placeholder="example@gmail.com")
+    password = st.text_input("Password", type="password", placeholder="@#*%")
+    remember = st.checkbox("Remember me")
+    st.markdown("[Forgot Password?](#)")
+
+    st.button("Sign in")
+
+    st.markdown("---")
+    st.button("🔵 Continue with Google")
+    st.button("🔷 Continue with Facebook")
+
+with col2:
+    st.markdown('<div class="card-box">', unsafe_allow_html=True)
+    st.markdown("### Reach financial goals faster")
+    st.write("Use your Venus card around the world with no hidden fees. Hold, transfer and spend money.")
+    st.button("Learn more")
+    st.markdown('<div class="earnings">📈 Earnings: <strong>$350.40</strong></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("### Introducing new features")
+    st.write("Analyzing previous trends ensures that businesses always make the right decision. "
+             "And as the scale of the decision and its impact magnifies…")
