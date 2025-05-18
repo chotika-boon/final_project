@@ -21,9 +21,9 @@ LIFESTYLES = engine.LIFESTYLES
 RestaurantSelector = engine.RestaurantSelector
 CardRecommender = engine.CardRecommender
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Login", page_icon="🔐", layout="wide")
 
-# Inject font ผ่าน CSS
+# Inject font
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
     base64_font = base64.b64encode(font_data).decode()
@@ -36,13 +36,70 @@ st.markdown(f"""
         font-weight: 300 600;
     }}
 
-    html, body, [class*="st-"], [class*="css"], h1, h2, h3, h4, h5, h6, p, span, div, input, button, label {{
+    html, body, [class*="st-"], [class*="css"] {{
         font-family: 'Noto Sans Thai', sans-serif !important;
     }}
 
-    /* Optional: Set fallback color */
-    h2, h1, h3, h4, h5, h6 {{
-        color: #222;
+    .center-wrapper {{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #fff;
+    }}
+
+    .login-container {{
+        width: 100%;
+        max-width: 400px;
+        background: white;
+        padding: 2.5rem 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        text-align: center;
+    }}
+
+    .login-button-primary {{
+        background-color: #0084ff;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        width: 100%;
+        cursor: pointer;
+    }}
+
+    .social-button {{
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: white;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+    }}
+
+    .divider {{
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+    }}
+    .divider::before, .divider::after {{
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #ccc;
+    }}
+    .divider:not(:empty)::before {{
+        margin-right: .75em;
+    }}
+    .divider:not(:empty)::after {{
+        margin-left: .75em;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -64,127 +121,47 @@ def init_session_state():
         st.session_state["search_query"] = ""
 
 def modern_login_page():
-    st.markdown("""
-        <style>
-        .center-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #f0f2f5;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 420px;
-            background: white;
-            padding: 2.5rem 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .login-title {
-            font-weight: 700;
-            font-size: 1.75rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #0e3c2e;
-        }
-
-        .login-subtitle {
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background: #0e3c2e;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 999px;
-            font-size: 15px;
-            margin-top: 1rem;
-            cursor: pointer;
-        }
-
-        .social-button {
-            width: 100%;
-            padding: 10px;
-            border-radius: 999px;
-            border: 1px solid #ccc;
-            background: white;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 0.5rem;
-        }
-
-        hr {
-            border: none;
-            height: 1px;
-            background: #e5e5e5;
-            margin: 2rem 0 1rem;
-        }
-
-        </style>
-    """, unsafe_allow_html=True)
-
     st.markdown('<div class="center-wrapper"><div class="login-container">', unsafe_allow_html=True)
 
-    st.image("คู่คิด-removebg-preview.png", width=70)
-    st.markdown('<div class="login-title">เข้าสู่ระบบ</div>', unsafe_allow_html=True)
-    st.markdown('<div class="login-subtitle">ยังไม่มีบัญชี? <a href="#" style="color:#0e3c2e;font-weight:bold;">สร้างบัญชี</a></div>', unsafe_allow_html=True)
+    st.markdown("""
+        <h2 style="font-weight: 700; margin-bottom: 1rem;">เข้าสู่ระบบ</h2>
+    """, unsafe_allow_html=True)
 
-    email = st.text_input("E-mail", placeholder="example@gmail.com")
-    password = st.text_input("Password", type="password", placeholder="@#*%")
-
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        st.checkbox("จำฉันไว้")
-    with col2:
-        st.markdown("<div style='text-align:right;'><a href='#'>ลืมรหัสผ่าน?</a></div>", unsafe_allow_html=True)
-
-    # Primary login button
-    if st.button("เข้าสู่ระบบ", use_container_width=True):
-        # Add login logic here
+    email = st.text_input("เบอร์โทร/อีเมล")
+    if st.button("ถัดไป", use_container_width=True):
         st.session_state.logged_in = True
 
-    st.markdown("<hr><p style='text-align:center;'>หรือเข้าสู่ระบบด้วย</p>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style="text-align:right; margin-top: 0.5rem;">
+            <a href="#" style="font-size: 14px;">สมัครสมาชิก</a>
+        </div>
+        <div class="divider">หรือ</div>
+    """, unsafe_allow_html=True)
 
     # Social buttons
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("""
-            <button class="social-button">
-                <img src="https://static2.wongnai.com/static2/images/21qexS5.svg" width="20" />
-                Google
-            </button>
-        """, unsafe_allow_html=True)
-    with col2:
-        st.markdown("""
-            <button class="social-button">
-                <img src="https://static2.wongnai.com/static2/images/3F9TqCg.svg" width="20" />
-                Facebook
-            </button>
-        """, unsafe_allow_html=True)
+    st.markdown("""
+        <button class="social-button">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
+            เข้าสู่ระบบด้วย Facebook
+        </button>
+        <button class="social-button">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
+            เข้าสู่ระบบด้วย LINE
+        </button>
+        <button class="social-button">
+            <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
+            เข้าสู่ระบบด้วย Google
+        </button>
+    """, unsafe_allow_html=True)
 
     st.markdown('</div></div>', unsafe_allow_html=True)
-
-
-
-
 
 def main():
     init_session_state()
     if not st.session_state.logged_in:
         modern_login_page()
     else:
-        restaurant_app()  # ใช้ของเดิม
+        restaurant_app()  # Use original function for logged-in experience
 
 if __name__ == "__main__":
     main()
