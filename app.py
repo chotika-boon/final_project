@@ -2,10 +2,10 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ ต้องอยู่บรรทัดแรก
+# ✅ ต้องมาก่อนคำสั่งอื่น
 st.set_page_config(layout="wide")
 
-# ✅ Modern CSS
+# ✅ CSS
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
@@ -77,7 +77,7 @@ html, body, input, button, select, div {
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ Mock card data
+# ✅ Mock restaurant card data
 def get_card_data():
     return [
         {
@@ -109,11 +109,11 @@ def get_card_data():
             "image_url": "https://img.wongnai.com/p/624x0/2019/12/17/a3a24300483f46298b728452dcdddb76.jpg"
         },
         {
-            "name": "The Saucy Kitchen",
-            "category": "อาหารคลีน/สลัด",
-            "rating": 4.4,
-            "reviews": 13,
-            "image_url": "https://img.wongnai.com/p/624x0/2021/06/15/4b8d4e88d3f2406fa5a0f0d83773104a.jpg"
+            "name": "Starbucks Index Living Mall",
+            "category": "ร้านกาแฟ/ชา",
+            "rating": 4.6,
+            "reviews": 5,
+            "image_url": "https://img.wongnai.com/p/624x0/2023/02/22/fcc32f22c4cf4c6489c7933df7e0dd88.jpg"
         },
         {
             "name": "Starbucks Vichaiyut",
@@ -138,7 +138,7 @@ if "selected_restaurant" not in st.session_state:
 if "search_query" not in st.session_state:
     st.session_state["search_query"] = ""
 
-# ✅ Search input
+# ✅ Search UI
 st.subheader("🔍 ค้นหาร้านอาหาร")
 search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
 
@@ -149,7 +149,7 @@ filtered_restaurants = all_restaurants if not search_query else [
 
 selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ✅ Show recommendations
+# ✅ Show restaurant cards
 if selected_restaurant == "เลือกจากรายการ":
     st.subheader("⭐ ร้านแนะนำ")
     html = '<div class="card-grid">'
@@ -170,7 +170,7 @@ if selected_restaurant == "เลือกจากรายการ":
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Show credit card recommendation
+# ✅ Credit card recommendation
 if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
     st.session_state["selected_restaurant"] = selected_restaurant
     st.session_state["search_query"] = search_query
@@ -197,7 +197,7 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
     else:
         st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# ✅ Reset
+# ✅ Reset button
 if st.button("🔄 เลือกร้านใหม่"):
     st.session_state["selected_restaurant"] = None
     st.session_state["search_query"] = ""
