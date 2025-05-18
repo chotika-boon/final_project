@@ -2,44 +2,50 @@ import streamlit as st
 
 st.set_page_config(layout="wide")
 
-# ลบ padding + ใส่ฟอนต์
+# ลบ padding + จัด layout เต็มจอ
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-    
-    html, body, .block-container {
-        padding: 0 !important;
-        margin: 0 !important;
-        height: 100vh;
-        overflow-x: hidden;
-        font-family: 'Noto Sans Thai', sans-serif;
-    }
-    .card-box {
-        background-color: white;
-        padding: 24px;
-        border-radius: 16px;
-        max-width: 400px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        margin-bottom: 40px;
-    }
-    .earnings {
-        background-color: #f0f4f5;
-        padding: 10px 16px;
-        border-radius: 10px;
-        display: inline-block;
-        margin-top: 16px;
-        color: #123d2d;
-        font-weight: bold;
-    }
-    </style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+
+html, body, .block-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Noto Sans Thai', sans-serif;
+}
+
+section.main > div {
+    padding: 0rem !important;
+}
+
+.card-box {
+    background-color: white;
+    padding: 24px;
+    border-radius: 16px;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+}
+
+.earnings {
+    background-color: #f0f4f5;
+    padding: 10px 16px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 16px;
+    color: #123d2d;
+    font-weight: bold;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# Layout แบบ 40% / 60% โดยไม่มีขอบ
-col1, col2 = st.columns([2, 3], gap="none")
+# layout 40% / 60%
+col1, col2 = st.columns([2, 3])
 
 with col1:
     st.markdown("### Sign in")
-    st.write("Don't have an account? [Create now](#)")
+    st.write("Don’t have an account? [Create now](#)")
 
     email = st.text_input("E-mail", placeholder="example@gmail.com")
     password = st.text_input("Password", type="password", placeholder="@#*%")
