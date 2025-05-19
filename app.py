@@ -124,6 +124,23 @@ st.markdown(f"""
         font-size: 14px;
         color: #888;
     }}
+    .custom-login-btn {{
+    width: 20rem;
+    background-color: #0084ff;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto;
+    transition: background 0.2s ease;
+}}
+    .custom-login-btn:hover {{
+    background-color: #0070dd;
+}}
     </style>
 """, unsafe_allow_html=True)
 
@@ -164,7 +181,14 @@ def modern_login_page():
         st.session_state.logged_in = True
     st.markdown('</div>', unsafe_allow_html=True)
 
+# ปุ่ม HTML ตรงกลาง
+    st.markdown("""
+    <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">เข้าสู่ระบบ</button>
+""", unsafe_allow_html=True)
 
+# ปุ่ม Streamlit จริง (hidden)
+    if st.button("เข้าสู่ระบบ", key="login_btn"):
+        st.session_state.logged_in = True
     
 
     st.markdown("""
