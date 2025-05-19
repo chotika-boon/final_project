@@ -127,8 +127,8 @@ def modern_login_page():
 
     st.markdown("""<h3 style="text-align:center;">เข้าสู่ระบบ</h3>""", unsafe_allow_html=True)
 
-    email = st.text_input("เบอร์โทร/อีเมล")
-    password = st.text_input("รหัสผ่าน", type="password")
+    email = st.text_input(label="", placeholder="เบอร์โทร/อีเมล")
+    password = st.text_input(label="", type="password", placeholder="รหัสผ่าน")
 
     if st.button("ถัดไป", key="login_btn", use_container_width=True):
         st.session_state.logged_in = True
