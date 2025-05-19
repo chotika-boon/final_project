@@ -31,6 +31,27 @@ with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
 
 st.markdown(f"""
     <style>
+    .top-navbar {{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #000000;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        z-index: 999;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    }}
+
+    .top-navbar img {{
+        height: 38px;
+    }}
+
+    .stApp {{
+        padding-top: 70px;  /* Push content down */
+    }}
     @font-face {{
         font-family: 'Noto Sans Thai';
         src: url(data:font/ttf;base64,{base64_font}) format('truetype');
