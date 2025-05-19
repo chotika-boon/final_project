@@ -52,7 +52,10 @@ st.markdown(f"""
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 20rem;
+        justify-content: center;
+        width: 100%;
+        max-width: 20rem;
+        margin: auto;
         padding: 2rem;
         background: white;
         border-radius: 12px;
@@ -66,9 +69,11 @@ st.markdown(f"""
 
     input[type="text"], input[type="password"] {{
         width: 100% !important;
+        max-width: 100%;
         border-radius: 8px;
         padding: 10px;
         font-size: 15px;
+        box-sizing: border-box;
     }}
     .input-wrapper {{
         width: 20rem;
@@ -147,13 +152,15 @@ def modern_login_page():
     with st.container():
         st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
 
-        st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
+         st.markdown('<div class="login-input">', unsafe_allow_html=True)
         email = st.text_input(" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
         st.markdown('</div>', unsafe_allow_html=True)
 
-        st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
+        # Password
+        st.markdown('<div class="login-input">', unsafe_allow_html=True)
         password = st.text_input(" ", type="password", placeholder="รหัสผ่าน", key="password_input")
         st.markdown('</div>', unsafe_allow_html=True)
+
 
         if st.button("ถัดไป", key="login_btn"):
             st.session_state.logged_in = True
