@@ -114,8 +114,11 @@ def init_session_state():
 def modern_login_page():
 
     st.markdown("""
-        <h2 style="font-weight: 700; margin-bottom: 1.5rem;">เข้าสู่ระบบ</h2>
+    <div class="center-wrapper">
+        <div class="login-container">
+            <h3 style="margin-bottom: 1.5rem;">เข้าสู่ระบบ</h3>
     """, unsafe_allow_html=True)
+
 
     email = st.text_input("เบอร์โทร/อีเมล")
     password = st.text_input("รหัสผ่าน", type="password")
