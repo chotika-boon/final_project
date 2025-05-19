@@ -25,7 +25,7 @@ LIFESTYLES = engine.LIFESTYLES
 RestaurantSelector = engine.RestaurantSelector
 CardRecommender = engine.CardRecommender
 
-st.write(logo_base64[:50]
+st.write(logo_base64[:50])
 st.set_page_config(page_title="Login", page_icon="🔐", layout="wide")
 
 # Inject Thai font
