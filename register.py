@@ -2,18 +2,18 @@ import streamlit as st
 import pandas as pd
 
 def show_register():
-    # ---------- Reset session state on first load ----------
-    for key in ["credit_cards", "card_count", "register_visited"]:
-        if key in st.session_state:
-            del st.session_state[key]
-    st.session_state.register_visited = True
+    # ---------- Reset once ----------
+    if "register_visited" not in st.session_state:
+        st.session_state.register_visited = True
+        st.session_state.credit_cards = []
+        st.session_state.card_count = 1
 
     # ---------- Load data ----------
     df = pd.read_csv("credit_card.csv")
 
     st.markdown("<h2 style='text-align:center;'>สมัครสมาชิก</h2>", unsafe_allow_html=True)
 
-    # ---------- Section: ข้อมูลบัญชีผู้ใช้ ----------
+    # ---------- ข้อมูลผู้ใช้ ----------
     st.markdown("### 👤 ข้อมูลบัญชีผู้ใช้")
     col1, col2 = st.columns(2)
     with col1:
@@ -27,13 +27,7 @@ def show_register():
     with col2:
         confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password")
 
-    # ---------- Initialize card state ----------
-    if "card_count" not in st.session_state:
-        st.session_state.card_count = 1
-    if "credit_cards" not in st.session_state:
-        st.session_state.credit_cards = []
-
-    # Ensure list size matches card_count
+    # ---------- Ensure cards match count ----------
     while len(st.session_state.credit_cards) < st.session_state.card_count:
         st.session_state.credit_cards.append({
             "bank": "",
@@ -41,10 +35,9 @@ def show_register():
             "issuer": ""
         })
 
-    # ---------- Section: ข้อมูลบัตรเครดิต ----------
     st.markdown("### 💳 ข้อมูลบัตรเครดิต")
-
     remove_index = None
+
     for i in range(st.session_state.card_count):
         with st.expander(f"📄 ข้อมูลบัตรที่ {i+1}", expanded=True):
             bank_list = sorted(df["ธนาคาร"].dropna().unique())
@@ -58,7 +51,6 @@ def show_register():
             issuer_list = sorted(issuer_df["ผู้ออกบัตร"].dropna().unique())
             selected_issuer = st.selectbox("🏢 เลือกผู้ออกบัตร", options=issuer_list, key=f"issuer_{i}")
 
-            # Save to credit_cards
             st.session_state.credit_cards[i] = {
                 "bank": selected_bank,
                 "product": selected_product,
@@ -69,7 +61,6 @@ def show_register():
                 if st.button(f"🗑️ ลบบัตรที่ {i+1}", key=f"remove_{i}"):
                     remove_index = i
 
-    # ดำเนินการลบการ์ด
     if remove_index is not None:
         del st.session_state.credit_cards[remove_index]
         st.session_state.card_count -= 1
@@ -79,7 +70,6 @@ def show_register():
         st.session_state.card_count += 1
         st.rerun()
 
-    # ---------- Submit ----------
     if st.button("✅ สมัครสมาชิก"):
         if not username or not email or not password:
             st.warning("กรุณากรอกข้อมูลให้ครบถ้วน")
@@ -92,7 +82,6 @@ def show_register():
             st.session_state.page = "login"
             st.rerun()
 
-    # ---------- ไปหน้าเข้าสู่ระบบ ----------
     if st.button("🔁 มีบัญชีอยู่แล้ว? เข้าสู่ระบบ"):
         st.session_state.page = "login"
         st.rerun()
