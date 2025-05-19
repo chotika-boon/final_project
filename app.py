@@ -16,8 +16,6 @@ from login import show_login
 from register import show_register
 from login import init_session_state
 
-
-
 # Load font
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     base64_font = base64.b64encode(f.read()).decode()
