@@ -8,6 +8,14 @@ import time
 from google.cloud import bigquery
 import base64
 
+def authenticate_user(email, password, file_path="user_data.csv"):
+    if not os.path.exists(file_path):
+        return False
+
+    df = pd.read_csv(file_path)
+    match = df[(df["email"] == email) & (df["password"] == password)]
+    return not match.empty
+
 # Load engine.py dynamically
 spec = importlib.util.spec_from_file_location("engine", os.path.join(os.path.dirname(__file__), "engine.py"))
 engine = importlib.util.module_from_spec(spec)
@@ -26,6 +34,16 @@ CardRecommender = engine.CardRecommender
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
     base64_font = base64.b64encode(font_data).decode()
+
+    if email and password:
+        if authenticate_user(email, password):
+            st.session_state.logged_in = True
+            st.session_state.username = email
+            st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
+            st.rerun()
+        else:
+            st.error("❌ อีเมลหรือรหัสผ่านไม่ถูกต้อง")
+
 
 st.markdown(f"""
     <style>
