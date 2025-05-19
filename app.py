@@ -29,11 +29,21 @@ def restaurant_app():
     st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
     st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
 
-if "page" not in st.session_state:
-    st.session_state.page = "login"
 
 # Routing
-if st.session_state.page == "login":
+# ✅ Initialize session state
+init_session_state()
+
+# ✅ Routing logic
+if st.session_state.get("page") == "login":
     show_login()
-elif st.session_state.page == "register":
+elif st.session_state.get("page") == "register":
     show_register()
+elif st.session_state.get("logged_in"):
+    # แสดงหลัง login สำเร็จ
+    st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
+    st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
+else:
+    # fallback เผื่อ state หาย
+    st.session_state.page = "login"
+    show_login()
