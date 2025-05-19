@@ -157,6 +157,7 @@ def modern_login_page():
 
         # Social buttons (HTML only for now)
         st.markdown("""
+        <div style="display:flex; justify-content:center; flex-direction: column; align-items:center;">
             <button class="social-button">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
                 เข้าสู่ระบบด้วย Facebook
@@ -169,7 +170,9 @@ def modern_login_page():
                 <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
                 เข้าสู่ระบบด้วย Google
             </button>
-        """, unsafe_allow_html=True)
+        </div>
+            """, unsafe_allow_html=True)
+
 
         st.markdown('</div></div>', unsafe_allow_html=True)
 
