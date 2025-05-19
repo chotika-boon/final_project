@@ -8,7 +8,7 @@ import time
 from google.cloud import bigquery
 import base64
 
-with open("Screenshot 2568-05-19 at 18.02.01.png", "rb") as image_file:
+with open("logo.png", "rb") as image_file:
     logo_base64 = base64.b64encode(image_file.read()).decode()
     
 # Load engine.py dynamically
