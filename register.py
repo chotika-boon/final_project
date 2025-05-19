@@ -32,7 +32,6 @@ def show_register():
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div class='register-container'>", unsafe_allow_html=True)
     st.markdown("<div class='register-title'>📝 สมัครสมาชิก</div>", unsafe_allow_html=True)
 
     with st.form("register_form"):
