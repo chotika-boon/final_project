@@ -163,6 +163,7 @@ st.markdown(f"""
     font-size: 14px;
 }}
     </style>
+    
     <div class="top-navbar">
         <img src="data:image/png;base64,{logo_base64}" alt="Logo">
     </div>
