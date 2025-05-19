@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 
-# ---------- Google Sheet Setup ----------
 def insert_to_gsheet(data):
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    # ใช้ Credentials จาก google-auth
+    scope = ["https://www.googleapis.com/auth/spreadsheets"]
+    creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
     client = gspread.authorize(creds)
 
     sheet = client.open_by_key("17os24Dmfczb2qAuy9yUR87vw_6oDWunQulRthw3ZyBg").sheet1
