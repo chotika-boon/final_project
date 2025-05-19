@@ -123,8 +123,6 @@ def init_session_state():
         st.session_state["search_query"] = ""
 
 def modern_login_page():
-    st.markdown("""<div class="center-login-box">""", unsafe_allow_html=True)
-
     st.markdown("""<h3 style="text-align:center;">เข้าสู่ระบบ</h3>""", unsafe_allow_html=True)
 
     email = st.text_input(label=" ", placeholder="เบอร์โทร/อีเมล")
