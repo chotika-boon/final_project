@@ -102,6 +102,39 @@ st.markdown(f"""
     .divider:not(:empty)::after {{
         margin-left: .75em;
     }}
+    .login-form-container {{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 5vh;
+    }}
+
+    .login-input-wrapper {{
+        width: 20rem;
+        margin-bottom: 1rem;
+    }}
+
+    input[type="text"], input[type="password"] {{
+        width: 100% !important;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 15px;
+    }}
+
+    .login-button-primary {{
+        width: 20rem;
+        background-color: #0084ff;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -125,17 +158,23 @@ def init_session_state():
 def modern_login_page():
     st.markdown("""<h3 style="text-align:center;">เข้าสู่ระบบ</h3>""", unsafe_allow_html=True)
 
-    email = st.text_input(label=" ", placeholder="เบอร์โทร/อีเมล")
-    password = st.text_input(label=" ", type="password", placeholder="รหัสผ่าน")
+    st.markdown('<div class="login-input-wrapper">', unsafe_allow_html=True)
+    email = st.text_input(label=" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    if st.button("ถัดไป", key="login_btn", use_container_width=True):
+    st.markdown('<div class="login-input-wrapper">', unsafe_allow_html=True)
+    password = st.text_input(label=" ", placeholder="รหัสผ่าน", type="password", key="password_input")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('<button class="login-button-primary" onclick="document.querySelector(\'button[data-testid=stButton]\').click()">ถัดไป</button>', unsafe_allow_html=True)
+    if st.button("Login Backend Logic", key="login_btn"):
         st.session_state.logged_in = True
 
     st.markdown("""
-        <div style="text-align:right; margin-top: 0.5rem;">
+        <div style="text-align:right; width: 20rem; margin-top: 0.5rem;">
             <a href="#" style="font-size: 14px;">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
         </div>
-        <div class="divider">หรือ</div>
+        <div class="divider" style="width: 20rem;">หรือ</div>
     """, unsafe_allow_html=True)
 
     # Social buttons
