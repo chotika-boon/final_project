@@ -1,4 +1,5 @@
 import streamlit as st
+
 def show_register():
     """Render registration page"""
     st.title("ลงทะเบียน")
