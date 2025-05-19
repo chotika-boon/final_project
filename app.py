@@ -8,6 +8,9 @@ import time
 from google.cloud import bigquery
 import base64
 
+with open("Screenshot 2568-05-19 at 18.02.01.png", "rb") as image_file:
+    logo_base64 = base64.b64encode(image_file.read()).decode()
+    
 # Load engine.py dynamically
 spec = importlib.util.spec_from_file_location("engine", os.path.join(os.path.dirname(__file__), "engine.py"))
 engine = importlib.util.module_from_spec(spec)
@@ -160,6 +163,9 @@ st.markdown(f"""
     font-size: 14px;
 }}
     </style>
+    <div class="top-navbar">
+        <img src="data:image/png;base64,{logo_base64}" alt="Logo">
+    </div>
 """, unsafe_allow_html=True)
 
 # Initialize backend managers
