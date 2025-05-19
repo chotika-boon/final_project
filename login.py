@@ -22,6 +22,8 @@ LIFESTYLES = engine.LIFESTYLES
 RestaurantSelector = engine.RestaurantSelector
 CardRecommender = engine.CardRecommender
 
+st.set_page_config(page_title="Login", page_icon="🔐", layout="wide")
+
 # Inject Thai font
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
@@ -158,7 +160,7 @@ def init_session_state():
             st.session_state[key] = value
 
 # UI: Modern Login Page
-def show_login():
+def modern_login_page():
     with st.container():
         st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
 
@@ -205,3 +207,20 @@ def show_login():
 
 
     st.markdown('</div></div>', unsafe_allow_html=True)
+
+
+# Dummy app after login
+def restaurant_app():
+    st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
+    st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
+
+# Main
+def main():
+    init_session_state()
+    if not st.session_state.logged_in:
+        modern_login_page()
+    else:
+        restaurant_app()
+
+if __name__ == "__main__":
+    main()
