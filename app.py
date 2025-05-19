@@ -162,7 +162,7 @@ def modern_login_page():
 
 # ปุ่ม HTML ตรงกลาง
     st.markdown("""
-    <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">เข้าสู่ระบบ</button>
+    <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">ตกลง</button>
 """, unsafe_allow_html=True)    
 
     st.markdown("""
