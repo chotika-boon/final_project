@@ -176,10 +176,6 @@ def modern_login_page():
     with col2:
         password = st.text_input(" ", placeholder="รหัสผ่าน", type="password", key="password_input", label_visibility="collapsed")
 
-    st.markdown('<div class="login-btn-wrapper">', unsafe_allow_html=True)
-    if st.button("เข้าสู่ระบบ", key="login_btn"):
-        st.session_state.logged_in = True
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # ปุ่ม HTML ตรงกลาง
     st.markdown("""
