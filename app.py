@@ -135,46 +135,46 @@ def init_session_state():
 
 # UI: Modern Login Page
 def modern_login_page():
-    st.markdown('<div class="full-page-center">', unsafe_allow_html=True)
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="full-page-center"><div class="login-box">', unsafe_allow_html=True)
 
-    st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
 
-    st.markdown('<div class="login-input">', unsafe_allow_html=True)
-    email = st.text_input(" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
-    st.markdown('</div>', unsafe_allow_html=True)
+        # Email Input
+        email = st.text_input(" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
 
-    st.markdown('<div class="login-input">', unsafe_allow_html=True)
-    password = st.text_input(" ", type="password", placeholder="รหัสผ่าน", key="password_input")
-    st.markdown('</div>', unsafe_allow_html=True)
+        # Password Input
+        password = st.text_input(" ", type="password", placeholder="รหัสผ่าน", key="password_input")
 
-    if st.button("ถัดไป", key="login_btn"):
-        st.session_state.logged_in = True
+        if st.button("ถัดไป", key="login_btn"):
+            st.session_state.logged_in = True
 
-    st.markdown("""
-        <div style="text-align:right; font-size: 14px; width: 100%; margin-top: 0.5rem;">
-            <a href="#">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
-        </div>
-    """, unsafe_allow_html=True)
+        st.markdown("""
+            <div style="text-align:right; font-size: 14px; width: 100%; margin-top: 0.5rem;">
+                <a href="#">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
+            </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown('<div class="divider"><span>หรือ</span></div>', unsafe_allow_html=True)
+        st.markdown('<div class="divider"><span>หรือ</span></div>', unsafe_allow_html=True)
 
-    st.markdown("""
-        <button class="social-button">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
-            เข้าสู่ระบบด้วย Facebook
-        </button>
-        <button class="social-button">
-            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
-            เข้าสู่ระบบด้วย LINE
-        </button>
-        <button class="social-button">
-            <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
-            เข้าสู่ระบบด้วย Google
-        </button>
-    """, unsafe_allow_html=True)
+        # Social buttons (HTML only for now)
+        st.markdown("""
+            <button class="social-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
+                เข้าสู่ระบบด้วย Facebook
+            </button>
+            <button class="social-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
+                เข้าสู่ระบบด้วย LINE
+            </button>
+            <button class="social-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
+                เข้าสู่ระบบด้วย Google
+            </button>
+        """, unsafe_allow_html=True)
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
+
 
 # Dummy app after login
 def restaurant_app():
