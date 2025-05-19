@@ -132,6 +132,12 @@ st.markdown(f"""
     .custom-login-btn:hover {{
     background-color: #0070dd;
 }}
+    .signup-link {{
+    width: 20rem;
+    margin: 0 auto;
+    text-align: right;
+    font-size: 14px;
+}}
     </style>
 """, unsafe_allow_html=True)
 
@@ -174,10 +180,10 @@ def modern_login_page():
 """, unsafe_allow_html=True)    
 
     st.markdown("""
-            <div style="text-align:right; font-size: 14px; width: 100%; margin-top: 0.5rem;">
-                <a href="#">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
-            </div>
-        """, unsafe_allow_html=True)
+    <div class="signup-link">
+        <a href="#">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
+    </div>
+""", unsafe_allow_html=True)
 
     st.markdown('<div class="divider">หรือ</div>', unsafe_allow_html=True)
 
