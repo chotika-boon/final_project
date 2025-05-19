@@ -40,19 +40,21 @@ st.markdown(f"""
         font-family: 'Noto Sans Thai', sans-serif !important;
     }}
 
-    .center-wrapper {{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: #fff;
+    .center-login-box {{
+        max-width: 20rem;
+        margin: 5vh auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.08);
     }}
 
-    .center {{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #fff;
+    input[type="text"], input[type="password"] {{
+        width: 100% !important;
+        max-width: 100%;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 15px;
     }}
 
     .login-button-primary {{
@@ -65,6 +67,7 @@ st.markdown(f"""
         border-radius: 8px;
         margin-top: 1rem;
         cursor: pointer;
+        width: 100%;
     }}
 
     .social-button {{
@@ -102,6 +105,7 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
+
 user_manager = UserManager()
 restaurant_selector = RestaurantSelector()
 card_recommender = CardRecommender()
@@ -119,15 +123,14 @@ def init_session_state():
         st.session_state["search_query"] = ""
 
 def modern_login_page():
+    st.markdown("""<div class="center-login-box">""", unsafe_allow_html=True)
 
-    st.markdown("""<h3><div class="center">เข้าสู่ระบบ</h3>
-    """, unsafe_allow_html=True)
-
+    st.markdown("""<h3 style="text-align:center;">เข้าสู่ระบบ</h3>""", unsafe_allow_html=True)
 
     email = st.text_input("เบอร์โทร/อีเมล")
     password = st.text_input("รหัสผ่าน", type="password")
 
-    if st.button("ถัดไป"):
+    if st.button("ถัดไป", key="login_btn", use_container_width=True):
         st.session_state.logged_in = True
 
     st.markdown("""
@@ -155,7 +158,8 @@ def modern_login_page():
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)  # Close .center-login-box
+
 
 def main():
     init_session_state()
