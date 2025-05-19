@@ -1,6 +1,6 @@
 import streamlit as st
 
-def register_page():
+def show_register():
     """Render registration page"""
     st.title("ลงทะเบียน")
     
