@@ -36,7 +36,7 @@ init_session_state()
 
 # ✅ Routing logic
 if st.session_state.get("page") == "login":
-    init_session_state()
+    show_login()
 elif st.session_state.get("page") == "register":
     show_register()
 elif st.session_state.get("logged_in"):
