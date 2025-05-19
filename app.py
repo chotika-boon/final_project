@@ -73,9 +73,14 @@ st.markdown(f"""
         cursor: pointer;
         margin-top: 1rem;
     }}
-    .login-button-wrapper button {{
-    width: 20rem !important;
-    max-width: 100%;
+    .login-btn-wrapper {{
+    width: 20rem;
+    margin: 0 auto;
+    text-align: center;
+}}
+
+    .login-btn-wrapper button {{
+    width: 100% !important;
     background-color: #0084ff;
     color: white;
     font-weight: bold;
@@ -84,10 +89,7 @@ st.markdown(f"""
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    display: block;
-    margin: auto;
 }}
-
 
     .social-button {{
         width: 20rem;
@@ -157,12 +159,11 @@ def modern_login_page():
     with col2:
         password = st.text_input(" ", placeholder="รหัสผ่าน", type="password", key="password_input", label_visibility="collapsed")
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown('<div class="login-button-wrapper">', unsafe_allow_html=True)
-        if st.button("เข้าสู่ระบบ", key="login_btn"):
-            st.session_state.logged_in = True
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-btn-wrapper">', unsafe_allow_html=True)
+    if st.button("เข้าสู่ระบบ", key="login_btn"):
+        st.session_state.logged_in = True
+    st.markdown('</div>', unsafe_allow_html=True)
+
 
     
 
