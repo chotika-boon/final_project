@@ -73,23 +73,6 @@ st.markdown(f"""
         cursor: pointer;
         margin-top: 1rem;
     }}
-    .login-btn-wrapper {{
-    width: 20rem;
-    margin: 0 auto;
-    text-align: center;
-}}
-
-    .login-btn-wrapper button {{
-    width: 100% !important;
-    background-color: #0084ff;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}}
 
     .social-button {{
         width: 20rem;
@@ -180,12 +163,7 @@ def modern_login_page():
 # ปุ่ม HTML ตรงกลาง
     st.markdown("""
     <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">เข้าสู่ระบบ</button>
-""", unsafe_allow_html=True)
-
-# ปุ่ม Streamlit จริง (hidden)
-    if st.button("เข้าสู่ระบบ", key="login_btn"):
-        st.session_state.logged_in = True
-    
+""", unsafe_allow_html=True)    
 
     st.markdown("""
             <div style="text-align:right; font-size: 14px; width: 100%; margin-top: 0.5rem;">
