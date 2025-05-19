@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # อ่านไฟล์ CSV (คุณเปลี่ยน path ได้)
-df = pd.read_csv("data/Card.csv")
+df = pd.read_csv("credit_card.csv")
 
 st.markdown("## 💳 ค้นหาบัตรเครดิต")
 
