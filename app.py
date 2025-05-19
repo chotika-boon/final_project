@@ -84,6 +84,7 @@ def inject_global_css():
 
 
 # ✅ Init session
+inject_global_css()
 init_session_state()
 
 # ✅ Routing based on session
