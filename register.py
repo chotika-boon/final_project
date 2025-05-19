@@ -1,19 +1,27 @@
 import streamlit as st
 import pandas as pd
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# ---------- Google Sheet Setup ----------
+def insert_to_gsheet(data):
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    client = gspread.authorize(creds)
+
+    sheet = client.open_by_key("17os24Dmfczb2qAuy9yUR87vw_6oDWunQulRthw3ZyBg").sheet1
+    sheet.append_row(data)
 
 def show_register():
-    # ---------- Reset once ----------
     if "register_visited" not in st.session_state:
         st.session_state.register_visited = True
         st.session_state.credit_cards = []
         st.session_state.card_count = 1
 
-    # ---------- Load data ----------
     df = pd.read_csv("credit_card.csv")
 
     st.markdown("<h2 style='text-align:center;'>สมัครสมาชิก</h2>", unsafe_allow_html=True)
 
-    # ---------- ข้อมูลผู้ใช้ ----------
     st.markdown("### 👤 ข้อมูลบัญชีผู้ใช้")
     col1, col2 = st.columns(2)
     with col1:
@@ -27,7 +35,6 @@ def show_register():
     with col2:
         confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password")
 
-    # ---------- Ensure cards match count ----------
     while len(st.session_state.credit_cards) < st.session_state.card_count:
         st.session_state.credit_cards.append({
             "bank": "",
@@ -77,8 +84,20 @@ def show_register():
             st.error("❌ รหัสผ่านไม่ตรงกัน")
         else:
             st.success(f"✅ สมัครสำเร็จ! ยินดีต้อนรับคุณ {username} 🎉")
-            st.write("📋 บัตรทั้งหมดที่คุณเพิ่ม:")
             st.write(pd.DataFrame(st.session_state.credit_cards))
+
+            for card in st.session_state.credit_cards:
+                row = [
+                    username,
+                    email,
+                    password,
+                    card["bank"],
+                    card["issuer"],
+                    card["product"],
+                    st.session_state.card_count
+                ]
+                insert_to_gsheet(row)
+
             st.session_state.page = "login"
             st.rerun()
 
