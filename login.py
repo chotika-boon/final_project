@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import pandas as pd  # ✅ สำคัญมาก!
 import importlib.util
 import sys
 import os
