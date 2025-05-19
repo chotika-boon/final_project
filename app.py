@@ -113,7 +113,7 @@ def init_session_state():
 
 def modern_login_page():
 
-    st.markdown("""<h3><div class="center-wrapper"><div class="login-container">เข้าสู่ระบบ</h3>
+    st.markdown("""<h3><div class="center-wrapper">เข้าสู่ระบบ</h3>
     """, unsafe_allow_html=True)
 
 
