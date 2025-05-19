@@ -194,7 +194,7 @@ def modern_login_page():
             """, unsafe_allow_html=True)
 
 
-        st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 
 # Dummy app after login
