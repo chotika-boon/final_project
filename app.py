@@ -63,7 +63,7 @@ st.markdown(f"""
     }}
 
     .login-input {{
-        width: 100%;
+        width: 20rem;
         margin-bottom: 1rem;
     }}
 
