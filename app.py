@@ -94,18 +94,26 @@ st.markdown(f"""
     }}
 
     .divider {{
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid #ccc;
-        line-height: 0.1em;
-        margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 20rem;
+    margin: 2rem auto;
+    color: #888;
+}}
+
+    .divider::before,
+    .divider::after {{
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
     }}
 
-    .divider span {{
-        background:#fff;
-        padding:0 10px;
-        font-size: 14px;
-        color: #888;
+    .divider:not(:empty)::before {{
+    margin-right: .75em;
+    }}
+    .divider:not(:empty)::after {{
+    margin-left: .75em;
     }}
     .custom-login-btn {{
     width: 20rem;
@@ -171,7 +179,7 @@ def modern_login_page():
             </div>
         """, unsafe_allow_html=True)
 
-    st.markdown('<div class="divider"><span>หรือ</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="divider">หรือ</div>', unsafe_allow_html=True)
 
         # Social buttons (HTML only for now)
     st.markdown("""
