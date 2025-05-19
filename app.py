@@ -59,13 +59,10 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# Routing
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 page = query_params.get("page", ["login"])[0]
 
 if page == "login":
-    show_login()
+    st.write("🔐 หน้าล็อกอิน")
 elif page == "register":
-    show_register()
-else:
-    st.error("ไม่พบหน้า 😢")
+    st.write("📝 หน้าสมัครสมาชิก")
