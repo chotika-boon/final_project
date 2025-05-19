@@ -51,7 +51,16 @@ st.markdown(f"""
 
     .login-input {{
         width: 20rem;
-        margin-bottom: 1rem;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: white;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 8px auto;
     }}
 
     input[type="text"], input[type="password"] {{
