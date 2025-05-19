@@ -99,9 +99,9 @@ st.markdown(f"""
         box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         transition: background 0.2s ease;
     }}
-    .social-button:hover {
+    .social-button:hover {{
         background: #f3f3f3;
-    }
+    }}
 
     .divider {{
         width: 100%;
