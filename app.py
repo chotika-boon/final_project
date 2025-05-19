@@ -165,11 +165,12 @@ def modern_login_page():
     st.markdown('</div></div>', unsafe_allow_html=True)
 
 def main():
+    st.write("Loaded")  # << ทดลองดูว่าแสดงผลไหม
     init_session_state()
     if not st.session_state.logged_in:
         modern_login_page()
     else:
-        restaurant_app()  # Use original function for logged-in experience
+        st.write("You're logged in.")
 
 if __name__ == "__main__":
     main()
