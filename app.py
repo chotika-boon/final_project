@@ -28,14 +28,12 @@ def restaurant_app():
     st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
     st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
 
-# Main
-def main():
-    init_session_state()
-    if not st.session_state.logged_in:
-        show_login()
-    else:
-        show_register()
+query_params = st.query_params
+page = query_params.get("page", ["login"])[0]
 
-if __name__ == "__main__":
-    main()
-
+if page == "login":
+    show_login()
+elif page == "register":
+    show_register()
+else:
+    st.error("ไม่พบหน้า 😢")
