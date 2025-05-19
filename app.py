@@ -71,9 +71,10 @@ st.markdown(f"""
         font-size: 15px;
     }}
     .input-wrapper {{
-    width: 20rem;
-    margin: 0 auto 1rem auto;
+        width: 20rem;
+        margin: 0 auto 1rem auto;
     }}
+    
     .login-button {{
         width: 100%;
         background-color: #0084ff;
