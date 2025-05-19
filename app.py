@@ -142,8 +142,9 @@ def modern_login_page():
     with col2:
         password = st.text_input(" ", placeholder="รหัสผ่าน", type="password", key="password_input", label_visibility="collapsed")
 
-
-        if st.button("ถัดไป", key="login_btn"):
+    col1, col2, col3 = st.columns([1, 0.6, 1])
+    with col2:
+        if st.button("เข้าสู่ระบบ", key="login_btn"):
             st.session_state.logged_in = True
 
         st.markdown("""
