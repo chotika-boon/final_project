@@ -177,11 +177,11 @@ def show_login():
     <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">ตกลง</button>
 """, unsafe_allow_html=True)    
 
-#     st.markdown("""
-#     <div class="signup-link">
-#         <a href="/?page=register">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
-#     </div>
-# """, unsafe_allow_html=True)
+    st.markdown("""
+    <div class="signup-link">
+        <a href="/?page=register">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
+    </div>
+""", unsafe_allow_html=True)
 
 
     st.markdown('<div class="divider">หรือ</div>', unsafe_allow_html=True)
