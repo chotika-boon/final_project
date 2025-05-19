@@ -84,8 +84,8 @@ st.markdown(f"""
         margin-top: 1rem;
     }}
 
-    .social-button {{
-        width: 100%;
+    .social-button {
+        width: 20rem;
         padding: 10px;
         border-radius: 6px;
         border: 1px solid #ccc;
@@ -95,8 +95,13 @@ st.markdown(f"""
         align-items: center;
         justify-content: center;
         gap: 10px;
-        margin: 8px 0;
-    }}
+        margin: 8px auto;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        transition: background 0.2s ease;
+    }
+    .social-button:hover {
+        background: #f3f3f3;
+    }
 
     .divider {{
         width: 100%;
