@@ -27,9 +27,19 @@ def show_register():
     with col2:
         confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password")
 
-    # ---------- Initialize card data ----------
-    st.session_state.credit_cards = []
-    st.session_state.card_count = 1
+    # ---------- Initialize card state ----------
+    if "card_count" not in st.session_state:
+        st.session_state.card_count = 1
+    if "credit_cards" not in st.session_state:
+        st.session_state.credit_cards = []
+
+    # Ensure list size matches card_count
+    while len(st.session_state.credit_cards) < st.session_state.card_count:
+        st.session_state.credit_cards.append({
+            "bank": "",
+            "product": "",
+            "issuer": ""
+        })
 
     # ---------- Section: ข้อมูลบัตรเครดิต ----------
     st.markdown("### 💳 ข้อมูลบัตรเครดิต")
@@ -48,24 +58,23 @@ def show_register():
             issuer_list = sorted(issuer_df["ผู้ออกบัตร"].dropna().unique())
             selected_issuer = st.selectbox("🏢 เลือกผู้ออกบัตร", options=issuer_list, key=f"issuer_{i}")
 
-            st.session_state.credit_cards.append({
+            # Save to credit_cards
+            st.session_state.credit_cards[i] = {
                 "bank": selected_bank,
                 "product": selected_product,
                 "issuer": selected_issuer
-            })
+            }
 
-            # ลบบัตร ถ้ามีมากกว่า 1 ใบ
             if st.session_state.card_count > 1:
                 if st.button(f"🗑️ ลบบัตรที่ {i+1}", key=f"remove_{i}"):
                     remove_index = i
 
     # ดำเนินการลบการ์ด
     if remove_index is not None:
-        st.session_state.card_count -= 1
         del st.session_state.credit_cards[remove_index]
+        st.session_state.card_count -= 1
         st.rerun()
 
-    # เพิ่มบัตรใหม่
     if st.button("➕ เพิ่มบัตร"):
         st.session_state.card_count += 1
         st.rerun()
