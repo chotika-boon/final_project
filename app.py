@@ -21,7 +21,7 @@ LIFESTYLES = engine.LIFESTYLES
 RestaurantSelector = engine.RestaurantSelector
 CardRecommender = engine.CardRecommender
 
-st.set_page_config(page_title="Login", page_icon="🔐", layout="centered", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Login", page_icon="🔐", layout="wide")
 
 # Inject font
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
@@ -35,48 +35,43 @@ st.markdown(f"""
         src: url(data:font/ttf;base64,{base64_font}) format('truetype');
         font-weight: 300 600;
     }}
-
     html, body, [class*="st-"], [class*="css"] {{
         font-family: 'Noto Sans Thai', sans-serif !important;
-        height: 100vh;
-        background: linear-gradient(to right, #ff5858, #f09819);
         margin: 0;
         padding: 0;
+        height: 100%;
+        overflow: hidden;
     }}
-
     .center-wrapper {{
         display: flex;
         justify-content: center;
-        align-items: flex-start;
-        min-height: 100vh;
-        padding-top: 5vh;
+        align-items: center;
+        height: 100vh;
+        background-color: #f9f9f9;
     }}
-
     .login-container {{
         width: 100%;
         max-width: 360px;
         background: white;
-        padding: 2rem 1.5rem;
+        padding: 2rem;
         border-radius: 1rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         text-align: center;
     }}
-
     .login-button-primary {{
         background-color: #0084ff;
         color: white;
         font-weight: bold;
-        font-size: 15px;
-        padding: 8px 20px;
+        font-size: 16px;
+        padding: 10px 24px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         margin-top: 1rem;
         cursor: pointer;
     }}
-
     .social-button {{
         width: 100%;
-        max-width: 280px;
+        max-width: 300px;
         padding: 10px;
         border-radius: 6px;
         border: 1px solid #ccc;
@@ -88,12 +83,11 @@ st.markdown(f"""
         gap: 10px;
         margin: 8px auto;
     }}
-
     .divider {{
         display: flex;
         align-items: center;
         text-align: center;
-        margin: 2rem 0 1.5rem;
+        margin: 2rem 0;
     }}
     .divider::before, .divider::after {{
         content: '';
@@ -129,14 +123,15 @@ def modern_login_page():
     st.markdown('<div class="center-wrapper"><div class="login-container">', unsafe_allow_html=True)
 
     st.markdown("""
-        <h2 style="font-weight: 700; margin-bottom: 1.25rem;">เข้าสู่ระบบ</h2>
+        <h2 style="font-weight: 700; margin-bottom: 1.5rem;">เข้าสู่ระบบ</h2>
     """, unsafe_allow_html=True)
 
-    email = st.text_input("เบอร์โทร/อีเมล")
-    password = st.text_input("รหัสผ่าน", type="password")
+    email = st.text_input("เบอร์โทร/อีเมล", placeholder="example@gmail.com", label_visibility="collapsed")
+    password = st.text_input("รหัสผ่าน", type="password", placeholder="••••••••", label_visibility="collapsed")
 
-    if st.button("ถัดไป", key="login_button"):
-        st.session_state.logged_in = True
+    st.markdown('<div style="margin-top:1rem;">', unsafe_allow_html=True)
+    st.button("ถัดไป", key="login_button", use_container_width=False)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("""
         <div style="text-align:right; margin-top: 0.5rem;">
@@ -145,6 +140,7 @@ def modern_login_page():
         <div class="divider">หรือ</div>
     """, unsafe_allow_html=True)
 
+    # Social buttons
     st.markdown("""
         <div style="display:flex; justify-content:center; flex-direction: column; align-items:center;">
             <button class="social-button">
@@ -169,7 +165,7 @@ def main():
     if not st.session_state.logged_in:
         modern_login_page()
     else:
-        st.write("You're logged in.")
+        restaurant_app()
 
 if __name__ == "__main__":
     main()
