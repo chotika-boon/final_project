@@ -1,29 +1,39 @@
 import streamlit as st
 import pandas as pd
-from google.oauth2.service_account import Credentials
-import gspread
-import streamlit as st
+import os
 
-def insert_to_gsheet(data):
-    creds = Credentials.from_service_account_info(
-        st.secrets["google_service_account"],
-        scopes=["https://www.googleapis.com/auth/spreadsheets"]
-    )
-    client = gspread.authorize(creds)
-    sheet = client.open_by_key("17os24Dmfczb2qAuy9yUR87vw_6oDWunQulRthw3ZyBg").sheet1
-    sheet.append_row(data)
+CSV_FILE = "user_data.csv"
+CARD_DATA_FILE = "credit_card.csv"
 
+# ---------- บันทึกข้อมูลลง CSV ----------
+def save_to_csv(row, file_path=CSV_FILE):
+    df_new = pd.DataFrame([row])
+    if not os.path.exists(file_path):
+        df_new.to_csv(file_path, index=False)
+    else:
+        df_existing = pd.read_csv(file_path)
+        df_combined = pd.concat([df_existing, df_new], ignore_index=True)
+        df_combined.to_csv(file_path, index=False)
 
+# ---------- เช็คอีเมลซ้ำ ----------
+def is_duplicate_email(email, file_path=CSV_FILE):
+    if not os.path.exists(file_path):
+        return False
+    df = pd.read_csv(file_path)
+    return email in df["email"].values
+
+# ---------- หน้า Register ----------
 def show_register():
     if "register_visited" not in st.session_state:
         st.session_state.register_visited = True
         st.session_state.credit_cards = []
         st.session_state.card_count = 1
 
-    df = pd.read_csv("credit_card.csv")
+    df = pd.read_csv(CARD_DATA_FILE)
 
     st.markdown("<h2 style='text-align:center;'>สมัครสมาชิก</h2>", unsafe_allow_html=True)
 
+    # ข้อมูลผู้ใช้
     st.markdown("### 👤 ข้อมูลบัญชีผู้ใช้")
     col1, col2 = st.columns(2)
     with col1:
@@ -37,6 +47,7 @@ def show_register():
     with col2:
         confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password")
 
+    # เตรียม credit card slots
     while len(st.session_state.credit_cards) < st.session_state.card_count:
         st.session_state.credit_cards.append({
             "bank": "",
@@ -44,6 +55,7 @@ def show_register():
             "issuer": ""
         })
 
+    # ข้อมูลบัตรเครดิต
     st.markdown("### 💳 ข้อมูลบัตรเครดิต")
     remove_index = None
 
@@ -79,30 +91,31 @@ def show_register():
         st.session_state.card_count += 1
         st.rerun()
 
+    # ✅ สมัครสมาชิก
     if st.button("✅ สมัครสมาชิก"):
         if not username or not email or not password:
             st.warning("กรุณากรอกข้อมูลให้ครบถ้วน")
         elif password != confirm_password:
             st.error("❌ รหัสผ่านไม่ตรงกัน")
+        elif is_duplicate_email(email):
+            st.error("❌ อีเมลนี้ถูกใช้งานแล้ว")
         else:
-            st.success(f"✅ สมัครสำเร็จ! ยินดีต้อนรับคุณ {username} 🎉")
-            st.write(pd.DataFrame(st.session_state.credit_cards))
-
             for card in st.session_state.credit_cards:
-                row = [
-                    username,
-                    email,
-                    password,
-                    card["bank"],
-                    card["issuer"],
-                    card["product"],
-                    st.session_state.card_count
-                ]
-                insert_to_gsheet(row)
-
+                row = {
+                    "name": username,
+                    "email": email,
+                    "password": password,
+                    "bank": card["bank"],
+                    "credit_type": card["issuer"],
+                    "credit_name": card["product"],
+                    "card_count": st.session_state.card_count
+                }
+                save_to_csv(row)
+            st.success(f"✅ สมัครสำเร็จ! ยินดีต้อนรับคุณ {username} 🎉")
             st.session_state.page = "login"
             st.rerun()
 
+    # 🔁 ลิงก์ไปหน้า Login
     if st.button("🔁 มีบัญชีอยู่แล้ว? เข้าสู่ระบบ"):
         st.session_state.page = "login"
         st.rerun()
