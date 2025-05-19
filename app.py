@@ -23,6 +23,66 @@ html, body, [class*="st-"] {{
 </style>
 """, unsafe_allow_html=True)
 
+def inject_global_css():
+    with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
+        font_data = f.read()
+        base64_font = base64.b64encode(font_data).decode()
+
+    st.markdown(f"""
+    <style>
+    @font-face {{
+        font-family: 'Noto Sans Thai';
+        src: url(data:font/ttf;base64,{base64_font}) format('truetype');
+    }}
+    html, body, [class*="st-"] {{
+        font-family: 'Noto Sans Thai', sans-serif !important;
+    }}
+
+    .custom-login-btn {{
+        width: 100%;
+        background-color: #0084ff;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 1rem;
+    }}
+    .custom-login-btn:hover {{
+        background-color: #0070dd;
+    }}
+
+    .signup-link {{
+        width: 100%;
+        text-align: right;
+        font-size: 14px;
+        margin-top: 10px;
+    }}
+
+    .social-button {{
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: white;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 8px auto;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        transition: background 0.2s ease;
+    }}
+    .social-button:hover {{
+        background: #f3f3f3;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
+
 # ✅ Init session
 init_session_state()
 
