@@ -158,7 +158,7 @@ def init_session_state():
             st.session_state[key] = value
 
 # UI: Modern Login Page
-def modern_login_page():
+def show_login():
     with st.container():
         st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
 
