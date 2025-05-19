@@ -48,19 +48,6 @@ st.markdown(f"""
         height: 100vh;
     }}
 
-    .login-box {{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 20rem;
-        margin: auto;
-        padding: 2rem;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }}
 
     .login-input {{
         width: 20rem;
