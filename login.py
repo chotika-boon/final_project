@@ -35,16 +35,6 @@ with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
     base64_font = base64.b64encode(font_data).decode()
 
-    if email and password:
-        if authenticate_user(email, password):
-            st.session_state.logged_in = True
-            st.session_state.username = email
-            st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
-            st.rerun()
-        else:
-            st.error("❌ อีเมลหรือรหัสผ่านไม่ถูกต้อง")
-
-
 st.markdown(f"""
     <style>
     @font-face {{
