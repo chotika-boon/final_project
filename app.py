@@ -84,35 +84,26 @@ st.markdown(f"""
         gap: 10px;
         margin: 8px auto;
     }}
-
-    .divider {{
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin: 2rem 0;
-    }}
-    .divider::before, .divider::after {{
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid #ccc;
-    }}
-    .divider:not(:empty)::before {{
-        margin-right: .75em;
-    }}
-    .divider:not(:empty)::after {{
-        margin-left: .75em;
-    }}
-    .login-form-container {{
+.full-page-center {{
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-        width: 100%;
-        margin-top: 5vh;
+        height: 100vh;
     }}
 
-    .login-input-wrapper {{
+    .login-box {{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         width: 20rem;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }}
+
+    .login-input {{
+        width: 100% !important;
         margin-bottom: 1rem;
     }}
 
@@ -123,8 +114,8 @@ st.markdown(f"""
         font-size: 15px;
     }}
 
-    .login-button-primary {{
-        width: 20rem;
+    .login-button {{
+        width: 100%;
         background-color: #0084ff;
         color: white;
         font-weight: bold;
@@ -134,6 +125,35 @@ st.markdown(f"""
         border-radius: 8px;
         cursor: pointer;
         margin-top: 1rem;
+    }}
+
+    .social-button {{
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: white;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 8px 0;
+    }}
+
+    .divider {{
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+        line-height: 0.1em;
+        margin: 1.5rem 0;
+    }}
+
+    .divider span {{
+        background:#fff;
+        padding:0 10px;
+        font-size: 14px;
+        color: #888;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -156,46 +176,53 @@ def init_session_state():
         st.session_state["search_query"] = ""
 
 def modern_login_page():
-    st.markdown("""<h3 style="text-align:center;">เข้าสู่ระบบ</h3>""", unsafe_allow_html=True)
+    st.markdown('<div class="full-page-center">', unsafe_allow_html=True)
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-    st.markdown('<div class="login-input-wrapper">', unsafe_allow_html=True)
-    email = st.text_input(label=" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
+    st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
+
+    # Email Input
+    st.markdown('<div class="login-input">', unsafe_allow_html=True)
+    email = st.text_input(" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="login-input-wrapper">', unsafe_allow_html=True)
-    password = st.text_input(label=" ", placeholder="รหัสผ่าน", type="password", key="password_input")
+    # Password Input
+    st.markdown('<div class="login-input">', unsafe_allow_html=True)
+    password = st.text_input(" ", type="password", placeholder="รหัสผ่าน", key="password_input")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('<button class="login-button-primary" onclick="document.querySelector(\'button[data-testid=stButton]\').click()">ถัดไป</button>', unsafe_allow_html=True)
-    if st.button("Login Backend Logic", key="login_btn"):
+    # Submit Button
+    if st.button("ถัดไป", key="login_btn"):
         st.session_state.logged_in = True
 
+    # สมัครสมาชิก
     st.markdown("""
-        <div style="text-align:right; width: 20rem; margin-top: 0.5rem;">
-            <a href="#" style="font-size: 14px;">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
+        <div style="text-align:right; font-size: 14px; width: 100%; margin-top: 0.5rem;">
+            <a href="#">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
         </div>
-        <div class="divider" style="width: 20rem;">หรือ</div>
     """, unsafe_allow_html=True)
+
+    # Divider
+    st.markdown('<div class="divider"><span>หรือ</span></div>', unsafe_allow_html=True)
 
     # Social buttons
     st.markdown("""
-        <div style="display:flex; justify-content:center; flex-direction: column; align-items:center;">
-            <button class="social-button">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
-                เข้าสู่ระบบด้วย Facebook
-            </button>
-            <button class="social-button">
-                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
-                เข้าสู่ระบบด้วย LINE
-            </button>
-            <button class="social-button">
-                <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
-                เข้าสู่ระบบด้วย Google
-            </button>
-        </div>
+        <button class="social-button">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
+            เข้าสู่ระบบด้วย Facebook
+        </button>
+        <button class="social-button">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
+            เข้าสู่ระบบด้วย LINE
+        </button>
+        <button class="social-button">
+            <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
+            เข้าสู่ระบบด้วย Google
+        </button>
     """, unsafe_allow_html=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)  # Close .center-login-box
+    st.markdown('</div></div>', unsafe_allow_html=True)  # Close login-box + full-page-center
+
 
 
 def main():
