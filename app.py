@@ -39,9 +39,9 @@ st.markdown(f"""
     html, body, [class*="st-"], [class*="css"] {{
         font-family: 'Noto Sans Thai', sans-serif !important;
         height: 100vh;
-        overflow: hidden;
-        background-color: #f9f9f9;
+        background: linear-gradient(to right, #ff5858, #f09819);
         margin: 0;
+        padding: 0;
     }}
 
     .center-wrapper {{
@@ -165,7 +165,6 @@ def modern_login_page():
     st.markdown('</div></div>', unsafe_allow_html=True)
 
 def main():
-    st.write("Loaded")  # << ทดลองดูว่าแสดงผลไหม
     init_session_state()
     if not st.session_state.logged_in:
         modern_login_page()
