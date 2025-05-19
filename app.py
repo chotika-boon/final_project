@@ -1,11 +1,11 @@
 import streamlit as st
+st.set_page_config(page_title="Final Project", page_icon="🔐", layout="wide")
+
 import base64
 from login import show_login, init_session_state
 from register import show_register
 
 # ✅ set page config ต้องเป็นบรรทัดแรก
-st.set_page_config(page_title="Final Project", page_icon="🔐", layout="wide")
-
 # ✅ Load Thai font & inject CSS
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     font_data = f.read()
