@@ -48,6 +48,13 @@ st.markdown(f"""
         background: #fff;
     }}
 
+    .center {{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+    }}
+
     .login-button-primary {{
         background-color: #0084ff;
         color: white;
@@ -113,7 +120,7 @@ def init_session_state():
 
 def modern_login_page():
 
-    st.markdown("""<h3><div class="center-wrapper">เข้าสู่ระบบ</h3>
+    st.markdown("""<h3><div class="center">เข้าสู่ระบบ</h3>
     """, unsafe_allow_html=True)
 
 
