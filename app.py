@@ -35,40 +35,41 @@ st.markdown(f"""
         src: url(data:font/ttf;base64,{base64_font}) format('truetype');
         font-weight: 300 600;
     }}
+
     html, body, [class*="st-"], [class*="css"] {{
         font-family: 'Noto Sans Thai', sans-serif !important;
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
     }}
+
     .center-wrapper {{
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        background-color: #f9f9f9;
+        min-height: 100vh;
+        background: #fff;
     }}
+
     .login-container {{
         width: 100%;
         max-width: 360px;
         background: white;
-        padding: 2rem;
+        padding: 2.5rem 2rem;
         border-radius: 1rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         text-align: center;
     }}
+
     .login-button-primary {{
         background-color: #0084ff;
         color: white;
         font-weight: bold;
         font-size: 16px;
-        padding: 10px 24px;
+        padding: 10px 30px;
         border: none;
         border-radius: 8px;
         margin-top: 1rem;
         cursor: pointer;
     }}
+
     .social-button {{
         width: 100%;
         max-width: 300px;
@@ -83,6 +84,7 @@ st.markdown(f"""
         gap: 10px;
         margin: 8px auto;
     }}
+
     .divider {{
         display: flex;
         align-items: center;
@@ -126,12 +128,11 @@ def modern_login_page():
         <h2 style="font-weight: 700; margin-bottom: 1.5rem;">เข้าสู่ระบบ</h2>
     """, unsafe_allow_html=True)
 
-    email = st.text_input("เบอร์โทร/อีเมล", placeholder="example@gmail.com", label_visibility="collapsed")
-    password = st.text_input("รหัสผ่าน", type="password", placeholder="••••••••", label_visibility="collapsed")
+    email = st.text_input("เบอร์โทร/อีเมล")
+    password = st.text_input("รหัสผ่าน", type="password")
 
-    st.markdown('<div style="margin-top:1rem;">', unsafe_allow_html=True)
-    st.button("ถัดไป", key="login_button", use_container_width=False)
-    st.markdown('</div>', unsafe_allow_html=True)
+    if st.button("ถัดไป"):
+        st.session_state.logged_in = True
 
     st.markdown("""
         <div style="text-align:right; margin-top: 0.5rem;">
@@ -165,7 +166,9 @@ def main():
     if not st.session_state.logged_in:
         modern_login_page()
     else:
-        restaurant_app()
+        restaurant_app()  # Use original function for logged-in experience
 
 if __name__ == "__main__":
     main()
+
+
