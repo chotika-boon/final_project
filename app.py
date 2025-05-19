@@ -51,29 +51,14 @@ st.markdown(f"""
 
     .login-input {{
         width: 20rem;
-        padding: 10px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        background: white;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin: 8px auto;
+        margin: 0 auto 1rem auto;
     }}
-
-    input[type="text"], input[type="password"] {{
+    .input[type="text"], input[type="password"] {{
         width: 100% !important;
-        max-width: 100%;
         border-radius: 8px;
         padding: 10px;
         font-size: 15px;
         box-sizing: border-box;
-    }}
-    .input-wrapper {{
-        width: 20rem;
-        margin: 0 auto 1rem auto;
     }}
     
     .login-button {{
