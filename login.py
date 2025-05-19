@@ -184,7 +184,17 @@ def show_login():
     st.markdown("""
     <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">ตกลง</button>
 """, unsafe_allow_html=True)    
-
+    if st.button("เข้าสู่ระบบ"):
+        if email and password:
+            if authenticate_user(email, password):
+                st.success("เข้าสู่ระบบสำเร็จ")
+                st.session_state.logged_in = True
+                st.session_state.username = email
+                st.rerun()
+            else:
+                st.error("อีเมลหรือรหัสผ่านไม่ถูกต้อง")
+        else:
+            st.warning("กรุณากรอกข้อมูลให้ครบถ้วน")
     
     st.markdown("""
     <div class="signup-link">
