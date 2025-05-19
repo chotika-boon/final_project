@@ -1,7 +1,17 @@
 import streamlit as st
+
+# ✅ ต้องอยู่ตรงนี้เลย! ด้านบนสุด
+st.set_page_config(page_title="Final Project", page_icon="🔐", layout="wide")
+
+# 🧠 แล้วค่อย import ที่เหลือ
+from PIL import Image
+import importlib.util
+import sys
+import os
+import uuid
+import time
+from google.cloud import bigquery
 import base64
-from login import show_login
-from register import show_register
 
 
 # Load font
