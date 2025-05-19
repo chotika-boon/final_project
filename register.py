@@ -4,7 +4,7 @@ import pandas as pd
 def show_register():
 
     # อ่านไฟล์ CSV (คุณเปลี่ยน path ได้)
-    df = pd.read_csv("data/Card.csv")
+    df = pd.read_csv("credit_card.csv")
 
     st.markdown("## 💳 ค้นหาบัตรเครดิต")
 
