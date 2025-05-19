@@ -12,6 +12,9 @@ import uuid
 import time
 from google.cloud import bigquery
 import base64
+from login import show_login
+from register import show_register
+from login import init_session_state
 
 
 # Load font
