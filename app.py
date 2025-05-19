@@ -21,7 +21,7 @@ LIFESTYLES = engine.LIFESTYLES
 RestaurantSelector = engine.RestaurantSelector
 CardRecommender = engine.CardRecommender
 
-st.set_page_config(page_title="Login", page_icon="🔐", layout="wide")
+st.set_page_config(page_title="Login", page_icon="🔐", layout="centered", initial_sidebar_state="collapsed")
 
 # Inject font
 with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
@@ -38,21 +38,15 @@ st.markdown(f"""
 
     html, body, [class*="st-"], [class*="css"] {{
         font-family: 'Noto Sans Thai', sans-serif !important;
-    }}
-
-    .center-wrapper {{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: #fff;
+        height: 100vh;
+        overflow: hidden;
     }}
 
     .login-container {{
-        width: 100%;
         max-width: 360px;
+        margin: 3vh auto 0 auto;
         background: white;
-        padding: 2.5rem 2rem;
+        padding: 2rem;
         border-radius: 1rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         text-align: center;
@@ -62,10 +56,10 @@ st.markdown(f"""
         background-color: #0084ff;
         color: white;
         font-weight: bold;
-        font-size: 16px;
-        padding: 10px 30px;
+        font-size: 15px;
+        padding: 8px 20px;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         margin-top: 1rem;
         cursor: pointer;
     }}
@@ -89,7 +83,7 @@ st.markdown(f"""
         display: flex;
         align-items: center;
         text-align: center;
-        margin: 2rem 0;
+        margin: 2rem 0 1.5rem;
     }}
     .divider::before, .divider::after {{
         content: '';
@@ -122,20 +116,21 @@ def init_session_state():
         st.session_state["search_query"] = ""
 
 def modern_login_page():
-    st.markdown('<div class="center-wrapper"><div class="login-container">', unsafe_allow_html=True)
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
     st.markdown("""
-        <h2 style="font-weight: 700; margin-bottom: 1.5rem;">เข้าสู่ระบบ</h2>
+        <h2 style="font-weight: 700; margin-bottom: 1.25rem;">เข้าสู่ระบบ</h2>
     """, unsafe_allow_html=True)
 
     email = st.text_input("เบอร์โทร/อีเมล")
     password = st.text_input("รหัสผ่าน", type="password")
 
-    if st.button("ถัดไป"):
-        st.session_state.logged_in = True
+    st.markdown("<div style='margin-top: 10px;'>", unsafe_allow_html=True)
+    st.button("ถัดไป", key="login_button")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("""
-        <div style="text-align:right; margin-top: 0.5rem;">
+        <div style="text-align:right; margin-top: 0.25rem;">
             <a href="#" style="font-size: 14px;">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
         </div>
         <div class="divider">หรือ</div>
@@ -159,14 +154,14 @@ def modern_login_page():
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     init_session_state()
     if not st.session_state.logged_in:
         modern_login_page()
     else:
-        restaurant_app()  # Use original function for logged-in experience
+        restaurant_app()
 
 if __name__ == "__main__":
     main()
