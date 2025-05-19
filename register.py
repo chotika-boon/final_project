@@ -1,29 +1,38 @@
 import streamlit as st
-
 def show_register():
-    st.markdown("<h3 style='text-align:center;'>สมัครสมาชิก</h3>", unsafe_allow_html=True)
+    """Render registration page"""
+    st.title("ลงทะเบียน")
+    
+    with st.form("register_form"):
+        username = st.text_input("ชื่อผู้ใช้", key="register_username")
+        password = st.text_input("รหัสผ่าน", type="password", key="register_password")
+        confirm_password = st.text_input("ยืนยันรหัสผ่าน", type="password", key="confirm_password")
+        
+        bank = st.selectbox("ธนาคารที่ถือบัตรเครดิต", options=BANKS)
+        card_type = st.selectbox("ประเภทบัตรเครดิตที่ถือ", options=CARD_TYPES)
+        lifestyle = st.selectbox("ไลฟ์สไตล์ของคุณ", options=LIFESTYLES)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            submit_button = st.form_submit_button("ลงทะเบียน")
+        with col2:
+            back_button = st.form_submit_button("กลับ")
+    
+    if submit_button:
+        if password != confirm_password:
+            st.error("รหัสผ่านไม่ตรงกัน")
+        elif not username or not password:
+            st.error("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน")
+        else:
+            success, message = user_manager.register_user(username, password, bank, card_type, lifestyle)
+            if success:
+                st.success(message)
+                st.session_state.show_register = False
+                st.rerun()
+            else:
+                st.error(message)
+    
+    if back_button:
+        st.session_state.show_register = False
+        st.rerun()
 
-    col1, col2, col3 = st.columns([1, 0.6, 1])
-    with col2:
-        username = st.text_input(" ", placeholder="ชื่อผู้ใช้", key="username_input", label_visibility="collapsed")
-
-    col1, col2, col3 = st.columns([1, 0.6, 1])
-    with col2:
-        email = st.text_input(" ", placeholder="อีเมล", key="reg_email", label_visibility="collapsed")
-
-    col1, col2, col3 = st.columns([1, 0.6, 1])
-    with col2:
-        password = st.text_input(" ", placeholder="รหัสผ่าน", type="password", key="reg_password", label_visibility="collapsed")
-
-    st.markdown("""
-        <button class="custom-login-btn" onclick="document.querySelector('[data-testid=register-btn]').click()">สมัครสมาชิก</button>
-    """, unsafe_allow_html=True)
-
-    if st.button("ยืนยันสมัคร", key="register-btn"):
-        st.success("🎉 สมัครสมาชิกเรียบร้อยแล้ว!")
-
-    st.markdown("""
-        <div class="signup-link" style="text-align:center;">
-            <a href="/?page=login">มีบัญชีอยู่แล้ว? <strong>เข้าสู่ระบบ</strong></a>
-        </div>
-    """, unsafe_allow_html=True)
