@@ -185,8 +185,8 @@ def show_login():
 """, unsafe_allow_html=True)
     if st.button("ยังไม่มีบัญชี? สมัครสมาชิก"):
         st.session_state.page = "register"
-        st.experimental_rerun()  # 🔁 บังคับ Streamlit reload เพื่อให้ routing ทำงาน
-
+        st.rerun()
+        
     st.markdown('<div class="divider">หรือ</div>', unsafe_allow_html=True)
 
         # Social buttons (HTML only for now)
