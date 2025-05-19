@@ -164,9 +164,6 @@ st.markdown(f"""
 }}
     </style>
     
-    <div class="top-navbar">
-        <img src="data:image/png;base64,{logo_base64}" alt="Logo">
-    </div>
 """, unsafe_allow_html=True)
 
 # Initialize backend managers
@@ -186,7 +183,7 @@ def init_session_state():
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
-    st.markdown("<div class='top-navbar'> </div>", unsafe_allow_html=True)
+    st.markdown("<div class='top-navbar'><img src="data:image/png;base64,{logo_base64}" alt="Logo"></div>", unsafe_allow_html=True)
 
 # UI: Modern Login Page
 def modern_login_page():
