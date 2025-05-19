@@ -4,8 +4,6 @@ import pandas as pd
 def show_register():
     df = pd.read_csv("credit_card.csv")
 
-    st.set_page_config(page_title="สมัครสมาชิก", layout="centered")
-
     # -------------- CSS Modern UI ----------------
     st.markdown("""
     <style>
