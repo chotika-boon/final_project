@@ -177,13 +177,15 @@ def show_login():
     <button class="custom-login-btn" onclick="document.querySelector('[data-testid=login-btn]').click()">ตกลง</button>
 """, unsafe_allow_html=True)    
 
+    
     st.markdown("""
     <div class="signup-link">
         <a href="/?page=register" target="_self">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
     </div>
 """, unsafe_allow_html=True)
-
-
+    if st.button("ยังไม่มีบัญชี? สมัครสมาชิก"):
+        st.session_state.page = "register"
+        st.experimental_rerun()  # 🔁 บังคับ Streamlit reload เพื่อให้ routing ทำงาน
 
     st.markdown('<div class="divider">หรือ</div>', unsafe_allow_html=True)
 
