@@ -167,16 +167,16 @@ def modern_login_page():
 
     
 
-        st.markdown("""
+    st.markdown("""
             <div style="text-align:right; font-size: 14px; width: 100%; margin-top: 0.5rem;">
                 <a href="#">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
             </div>
         """, unsafe_allow_html=True)
 
-        st.markdown('<div class="divider"><span>หรือ</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="divider"><span>หรือ</span></div>', unsafe_allow_html=True)
 
         # Social buttons (HTML only for now)
-        st.markdown("""
+    st.markdown("""
         <div style="display:flex; justify-content:center; flex-direction: column; align-items:center;">
             <button class="social-button">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
