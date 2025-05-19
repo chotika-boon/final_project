@@ -40,33 +40,45 @@ st.markdown(f"""
         font-family: 'Noto Sans Thai', sans-serif !important;
         height: 100vh;
         overflow: hidden;
+        background-color: #f4f6f8;
     }}
 
     .login-container {{
-        max-width: 360px;
-        margin: 3vh auto 0 auto;
+        max-width: 380px;
+        margin: 6vh auto;
         background: white;
-        padding: 2rem;
+        padding: 2.5rem 2rem;
         border-radius: 1rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         text-align: center;
+    }}
+
+    .login-title {{
+        font-weight: 700;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        color: #1c1e21;
     }}
 
     .login-button-primary {{
         background-color: #0084ff;
         color: white;
-        font-weight: bold;
+        font-weight: 600;
         font-size: 15px;
-        padding: 8px 20px;
+        padding: 10px 30px;
         border: none;
         border-radius: 6px;
         margin-top: 1rem;
         cursor: pointer;
+        transition: background 0.3s ease;
+    }}
+    .login-button-primary:hover {{
+        background-color: #006ddf;
     }}
 
     .social-button {{
         width: 100%;
-        max-width: 300px;
+        max-width: 320px;
         padding: 10px;
         border-radius: 6px;
         border: 1px solid #ccc;
@@ -77,6 +89,10 @@ st.markdown(f"""
         justify-content: center;
         gap: 10px;
         margin: 8px auto;
+        transition: box-shadow 0.3s ease;
+    }}
+    .social-button:hover {{
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }}
 
     .divider {{
@@ -84,11 +100,13 @@ st.markdown(f"""
         align-items: center;
         text-align: center;
         margin: 2rem 0 1.5rem;
+        color: #888;
+        font-size: 14px;
     }}
     .divider::before, .divider::after {{
         content: '';
         flex: 1;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #ddd;
     }}
     .divider:not(:empty)::before {{
         margin-right: .75em;
@@ -118,25 +136,21 @@ def init_session_state():
 def modern_login_page():
     st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
-    st.markdown("""
-        <h2 style="font-weight: 700; margin-bottom: 1.25rem;">เข้าสู่ระบบ</h2>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="login-title">เข้าสู่ระบบ</div>', unsafe_allow_html=True)
 
     email = st.text_input("เบอร์โทร/อีเมล")
     password = st.text_input("รหัสผ่าน", type="password")
 
-    st.markdown("<div style='margin-top: 10px;'>", unsafe_allow_html=True)
-    st.button("ถัดไป", key="login_button")
-    st.markdown("</div>", unsafe_allow_html=True)
+    if st.button("ถัดไป", key="login_button"):
+        st.session_state.logged_in = True
 
     st.markdown("""
-        <div style="text-align:right; margin-top: 0.25rem;">
+        <div style="text-align:right; margin-top: 0.5rem;">
             <a href="#" style="font-size: 14px;">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
         </div>
-        <div class="divider">หรือ</div>
+        <div class="divider">หรือเข้าสู่ระบบด้วย</div>
     """, unsafe_allow_html=True)
 
-    # Social buttons
     st.markdown("""
         <div style="display:flex; justify-content:center; flex-direction: column; align-items:center;">
             <button class="social-button">
