@@ -50,7 +50,7 @@ st.markdown(f"""
 
     .login-container {{
         width: 100%;
-        max-width: 400px;
+        max-width: 360px;
         background: white;
         padding: 2.5rem 2rem;
         border-radius: 1rem;
@@ -63,15 +63,16 @@ st.markdown(f"""
         color: white;
         font-weight: bold;
         font-size: 16px;
-        padding: 10px;
+        padding: 10px 30px;
         border: none;
         border-radius: 8px;
-        width: 100%;
+        margin-top: 1rem;
         cursor: pointer;
     }}
 
     .social-button {{
         width: 100%;
+        max-width: 300px;
         padding: 10px;
         border-radius: 6px;
         border: 1px solid #ccc;
@@ -81,14 +82,14 @@ st.markdown(f"""
         align-items: center;
         justify-content: center;
         gap: 10px;
-        margin-top: 10px;
+        margin: 8px auto;
     }}
 
     .divider {{
         display: flex;
         align-items: center;
         text-align: center;
-        margin: 20px 0;
+        margin: 2rem 0;
     }}
     .divider::before, .divider::after {{
         content: '';
@@ -124,34 +125,38 @@ def modern_login_page():
     st.markdown('<div class="center-wrapper"><div class="login-container">', unsafe_allow_html=True)
 
     st.markdown("""
-        <h2 style="font-weight: 700; margin-bottom: 1rem;">เข้าสู่ระบบ</h2>
+        <h2 style="font-weight: 700; margin-bottom: 1.5rem;">เข้าสู่ระบบ</h2>
     """, unsafe_allow_html=True)
 
     email = st.text_input("เบอร์โทร/อีเมล")
-    if st.button("ถัดไป", use_container_width=True):
+    password = st.text_input("รหัสผ่าน", type="password")
+
+    if st.button("ถัดไป"):
         st.session_state.logged_in = True
 
     st.markdown("""
         <div style="text-align:right; margin-top: 0.5rem;">
-            <a href="#" style="font-size: 14px;">สมัครสมาชิก</a>
+            <a href="#" style="font-size: 14px;">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
         </div>
         <div class="divider">หรือ</div>
     """, unsafe_allow_html=True)
 
     # Social buttons
     st.markdown("""
-        <button class="social-button">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
-            เข้าสู่ระบบด้วย Facebook
-        </button>
-        <button class="social-button">
-            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
-            เข้าสู่ระบบด้วย LINE
-        </button>
-        <button class="social-button">
-            <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
-            เข้าสู่ระบบด้วย Google
-        </button>
+        <div style="display:flex; justify-content:center; flex-direction: column; align-items:center;">
+            <button class="social-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" width="20" />
+                เข้าสู่ระบบด้วย Facebook
+            </button>
+            <button class="social-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111396.png" width="20" />
+                เข้าสู่ระบบด้วย LINE
+            </button>
+            <button class="social-button">
+                <img src="https://cdn-icons-png.flaticon.com/512/281/281764.png" width="20" />
+                เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
     """, unsafe_allow_html=True)
 
     st.markdown('</div></div>', unsafe_allow_html=True)
