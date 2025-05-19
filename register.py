@@ -4,13 +4,14 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 def insert_to_gsheet(data):
-    # ใช้ Credentials จาก google-auth
     scope = ["https://www.googleapis.com/auth/spreadsheets"]
     creds = Credentials.from_service_account_file("credentials.json", scopes=scope)
     client = gspread.authorize(creds)
 
-    sheet = client.open_by_key("17os24Dmfczb2qAuy9yUR87vw_6oDWunQulRthw3ZyBg").Sheet1
+    # ใช้ spreadsheet key จาก URL
+    sheet = client.open_by_key("17os24Dmfczb2qAuy9yUR87vw_6oDWunQulRthw3ZyBg").sheet1
     sheet.append_row(data)
+
 
 def show_register():
     if "register_visited" not in st.session_state:
