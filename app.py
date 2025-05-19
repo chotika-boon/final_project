@@ -37,7 +37,7 @@ st.markdown(f"""
         font-weight: 300 600;
     }}
 
-    html, body, [class*="st-"], [class*="css"] {{
+    html, body, h1, h2, h3, h4, h5, h6, p, div, span, [class*="st-"], [class*="css"] {{
         font-family: 'Noto Sans Thai', sans-serif !important;
     }}
 
