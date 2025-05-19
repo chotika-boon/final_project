@@ -179,9 +179,10 @@ def show_login():
 
     st.markdown("""
     <div class="signup-link">
-        <a href="/?page=register">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
+        <a href="/?page=register" target="_self">ยังไม่มีบัญชี? <strong>สมัครสมาชิก</strong></a>
     </div>
 """, unsafe_allow_html=True)
+
 
 
     st.markdown('<div class="divider">หรือ</div>', unsafe_allow_html=True)
