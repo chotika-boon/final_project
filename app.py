@@ -133,14 +133,14 @@ def modern_login_page():
     with st.container():
         st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
 
-        st.markdown('<div class="login-input">', unsafe_allow_html=True)
-        email = st.text_input(" ", placeholder="เบอร์โทร/อีเมล", key="email_input")
-        st.markdown('</div>', unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        email = st.text_input(" ", placeholder="เบอร์โทร/อีเมล", key="email_input", label_visibility="collapsed")
 
-        # Password
-        st.markdown('<div class="login-input">', unsafe_allow_html=True)
-        password = st.text_input(" ", type="password", placeholder="รหัสผ่าน", key="password_input")
-        st.markdown('</div>', unsafe_allow_html=True)
+# Password input
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        password = st.text_input(" ", placeholder="รหัสผ่าน", type="password", key="password_input", label_visibility="collapsed")
 
 
         if st.button("ถัดไป", key="login_btn"):
