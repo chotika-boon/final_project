@@ -9,7 +9,6 @@ def show_register():
 
     # ---------- Section: ข้อมูลผู้ใช้ ----------
     st.markdown("### 👤 ข้อมูลบัญชีผู้ใช้")
-
     col1, col2 = st.columns(2)
     with col1:
         username = st.text_input("ชื่อผู้ใช้")
@@ -25,22 +24,41 @@ def show_register():
     # ---------- Section: ข้อมูลบัตรเครดิต ----------
     st.markdown("### 💳 ข้อมูลบัตรเครดิต")
 
-    # ✅ Step 1: ธนาคาร
-    bank_list = sorted(df["ธนาคาร"].dropna().unique())
-    default_bank = bank_list[0] if bank_list else None
-    selected_bank = st.selectbox("🏦 เลือกธนาคาร", options=bank_list, index=0)
+    if "credit_cards" not in st.session_state:
+        st.session_state.credit_cards = []
 
-    # ✅ Step 2: กรองชื่อบัตร
-    product_df = df[df["ธนาคาร"] == selected_bank]
-    product_list = sorted(product_df["ผลิตภัณฑ์/ชื่อบัตร"].dropna().unique())
-    default_product = product_list[0] if product_list else None
-    selected_product = st.selectbox("💳 เลือกชื่อบัตร", options=product_list, index=0)
+    if "card_count" not in st.session_state:
+        st.session_state.card_count = 1
 
-    # ✅ Step 3: กรองผู้ออกบัตร
-    issuer_df = product_df[product_df["ผลิตภัณฑ์/ชื่อบัตร"] == selected_product]
-    issuer_list = sorted(issuer_df["ผู้ออกบัตร"].dropna().unique())
-    default_issuer = issuer_list[0] if issuer_list else None
-    selected_issuer = st.selectbox("🏢 เลือกผู้ออกบัตร", options=issuer_list, index=0)
+    for i in range(st.session_state.card_count):
+        with st.expander(f"📄 ข้อมูลบัตรที่ {i+1}", expanded=True):
+            bank_list = sorted(df["ธนาคาร"].dropna().unique())
+            selected_bank = st.selectbox(f"🏦 เลือกธนาคาร", options=bank_list, key=f"bank_{i}")
+
+            product_df = df[df["ธนาคาร"] == selected_bank]
+            product_list = sorted(product_df["ผลิตภัณฑ์/ชื่อบัตร"].dropna().unique())
+            selected_product = st.selectbox(f"💳 เลือกชื่อบัตร", options=product_list, key=f"product_{i}")
+
+            issuer_df = product_df[product_df["ผลิตภัณฑ์/ชื่อบัตร"] == selected_product]
+            issuer_list = sorted(issuer_df["ผู้ออกบัตร"].dropna().unique())
+            selected_issuer = st.selectbox(f"🏢 เลือกผู้ออกบัตร", options=issuer_list, key=f"issuer_{i}")
+
+            # เก็บข้อมูลลง session_state
+            if len(st.session_state.credit_cards) <= i:
+                st.session_state.credit_cards.append({
+                    "bank": selected_bank,
+                    "product": selected_product,
+                    "issuer": selected_issuer
+                })
+            else:
+                st.session_state.credit_cards[i] = {
+                    "bank": selected_bank,
+                    "product": selected_product,
+                    "issuer": selected_issuer
+                }
+
+    if st.button("➕ เพิ่มบัตร"):
+        st.session_state.card_count += 1
 
     # ---------- Submit Button ----------
     if st.button("✅ สมัครสมาชิก"):
@@ -50,10 +68,11 @@ def show_register():
             st.error("❌ รหัสผ่านไม่ตรงกัน")
         else:
             st.success(f"✅ สมัครสำเร็จ! ยินดีต้อนรับคุณ {username} 🎉")
+            st.write("📋 บัตรทั้งหมดที่คุณเพิ่ม:")
+            st.write(pd.DataFrame(st.session_state.credit_cards))
             st.session_state.page = "login"
             st.rerun()
 
-    # ---------- ลิงก์เข้าสู่ระบบ ----------
     if st.button("🔁 มีบัญชีอยู่แล้ว? เข้าสู่ระบบ"):
         st.session_state.page = "login"
         st.rerun()
