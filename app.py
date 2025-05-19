@@ -28,7 +28,7 @@ with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
 def restaurant_app():
     st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
     st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
-print(st.session_state.page)
+
 if "page" not in st.session_state:
     st.session_state.page = "login"
 
