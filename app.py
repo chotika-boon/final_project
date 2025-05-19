@@ -9,8 +9,6 @@ with open("NotoSansThai-VariableFont_wdth,wght.ttf", "rb") as f:
     base64_font = base64.b64encode(f.read()).decode()
 
 # Page config
-st.set_page_config(page_title="Final Project", page_icon="🔐", layout="wide")
-
 
 # Dummy app after login
 def restaurant_app():
