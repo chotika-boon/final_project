@@ -136,8 +136,6 @@ def init_session_state():
 # UI: Modern Login Page
 def modern_login_page():
     with st.container():
-        st.markdown('<div class="full-page-center"><div class="login-box">', unsafe_allow_html=True)
-
         st.markdown("<h3 style='text-align:center;'>เข้าสู่ระบบ</h3>", unsafe_allow_html=True)
 
         # Email Input
