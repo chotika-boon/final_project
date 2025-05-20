@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 CSV_FILE = "user_data.csv"
-PROMO_FILE = "mockup - Sheet1.csv"
+PROMO_FILE = "mockup - Sheet1 (2).csv"
 
 def render_cards(title, card_data):
     st.markdown(f"### {title}")
