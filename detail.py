@@ -51,6 +51,7 @@ def show_detail():
 
     # Show current logged-in user info
     st.subheader("👤 ข้อมูลผู้ใช้ที่เข้าสู่ระบบ")
+    user_cards = []
     if st.session_state.get("username"):
         st.markdown(f"**ชื่อผู้ใช้:** {st.session_state.username}")
         st.markdown(f"**อีเมล:** {st.session_state.get('logged_in_email', '-')}")
@@ -63,6 +64,7 @@ def show_detail():
         if not current_user.empty:
             user_row = current_user.iloc[-1]
             st.markdown(f"**จำนวนบัตรเครดิตที่สมัคร:** {user_row['card_count']}")
+            user_cards = current_user['credit_name'].unique().tolist()
         else:
             st.info("ไม่พบข้อมูลผู้ใช้นี้ในระบบ")
     except Exception as e:
@@ -76,8 +78,22 @@ def show_detail():
     try:
         promo_df = pd.read_csv(PROMO_FILE)
         filtered = promo_df[promo_df["Store"].str.contains(r["name"], case=False, na=False)]
+
         if not filtered.empty:
-            st.dataframe(filtered)
+            user_card_match = filtered[filtered['Card_name'].isin(user_cards)]
+            other_card = filtered[~filtered['Card_name'].isin(user_cards)]
+
+            st.markdown("### ✅ บัตรที่คุณมี")
+            if not user_card_match.empty:
+                st.dataframe(user_card_match)
+            else:
+                st.info("คุณยังไม่มีบัตรที่ร่วมรายการกับร้านนี้")
+
+            st.markdown("### 💳 บัตรอื่น ๆ ที่มีโปรโมชั่น")
+            if not other_card.empty:
+                st.dataframe(other_card)
+            else:
+                st.info("ไม่มีบัตรอื่นที่มีโปรโมชั่นในร้านนี้")
         else:
             st.info("ไม่มีโปรโมชั่นสำหรับร้านนี้ในขณะนี้")
     except Exception as e:
