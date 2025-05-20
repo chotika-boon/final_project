@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image
 import streamlit.components.v1 as components
 from engine import RestaurantSelector, CardRecommender
+import json
 
 def get_card_data():
     return [
@@ -124,14 +125,20 @@ def show_home():
         cards = get_card_data()
         st.markdown('<div class="card-grid">', unsafe_allow_html=True)
         for i, r in enumerate(cards):
-            js_trigger = f"""
+            js = f"""
                 <script>
-                    const card = document.getElementById("card{i}");
-                    if (card) {{
-                        card.onclick = () => {{
-                            fetch("/", {{method: "POST", headers: {{"Content-Type": "application/json"}}, body: JSON.stringify({{"selected_card": {i}}})}}).then(() => location.reload());
-                        }}
+                    function selectCard{i}() {{
+                        const data = {{"selected_card": {json.dumps(r)}}};
+                        fetch(window.location.href, {{
+                            method: "POST",
+                            headers: {{"Content-Type": "application/json"}},
+                            body: JSON.stringify(data)
+                        }}).then(() => window.location.reload());
                     }}
+                    document.addEventListener("DOMContentLoaded", function() {{
+                        let card = document.getElementById("card{i}");
+                        if(card) card.addEventListener("click", selectCard{i});
+                    }});
                 </script>
             """
             html = f'''
@@ -146,15 +153,16 @@ def show_home():
                         </div>
                     </div>
                 </div>
-                {js_trigger}
+                {js}
             '''
             components.html(html, height=280)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    if "selected_card" in st.session_state:
-        index = st.session_state.pop("selected_card")
+    # Read data from POST request (Streamlit's workaround)
+    if st.session_state.get("_selected_card_json"):
+        r = st.session_state.pop("_selected_card_json")
         st.session_state.page = "detail"
-        st.session_state.restaurant_detail = get_card_data()[index]
+        st.session_state.restaurant_detail = r
         st.rerun()
 
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
@@ -186,3 +194,16 @@ def show_home():
         st.session_state["selected_restaurant"] = None
         st.session_state["search_query"] = ""
         st.rerun()
+
+# Hook into request body manually (simulate API-style read)
+if st.runtime.exists():
+    try:
+        import streamlit.web.server.websocket_headers as wh
+        import streamlit.web.server.server_util as su
+        body = su.get_request_body()
+        if body:
+            payload = json.loads(body)
+            if "selected_card" in payload:
+                st.session_state["_selected_card_json"] = payload["selected_card"]
+    except:
+        pass
