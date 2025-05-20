@@ -2,25 +2,28 @@ import streamlit as st
 import pandas as pd
 
 CSV_FILE = "user_data.csv"
-PROMO_FILE = "mockup - Sheet1 (2).csv"
+PROMO_FILE = "mockup - Sheet1 (1).csv"
 
 def render_cards(title, card_data):
     st.markdown(f"### {title}")
     st.markdown("""
     <style>
     .card-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-wrap: nowrap;
         gap: 16px;
-        margin-top: 10px;
+        overflow-x: auto;
+        padding-bottom: 10px;
     }
     .promo-card {
+        flex: 0 0 23%;
         background: white;
         border-radius: 14px;
         padding: 14px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         transition: all 0.2s ease;
         font-family: 'Noto Sans Thai', sans-serif;
+        min-width: 240px;
     }
     .promo-card:hover {
         transform: translateY(-6px);
