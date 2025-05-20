@@ -1,141 +1,142 @@
 import streamlit as st
-import openai
 import pandas as pd
 import json
+from openai import OpenAI
 
-# ---------------------------
-# CONFIG
-# ---------------------------
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+CSV_FILE = "user_data.csv"
+PROMO_FILE = "CoolKid_promotion_creditcard - Sheet2.csv"
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-html, body, div, p, h1, h2, h3, h4 {
-    font-family: 'Noto Sans Thai', sans-serif !important;
-}
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    height: 100%;
-}
-.tag {
-    background-color: #eee;
-    color: #333;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    display: inline-block;
-    margin-right: 6px;
-    margin-bottom: 4px;
-}
-</style>
-""", unsafe_allow_html=True)
+def show_detail():
+    r = st.session_state.get("restaurant_detail")
+    if not r:
+        st.warning("ไม่พบข้อมูลร้านที่เลือก")
+        return
 
-# ---------------------------
-# INPUT DATA (คุณต้องเปลี่ยนตามจริง)
-# ---------------------------
-r = {"name": "รวมร้านบุฟเฟ่ต์ปิ้งย่างและชาบู"}
+    st.markdown("""
+        <style>
+        .detail-header {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .detail-image {
+            flex: 1;
+        }
+        .detail-info {
+            flex: 2;
+        }
+        .badge {
+            background-color: #e3e3e3;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 13px;
+            margin-right: 6px;
+            display: inline-block;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
-# ตัวอย่าง DataFrame (filtered เฉพาะร้านที่เลือก)
-filtered = pd.DataFrame([
-    {"Card_name": "KTC Platinum", "Benefit_detail": "แลกคะแนนรับส่วนลดบุฟเฟ่ต์ 80 บาท/ท่าน เมื่อใช้ 699 คะแนน KTC"},
-    {"Card_name": "KTC Signature", "Benefit_detail": "แลกคะแนนรับส่วนลดบุฟเฟ่ต์ 150 บาท/ท่าน เมื่อใช้ 699 คะแนน KTC"},
-])
+    # Header
+    st.markdown("<div class='detail-header'>", unsafe_allow_html=True)
+    st.image(r["image_url"], width=300)
+    st.markdown("<div class='detail-info'>", unsafe_allow_html=True)
+    st.title(r["name"])
+    st.markdown(f"<div class='badge'>{r['category']}</div>", unsafe_allow_html=True)
+    st.markdown(f"<p>⭐ <b>{r['rating']}</b> ({r['reviews']} รีวิว)</p>", unsafe_allow_html=True)
+    st.markdown(f"<p>{r.get('description', 'ไม่มีรายละเอียดเพิ่มเติม')}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-user_cards = ["KTC Platinum"]
+    st.divider()
 
-# ---------------------------
-# PROMPT ส่งให้ OpenAI
-# ---------------------------
-prompt = f"""
+    # User Info
+    st.subheader("👤 ข้อมูลผู้ใช้ที่เข้าสู่ระบบ")
+    if st.session_state.get("username"):
+        st.markdown(f"**ชื่อผู้ใช้:** {st.session_state.username}")
+        st.markdown(f"**อีเมล:** {st.session_state.get('logged_in_email', '-')}")
+    else:
+        st.warning("คุณยังไม่ได้เข้าสู่ระบบ")
+
+    user_cards = []
+    try:
+        df = pd.read_csv(CSV_FILE)
+        current_user = df[df['email'] == st.session_state.get("logged_in_email")]
+        if not current_user.empty:
+            user_row = current_user.iloc[-1]
+            st.markdown(f"**จำนวนบัตรเครดิตที่สมัคร:** {user_row['card_count']}")
+            user_cards = user_row['cards'].split(",") if 'cards' in user_row else []
+        else:
+            st.info("ไม่พบข้อมูลผู้ใช้นี้ในระบบ")
+    except Exception as e:
+        st.error(f"เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้: {e}")
+
+    st.divider()
+
+    # Promotions
+    st.subheader("🎁 โปรโมชั่นจากบัตรเครดิตที่ร่วมรายการ")
+    try:
+        promo_df = pd.read_csv(PROMO_FILE)
+        promo_df.rename(columns={promo_df.columns[5]: "Link"}, inplace=True)
+        filtered = promo_df[promo_df["Store"].str.contains(r["name"], case=False, na=False)]
+
+        if not filtered.empty:
+            st.dataframe(filtered[["Card_name", "Benefit_detail", "Date", "Link"]])
+
+            # AI Prompt
+            prompt = f"""
 คุณคือผู้ช่วยด้านการเงินและโปรโมชั่นบัตรเครดิต
 
 ร้าน: {r['name']}
+ผู้ใช้มีบัตร: {', '.join(user_cards)}
 
-ข้อมูลโปรโมชั่นทั้งหมด:
-{filtered[['Card_name', 'Benefit_detail']].to_csv(index=False)}
+จากโปรโมชั่นด้านล่าง โปรดวิเคราะห์:
+1. โปรโมชั่นไหนคุ้มค่าที่สุด
+2. เหมาะกับใคร (กินคนเดียว / กลุ่ม)
+3. ต้องจ่ายขั้นต่ำเท่าไหร่
+4. ให้คำแนะนำแบบสั้น เช่น “คุ้มเมื่อจ่ายเกิน 500 บาท”, “เหมาะกับปิ้งย่าง”
 
-ผู้ใช้มีบัตรดังต่อไปนี้:
-{', '.join(user_cards)}
-
-กรุณาช่วย:
-1. เรียงลำดับบัตรจากแต่ละกลุ่ม โดยพิจารณาจาก:
-   - จำนวนเงินที่ต้องจ่ายน้อยที่สุด (amount)
-   - ความง่ายในการใช้ (เงื่อนไขไม่ซับซ้อน)
-   - มูลค่า benefit ที่ได้รับจริง
-   จัดกลุ่มบัตรเป็น:
-   - ✅ บัตรที่ผู้ใช้มี
-   - 💳 บัตรที่ผู้ใช้ไม่มี
-
-2. สำหรับแต่ละบัตร ช่วยจัดประเภทการใช้งาน:
-   - กินคนเดียว / กินเป็นกลุ่ม
-   - ต้องจ่ายเกินเท่าไหร่
-   - คุ้มยังไง
-   - คำแนะนำ: เช่น “ปิ้งย่าง”, “เหมาะกับกลุ่ม”, “คุ้มเมื่อใช้คะแนน”
-
-3. ตอบกลับเฉพาะในรูปแบบ JSON เท่านั้น:
+ตอบกลับในรูปแบบ JSON เท่านั้น:
 [
   {{
-    "ร้าน": "ชื่อร้าน",
-    "ประเภท": "ปิ้งย่าง / ชาบู",
-    "benefit": "ลด ...",
-    "amount_min": 699,
-    "กลุ่ม": "✅ หรือ 💳",
-    "เหมาะกับ": "กินคนเดียว / กินเป็นกลุ่ม",
-    "คำแนะนำ": "ข้อความสั้น ๆ เช่น ปิ้งย่าง"
+    "ร้าน": "Bar B Q Plaza",
+    "บัตร": "KTC Platinum",
+    "ประโยชน์": "ลด 80 บาท เมื่อใช้ 699 คะแนน",
+    "ขั้นต่ำ": 699,
+    "เหมาะกับ": "กลุ่ม",
+    "แนะนำ": "คุ้มเมื่อจ่ายเยอะ"
   }}
 ]
+
+โปรโมชั่น:
+{filtered[['Store', 'Card_name', 'Benefit_detail']].to_csv(index=False)}
 """
 
-# ---------------------------
-# CALL OpenAI API
-# ---------------------------
-with st.spinner("กำลังวิเคราะห์ข้อมูล..."):
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.2,
-    )
-
-# ---------------------------
-# PARSE JSON RESPONSE
-# ---------------------------
-try:
-    content = response['choices'][0]['message']['content']
-    json_data = json.loads(content)
-except Exception as e:
-    st.error("❌ ไม่สามารถแปลงผลลัพธ์จาก OpenAI เป็น JSON ได้")
-    st.code(content)
-    st.stop()
-
-# ---------------------------
-# DISPLAY UI
-# ---------------------------
-st.markdown("### 📋 ผลลัพธ์แนะนำบัตรที่คุ้มค่าที่สุด")
-st.markdown('<div class="card-grid">', unsafe_allow_html=True)
-
-for item in json_data:
-    st.markdown(f"""
-    <div class="card">
-        <h4>{item['ร้าน']}</h4>
-        <p><strong>ประเภท:</strong> {item.get('ประเภท', '-')}</p>
-        <p><strong>สิทธิประโยชน์:</strong> {item['benefit']}</p>
-        <p><strong>ขั้นต่ำ:</strong> {item.get('amount_min', '-'):,} บาท</p>
-        <div>
-            <span class="tag">{item['กลุ่ม']}</span>
-            <span class="tag">{item['เหมาะกับ']}</span>
-            <span class="tag">{item['คำแนะนำ']}</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
+            # Call OpenAI
+            client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+            with st.spinner("🤖 AI กำลังวิเคราะห์โปรโมชั่น..."):
+                response = client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.2
+                )
+                result = response.choices[0].message.content
+                try:
+                    parsed = json.loads(result)
+                    st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+                    for item in parsed:
+                        st.markdown(f"""
+                        <div class="card">
+                            <h4>{item['ร้าน']}</h4>
+                            <p><strong>บ
