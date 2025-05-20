@@ -5,11 +5,11 @@ from engine import RestaurantSelector, CardRecommender
 def get_card_data():
     return [
         {
-            "name": "Thong Grill Hide & Yakiniku",
-            "category": "ชาบู/สุกี้ยากี้/หม้อไฟ",
+            "name": "Bar B Q Plaza",
+            "category": "Grill/BBQ, À La Carte",
             "rating": 4.8,
             "reviews": 5,
-            "image_url": "https://img.wongnai.com/p/624x0/2025/03/28/7b4e368494c94cee80dfc99f0a7704dc.jpg",
+            "image_url": "https://img.wongnai.com/p/1600x0/2022/04/04/a6f91636e8204a01b47dcd9aa1d0f69e.jpg",
             "description": "เปิดถึง 23:30 | ที่จอดรถ | เดลิเวอรี"
         },
         {
