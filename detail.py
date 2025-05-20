@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+
+CSV_FILE = "user_data.csv"
 
 def show_detail():
     r = st.session_state.get("restaurant_detail")
@@ -41,8 +44,24 @@ def show_detail():
     st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Footer
+    # Divider
     st.divider()
+
+    # Show current logged-in user info
+    st.subheader("👤 ข้อมูลผู้ใช้ที่เข้าสู่ระบบ")
+    try:
+        df = pd.read_csv(CSV_FILE)
+        current_user = df[df['email'] == st.session_state.get("logged_in_email")]
+        if not current_user.empty:
+            user_row = current_user.iloc[-1]  # show last match (latest)
+            st.markdown(f"**ชื่อผู้ใช้:** {user_row['name']}")
+            st.markdown(f"**อีเมล:** {user_row['email']}")
+            st.markdown(f"**จำนวนบัตรเครดิตที่สมัคร:** {user_row['card_count']}")
+        else:
+            st.info("ไม่พบข้อมูลผู้ใช้นี้ในระบบ")
+    except Exception as e:
+        st.error(f"เกิดข้อผิดพลาดในการโหลดข้อมูลผู้ใช้: {e}")
+
     if st.button("🔙 กลับไปหน้าหลัก"):
         st.session_state.page = "home"
         st.rerun()
