@@ -97,12 +97,11 @@ def show_home():
     ]
     selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-# ✅ Card Display
+    # ✅ Card Display
     if selected_restaurant == "เลือกจากรายการ":
         st.subheader("⭐ ร้านแนะนำ")
-        html = '<div class="card-grid">'
         for r in get_card_data():
-        html += f"""
+            st.markdown(f"""
 <div class="card">
     <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
     <div class="card-body">
@@ -114,9 +113,7 @@ def show_home():
         </div>
     </div>
 </div>
-"""
-    html += '</div>'
-    st.markdown(html, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
     # ✅ Recommendation
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
