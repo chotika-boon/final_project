@@ -115,7 +115,7 @@ def show_detail():
 4. **สรุปแบบตาราง** พร้อมชื่อบัตร, benefit และคำแนะนำสั้น ๆ เช่น “แนะนำ”, “คุ้มเมื่อจ่ายเยอะ”, “เหมาะสำหรับกลุ่ม”, เป็นต้น
 
 ข้อมูลโปรโมชั่นทั้งหมด:
-{filtered[['Card_name', 'amount', 'Benefit_detail']].to_csv(index=False)}
+{filtered[['Card_name', 'Benefit_detail']].to_csv(index=False)}
             """
 
 
