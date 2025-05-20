@@ -75,7 +75,7 @@ def show_detail():
     st.subheader("🎁 โปรโมชั่นจากบัตรเครดิตที่ร่วมรายการ")
     try:
         promo_df = pd.read_csv(PROMO_FILE)
-        filtered = promo_df[promo_df["ร้าน"] == r["name"]]
+        filtered = promo_df[promo_df["Store"].str.contains(r["name"], case=False, na=False)]
         if not filtered.empty:
             st.dataframe(filtered)
         else:
