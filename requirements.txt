@@ -2,3 +2,4 @@ streamlit
 pandas
 gspread
 google-auth
+openai>=1.0.0
