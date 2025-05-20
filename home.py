@@ -39,15 +39,6 @@ def get_card_data():
     ]
 
 def show_home():
-    params = st.experimental_get_query_params()
-    if "restaurant_index" in params:
-        index = int(params["restaurant_index"][0])
-        selected = get_card_data()[index]
-        st.session_state.page = "detail"
-        st.session_state.restaurant_detail = selected
-        st.experimental_set_query_params()
-        st.rerun()
-
     st.markdown("""
         <style>
         .card-grid {
@@ -62,6 +53,7 @@ def show_home():
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
+            padding-bottom: 10px;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -93,6 +85,7 @@ def show_home():
             gap: 6px;
             font-size: 13px;
             color: #333;
+            margin-bottom: 10px;
         }
         .rating-badge {
             background-color: #d93025;
@@ -101,10 +94,6 @@ def show_home():
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 12px;
-        }
-        a.card-link {
-            text-decoration: none;
-            color: inherit;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -121,7 +110,7 @@ def show_home():
     if "search_query" not in st.session_state:
         st.session_state["search_query"] = ""
 
-    st.subheader("\U0001F50D ค้นหาร้านอาหาร")
+    st.subheader("🔍 ค้นหาร้านอาหาร")
     search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
     all_restaurants = restaurant_selector.all_restaurants
     filtered_restaurants = all_restaurants if not search_query else [
@@ -130,34 +119,34 @@ def show_home():
     selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
     if selected_restaurant == "เลือกจากรายการ":
-        st.subheader("\u2B50 ร้านแนะนำ")
+        st.subheader("⭐ ร้านแนะนำ")
 
-        html = '<div class="card-grid">'
         for i, r in enumerate(get_card_data()):
-            html += f'''
-            <a href="?restaurant_index={i}" class="card-link">
+            with st.container():
+                st.markdown("""
                 <div class="card">
-                    <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
+                    <img class="card-img" src="{}" alt="{}">
                     <div class="card-body">
-                        <div class="card-title">{r['name']}</div>
-                        <div class="card-category">{r['category']}</div>
+                        <div class="card-title">{}</div>
+                        <div class="card-category">{}</div>
                         <div class="card-rating">
-                            <span class="rating-badge">{r['rating']} ⭐</span>
-                            <span>{r['reviews']} รีวิว</span>
+                            <span class="rating-badge">{} ⭐</span>
+                            <span>{} รีวิว</span>
                         </div>
                     </div>
                 </div>
-            </a>
-            '''
-        html += '</div>'
-        st.markdown(html, unsafe_allow_html=True)
+                """.format(r['image_url'], r['name'], r['name'], r['category'], r['rating'], r['reviews']), unsafe_allow_html=True)
+                if st.button("ดูร้านนี้", key=f"select_{i}"):
+                    st.session_state.page = "detail"
+                    st.session_state.restaurant_detail = r
+                    st.rerun()
 
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
         st.session_state["search_query"] = search_query
-        st.success(f"\u2705 คุณเลือกร้าน {selected_restaurant}")
+        st.success(f"✅ คุณเลือกร้าน {selected_restaurant}")
 
-        st.subheader(f"\U0001F4B3 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
+        st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
         recommended_card = card_recommender.recommend_cards(selected_restaurant)
 
         if recommended_card:
