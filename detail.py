@@ -6,52 +6,10 @@ PROMO_FILE = "mockup - Sheet1 (2).csv"
 
 def render_cards(title, card_data):
     st.markdown(f"### {title}")
-    st.markdown("""
-    <style>
-    .card-row {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 16px;
-        overflow-x: auto;
-        padding-bottom: 10px;
-    }
-    .promo-card {
-        flex: 0 0 23%;
-        background: white;
-        border-radius: 14px;
-        padding: 14px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        transition: all 0.2s ease;
-        font-family: 'Noto Sans Thai', sans-serif;
-        min-width: 240px;
-    }
-    .promo-card:hover {
-        transform: translateY(-6px);
-    }
-    .card-image {
-        width: 100%;
-        height: 140px;
-        object-fit: contain;
-        margin-bottom: 10px;
-        border-radius: 12px;
-        background-color: #f9f9f9;
-        padding: 6px;
-    }
-    .store-name {
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 6px;
-    }
-    .benefit, .type, .min, .date {
-        font-size: 13px;
-        margin-bottom: 4px;
-    }
-    </style>
-    <div class="card-row">
-    """, unsafe_allow_html=True)
 
+    cards_html = ""
     for _, row in card_data.iterrows():
-        st.markdown(f"""
+        cards_html += f"""
         <div class="promo-card">
             <img class="card-image" src="{row['picture']}" />
             <div class="store-name">{row['Card_name']}</div>
@@ -60,9 +18,51 @@ def render_cards(title, card_data):
             <div class="min">📌 ขั้นต่ำ: {row['ขั้นต่ำ']}</div>
             <div class="date">📅 {row['Date']}</div>
         </div>
-        """, unsafe_allow_html=True)
+        """
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <style>
+    .card-row {{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-top: 10px;
+    }}
+    .promo-card {{
+        background: white;
+        border-radius: 14px;
+        padding: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        font-family: 'Noto Sans Thai', sans-serif;
+    }}
+    .promo-card:hover {{
+        transform: translateY(-6px);
+    }}
+    .card-image {{
+        width: 100%;
+        height: 140px;
+        object-fit: contain;
+        margin-bottom: 10px;
+        border-radius: 12px;
+        background-color: #f9f9f9;
+        padding: 6px;
+    }}
+    .store-name {{
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 6px;
+    }}
+    .benefit, .type, .min, .date {{
+        font-size: 13px;
+        margin-bottom: 4px;
+    }}
+    </style>
+
+    <div class="card-row">
+        {cards_html}
+    </div>
+    """, unsafe_allow_html=True)
+
 
 def show_detail():
     r = st.session_state.get("restaurant_detail")
