@@ -43,8 +43,9 @@ def show_home():
         <style>
         .card-title { font-weight: bold; font-size: 16px; margin-top: 10px; }
         .card-category { font-size: 13px; color: #666; margin-bottom: 4px; }
-        .card-rating { font-size: 13px; color: #333; }
+        .card-rating { font-size: 13px; color: #333; margin: 4px 0; }
         .rating-badge { background-color: #d93025; color: white; font-weight: bold; padding: 2px 6px; border-radius: 12px; font-size: 12px; }
+        .card-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 12px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
         </style>
     """, unsafe_allow_html=True)
 
@@ -61,7 +62,7 @@ def show_home():
         st.session_state["search_query"] = ""
 
     st.subheader("🔍 ค้นหาร้านอาหาร")
-    search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
+    search_query = st.text_input("พิมพ์ชื่อร้านค่ะ", st.session_state["search_query"]).strip()
     all_restaurants = restaurant_selector.all_restaurants
     filtered_restaurants = all_restaurants if not search_query else [
         r for r in all_restaurants if search_query.lower() in r.lower()
@@ -76,14 +77,17 @@ def show_home():
             cols = st.columns(4)
             for j, r in enumerate(cards[i:i+4]):
                 with cols[j]:
-                    st.image(r['image_url'], use_column_width=True)
-                    st.markdown(f"<div class='card-title'>{r['name']}</div>", unsafe_allow_html=True)
-                    st.markdown(f"<div class='card-category'>{r['category']}</div>", unsafe_allow_html=True)
-                    st.markdown(f"<div class='card-rating'><span class='rating-badge'>{r['rating']} ⭐</span> {r['reviews']} รีวิว</div>", unsafe_allow_html=True)
-                    if st.button("ดูรายละเอียด", key=f"card_{i+j}"):
-                        st.session_state.page = "detail"
-                        st.session_state.restaurant_detail = r
-                        st.rerun()
+                    with st.container():
+                        st.image(r['image_url'], use_container_width=True)
+                        st.markdown(f"<div class='card-box'>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='card-title'>{r['name']}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='card-category'>{r['category']}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='card-rating'><span class='rating-badge'>{r['rating']} ⭐</span> {r['reviews']} รีวิว</div>", unsafe_allow_html=True)
+                        st.markdown("</div>", unsafe_allow_html=True)
+                        if st.button("ดูรายละเอียด", key=f"card_{i+j}"):
+                            st.session_state.page = "detail"
+                            st.session_state.restaurant_detail = r
+                            st.rerun()
 
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
