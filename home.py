@@ -2,9 +2,6 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ ต้องอยู่บรรทัดแรก
-st.set_page_config(layout="wide")
-
 # ✅ CSS
 st.markdown("""
     <style>
