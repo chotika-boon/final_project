@@ -39,6 +39,15 @@ def get_card_data():
     ]
 
 def show_home():
+    params = st.experimental_get_query_params()
+    if "restaurant_index" in params:
+        index = int(params["restaurant_index"][0])
+        selected = get_card_data()[index]
+        st.session_state.page = "detail"
+        st.session_state.restaurant_detail = selected
+        st.experimental_set_query_params()
+        st.rerun()
+
     st.markdown("""
         <style>
         .card-grid {
@@ -53,7 +62,6 @@ def show_home():
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
-            padding-bottom: 10px;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -85,7 +93,6 @@ def show_home():
             gap: 6px;
             font-size: 13px;
             color: #333;
-            margin-bottom: 10px;
         }
         .rating-badge {
             background-color: #d93025;
@@ -95,10 +102,9 @@ def show_home():
             border-radius: 12px;
             font-size: 12px;
         }
-        .card-button {
-            display: flex;
-            justify-content: center;
-            padding: 0 16px;
+        a.card-link {
+            text-decoration: none;
+            color: inherit;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -128,31 +134,23 @@ def show_home():
 
         html = '<div class="card-grid">'
         for i, r in enumerate(get_card_data()):
-            html += f'''<div class="card">
-                <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
-                <div class="card-body">
-                    <div class="card-title">{r['name']}</div>
-                    <div class="card-category">{r['category']}</div>
-                    <div class="card-rating">
-                        <span class="rating-badge">{r['rating']} ⭐</span>
-                        <span>{r['reviews']} รีวิว</span>
-                    </div>
-                    <div class="card-button">
-                        <form action="" method="post">
-                            <input type="hidden" name="selected" value="{i}">
-                            <button type="submit" class="custom-button" onclick="window.location.reload();">ดูร้านนี้</button>
-                        </form>
+            html += f'''
+            <a href="?restaurant_index={i}" class="card-link">
+                <div class="card">
+                    <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
+                    <div class="card-body">
+                        <div class="card-title">{r['name']}</div>
+                        <div class="card-category">{r['category']}</div>
+                        <div class="card-rating">
+                            <span class="rating-badge">{r['rating']} ⭐</span>
+                            <span>{r['reviews']} รีวิว</span>
+                        </div>
                     </div>
                 </div>
-            </div>'''
+            </a>
+            '''
         html += '</div>'
         st.markdown(html, unsafe_allow_html=True)
-
-        for i, r in enumerate(get_card_data()):
-            if st.button(f"__trigger_btn_{i}__", key=f"btn_{i}", help="", label_visibility="collapsed"):
-                st.session_state.page = "detail"
-                st.session_state.restaurant_detail = r
-                st.rerun()
 
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
