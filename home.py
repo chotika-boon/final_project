@@ -121,7 +121,7 @@ def show_home():
     if "search_query" not in st.session_state:
         st.session_state["search_query"] = ""
 
-    # ✅ Search Section
+    # ✅ Search
     st.subheader("🔍 ค้นหาร้านอาหาร")
     search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
     all_restaurants = restaurant_selector.all_restaurants
@@ -130,13 +130,13 @@ def show_home():
     ]
     selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
 
-    # ✅ Recommended Cards
+    # ✅ Card Grid
     if selected_restaurant == "เลือกจากรายการ":
         st.subheader("⭐ ร้านแนะนำ")
+
         html = '<div class="card-grid">'
         for r in get_card_data():
-            html += f"""
-            <div class="card">
+            html += f'''<div class="card">
                 <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
                 <div class="card-body">
                     <div class="card-title">{r['name']}</div>
@@ -146,12 +146,12 @@ def show_home():
                         <span>{r['reviews']} รีวิว</span>
                     </div>
                 </div>
-            </div>
-            """
+            </div>'''
         html += '</div>'
+
         st.markdown(html, unsafe_allow_html=True)
 
-    # ✅ Credit Card Recommendation
+    # ✅ Card Recommendation
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
         st.session_state["search_query"] = search_query
@@ -159,6 +159,7 @@ def show_home():
 
         st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
         recommended_card = card_recommender.recommend_cards(selected_restaurant)
+
         if recommended_card:
             st.markdown(f"""
 <div class="card">
