@@ -5,6 +5,8 @@ import base64
 from login import show_login, init_session_state
 from register import show_register
 from home import show_home
+from detail import show_detail
+
 
 # ✅ set page config ต้องเป็นบรรทัดแรก
 # ✅ Load Thai font & inject CSS
