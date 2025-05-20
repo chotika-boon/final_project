@@ -1,8 +1,6 @@
 import streamlit as st
 from PIL import Image
-import streamlit.components.v1 as components
 from engine import RestaurantSelector, CardRecommender
-import json
 
 def get_card_data():
     return [
@@ -43,98 +41,76 @@ def get_card_data():
 def show_home():
     st.markdown("""
         <style>
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .card {
-            width: 23%;
-            border-radius: 16px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
-            cursor: pointer;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-        }
-        .card-body {
-            padding: 12px 16px;
-        }
-        .card-title {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-        .card-category {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 8px;
-        }
-        .card-rating {
-            display: flex;
-            gap: 6px;
-            font-size: 13px;
-            color: #333;
-        }
-        .rating-badge {
-            background-color: #d93025;
-            color: white;
-            font-weight: bold;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
+        .card-title { font-weight: bold; font-size: 16px; margin-top: 10px; }
+        .card-category { font-size: 13px; color: #666; margin-bottom: 4px; }
+        .card-rating { font-size: 13px; color: #333; }
+        .rating-badge { background-color: #d93025; color: white; font-weight: bold; padding: 2px 6px; border-radius: 12px; font-size: 12px; }
         </style>
     """, unsafe_allow_html=True)
 
-    st.subheader("⭐ ร้านแนะนำ")
-    cards = get_card_data()
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    col1, col2, col3 = st.columns((1, 0.5, 1))
+    with col2:
+        st.image(Image.open("logo.png"), width=100)
 
-    for i, r in enumerate(cards):
-        with st.container():
-            btn_key = f"card_btn_{i}"
-            if st.button(
-                f'''
-                <div class="card">
-                    <img src="{r['image_url']}" />
-                    <div class="card-body">
-                        <div class="card-title">{r['name']}</div>
-                        <div class="card-category">{r['category']}</div>
-                        <div class="card-rating">
-                            <span class="rating-badge">{r['rating']} ⭐</span>
-                            <span>{r['reviews']} รีวิว</span>
-                        </div>
-                    </div>
-                </div>
-                ''',
-                key=btn_key,
-                use_container_width=True,
-                help=r['name'],
-            ):
-                st.session_state.page = "detail"
-                st.session_state.restaurant_detail = r
-                st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+    restaurant_selector = RestaurantSelector()
+    card_recommender = CardRecommender()
 
+    if "selected_restaurant" not in st.session_state:
+        st.session_state["selected_restaurant"] = None
+    if "search_query" not in st.session_state:
+        st.session_state["search_query"] = ""
 
-# Hook into request body manually (simulate API-style read)
-if st.runtime.exists():
-    try:
-        import streamlit.web.server.websocket_headers as wh
-        import streamlit.web.server.server_util as su
-        body = su.get_request_body()
-        if body:
-            payload = json.loads(body)
-            if "selected_card" in payload:
-                st.session_state["_selected_card_json"] = payload["selected_card"]
-    except:
-        pass
+    st.subheader("🔍 ค้นหาร้านอาหาร")
+    search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
+    all_restaurants = restaurant_selector.all_restaurants
+    filtered_restaurants = all_restaurants if not search_query else [
+        r for r in all_restaurants if search_query.lower() in r.lower()
+    ]
+    selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
+
+    if selected_restaurant == "เลือกจากรายการ":
+        st.subheader("⭐ ร้านแนะนำ")
+        cards = get_card_data()
+
+        for i in range(0, len(cards), 4):
+            cols = st.columns(4)
+            for j, r in enumerate(cards[i:i+4]):
+                with cols[j]:
+                    st.image(r['image_url'], use_column_width=True)
+                    st.markdown(f"<div class='card-title'>{r['name']}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='card-category'>{r['category']}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='card-rating'><span class='rating-badge'>{r['rating']} ⭐</span> {r['reviews']} รีวิว</div>", unsafe_allow_html=True)
+                    if st.button("ดูรายละเอียด", key=f"card_{i+j}"):
+                        st.session_state.page = "detail"
+                        st.session_state.restaurant_detail = r
+                        st.rerun()
+
+    if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
+        st.session_state["selected_restaurant"] = selected_restaurant
+        st.session_state["search_query"] = search_query
+        st.success(f"✅ คุณเลือกร้าน {selected_restaurant}")
+
+        st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
+        recommended_card = card_recommender.recommend_cards(selected_restaurant)
+
+        if recommended_card:
+            st.markdown(f"""
+<div class="card">
+    <div class="card-body">
+        <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
+        <ul>
+            <li>💰 <b>Cashback</b>: {recommended_card.cashback}%</li>
+            <li>🎁 <b>Rewards</b>: {recommended_card.rewards} คะแนน/100 บาท</li>
+            <li>🍽️ <b>Dining Discount</b>: {recommended_card.dining_discount}%</li>
+            <li>✈️ <b>Travel Benefits</b>: {recommended_card.travel_benefit}</li>
+        </ul>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+        else:
+            st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
+
+    if st.button("🔄 เลือกร้านใหม่"):
+        st.session_state["selected_restaurant"] = None
+        st.session_state["search_query"] = ""
+        st.rerun()
