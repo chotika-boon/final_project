@@ -8,7 +8,7 @@ PROMO_FILE = "CoolKid_promotion_creditcard - Sheet2.csv"
 
 def render_cards_by_group(title, card_data):
     st.markdown(f"### {title}")
-    st.markdown(\"""
+    st.markdown("""
     <style>
     .card-row {
         display: grid;
@@ -53,7 +53,7 @@ def render_cards_by_group(title, card_data):
     }
     </style>
     <div class="card-row">
-    \""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     for card in card_data:
         st.markdown(f"""
