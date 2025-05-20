@@ -88,14 +88,18 @@ def inject_global_css():
 inject_global_css()
 init_session_state()
 
-# ✅ Routing based on session
+from detail import show_detail  # เพิ่มไฟล์ detail.py แยกหน้า detail
+
+# ...
+
+# ✅ Routing
 if st.session_state.get("page") == "login":
     show_login()
 elif st.session_state.get("page") == "register":
     show_register()
+elif st.session_state.get("page") == "detail":
+    show_detail()
 elif st.session_state.get("logged_in"):
-    st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
-    st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
     show_home()
 else:
     st.session_state.page = "login"
