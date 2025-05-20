@@ -6,8 +6,6 @@ from openai import OpenAI
 CSV_FILE = "user_data.csv"
 PROMO_FILE = "CoolKid_promotion_creditcard - Sheet2.csv"
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
-
 def show_detail():
     r = st.session_state.get("restaurant_detail")
     if not r:
@@ -103,22 +101,22 @@ def show_detail():
 
             นี่คือตารางข้อมูลโปรโมชั่น:
 
-            {filtered.to_markdown(index=False)}
+            {filtered.to_csv(index=False)}
             """
 
-            if openai_api_key:
+            try:
                 openai_api_key = st.secrets["OPENAI_API_KEY"]
                 client = OpenAI(api_key=openai_api_key)
                 response = client.chat.completions.create(
                     model="gpt-4",
                     messages=[
-                        {"role": "system", "content": "คุณเป็นวิิเคราะห์ promotion โดยเลือกการ์ดที่เหมาะสมและคุ้มค่าที่สุด"},
+                        {"role": "system", "content": "คุณเป็นผู้ช่วยด้านการเงินและการตลาด"},
                         {"role": "user", "content": prompt}
                     ]
                 )
                 st.markdown(response.choices[0].message.content)
-            else:
-                st.info("❗️ยังไม่ได้ตั้งค่า OPENAI_API_KEY จึงไม่สามารถเชื่อมต่อ AI ได้")
+            except Exception as ai_error:
+                st.info(f"❗️ยังไม่ได้ตั้งค่า OPENAI_API_KEY หรือเชื่อมต่อ AI ไม่สำเร็จ: {ai_error}")
         else:
             st.info("ไม่มีโปรโมชั่นสำหรับร้านนี้ในขณะนี้")
     except Exception as e:
