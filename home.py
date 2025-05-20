@@ -39,7 +39,6 @@ def get_card_data():
     ]
 
 def show_home():
-    # CSS
     st.markdown("""
         <style>
         .card-grid {
@@ -54,7 +53,7 @@ def show_home():
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
-            cursor: pointer;
+            padding-bottom: 10px;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -86,6 +85,7 @@ def show_home():
             gap: 6px;
             font-size: 13px;
             color: #333;
+            margin-bottom: 10px;
         }
         .rating-badge {
             background-color: #d93025;
@@ -94,6 +94,11 @@ def show_home():
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 12px;
+        }
+        .card-button {
+            display: flex;
+            justify-content: center;
+            padding: 0 16px;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -121,14 +126,8 @@ def show_home():
     if selected_restaurant == "เลือกจากรายการ":
         st.subheader("\u2B50 ร้านแนะนำ")
 
-        for i, r in enumerate(get_card_data()):
-            if st.button(f"ดูร้าน: {r['name']}", key=f"btn_{i}"):
-                st.session_state.page = "detail"
-                st.session_state.restaurant_detail = r
-                st.rerun()
-
         html = '<div class="card-grid">'
-        for r in get_card_data():
+        for i, r in enumerate(get_card_data()):
             html += f'''<div class="card">
                 <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
                 <div class="card-body">
@@ -138,10 +137,22 @@ def show_home():
                         <span class="rating-badge">{r['rating']} ⭐</span>
                         <span>{r['reviews']} รีวิว</span>
                     </div>
+                    <div class="card-button">
+                        <form action="" method="post">
+                            <input type="hidden" name="selected" value="{i}">
+                            <button type="submit" class="custom-button" onclick="window.location.reload();">ดูร้านนี้</button>
+                        </form>
+                    </div>
                 </div>
             </div>'''
         html += '</div>'
         st.markdown(html, unsafe_allow_html=True)
+
+        for i, r in enumerate(get_card_data()):
+            if st.button(f"__trigger_btn_{i}__", key=f"btn_{i}", help="", label_visibility="collapsed"):
+                st.session_state.page = "detail"
+                st.session_state.restaurant_detail = r
+                st.rerun()
 
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
