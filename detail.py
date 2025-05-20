@@ -10,13 +10,13 @@ def render_cards(title, card_data):
     cards_html = ""
     for _, row in card_data.iterrows():
         cards_html += f"""
-        <div class="promo-card">
-            <img class="card-image" src="{row['picture']}" />
-            <div class="store-name">{row['Card_name']}</div>
-            <div class="benefit">💳 {row['ประโยชน์']}</div>
-            <div class="type">👥 เหมาะกับ: {row['เหมาะ']}</div>
-            <div class="min">📌 ขั้นต่ำ: {row['ขั้นต่ำ']}</div>
-            <div class="date">📅 {row['Date']}</div>
+        <div class=\"promo-card\">
+            <img class=\"card-image\" src=\"{row['picture']}\" />
+            <div class=\"store-name\">{row['Card_name']}</div>
+            <div class=\"benefit\">💳 {row['ประโยชน์']}</div>
+            <div class=\"type\">👥 เหมาะกับ: {row['เหมาะ']}</div>
+            <div class=\"min\">📌 ขั้นต่ำ: {row['ขั้นต่ำ']}</div>
+            <div class=\"date\">📅 {row['Date']}</div>
         </div>
         """
 
@@ -33,6 +33,7 @@ def render_cards(title, card_data):
         border-radius: 14px;
         padding: 14px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.2s ease;
         font-family: 'Noto Sans Thai', sans-serif;
     }}
     .promo-card:hover {{
@@ -58,11 +59,10 @@ def render_cards(title, card_data):
     }}
     </style>
 
-    <div class="card-row">
+    <div class=\"card-row\">
         {cards_html}
     </div>
     """, unsafe_allow_html=True)
-
 
 def show_detail():
     r = st.session_state.get("restaurant_detail")
