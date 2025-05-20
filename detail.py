@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 CSV_FILE = "user_data.csv"
-PROMO_FILE = "mockup - Sheet1 (2).csv"
+PROMO_FILE = "mockup - Sheet1 (1).csv"
 
 def render_cards(title, card_data):
     st.markdown(f"### {title}")
@@ -10,7 +10,7 @@ def render_cards(title, card_data):
     <style>
     .card-row {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
         gap: 16px;
         margin-top: 10px;
     }
