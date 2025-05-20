@@ -80,7 +80,7 @@ def show_detail():
         filtered = df[df["Store"].str.contains(r["name"], case=False, na=False)]
         if not filtered.empty:
             sorted_df = filtered.sort_values(by="score", ascending=False).head(4)
-            render_cards("🎁 โปรโมชั่นที่ร่วมรายการ", sorted_df)
+            render_card_row(sorted_df)
         else:
             st.info("ไม่มีโปรโมชั่นสำหรับร้านนี้")
     except Exception as e:
