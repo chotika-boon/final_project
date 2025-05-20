@@ -4,6 +4,7 @@ st.set_page_config(page_title="Final Project", page_icon="🔐", layout="wide")
 import base64
 from login import show_login, init_session_state
 from register import show_register
+from home import show_home
 
 # ✅ set page config ต้องเป็นบรรทัดแรก
 # ✅ Load Thai font & inject CSS
@@ -95,6 +96,8 @@ elif st.session_state.get("page") == "register":
 elif st.session_state.get("logged_in"):
     st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
     st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
+elif st.session_state.get("page") == "home":
+    show_home()
 else:
     st.session_state.page = "login"
     st.rerun()
