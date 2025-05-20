@@ -107,11 +107,12 @@ def show_detail():
             """
 
             if openai_api_key:
+                openai_api_key = st.secrets["OPENAI_API_KEY"]
                 client = OpenAI(api_key=openai_api_key)
                 response = client.chat.completions.create(
                     model="gpt-4",
                     messages=[
-                        {"role": "system", "content": "คุณเป็นผู้ช่วยด้านการเงินและการตลาด"},
+                        {"role": "system", "content": "คุณเป็นวิิเคราะห์ promotion โดยเลือกการ์ดที่เหมาะสมและคุ้มค่าที่สุด"},
                         {"role": "user", "content": prompt}
                     ]
                 )
