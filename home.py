@@ -2,79 +2,6 @@ import streamlit as st
 from PIL import Image
 from engine import RestaurantSelector, CardRecommender
 
-# ✅ CSS Styling
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
-
-    html, body, input, button, select, div {
-        font-family: 'Noto Sans Thai', sans-serif !important;
-    }
-
-    .card-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .card {
-        border-radius: 16px;
-        overflow: hidden;
-        background: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: transform 0.2s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-    }
-
-    .card-img {
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
-    }
-
-    .card-body {
-        padding: 12px 16px;
-    }
-
-    .card-title {
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .card-category {
-        font-size: 13px;
-        color: #666;
-        margin-bottom: 8px;
-    }
-
-    .card-rating {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 13px;
-        color: #333;
-    }
-
-    .rating-badge {
-        background-color: #d93025;
-        color: white;
-        font-weight: bold;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 12px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# ✅ Mock Data for Recommended Restaurants
 def get_card_data():
     return [
         {
@@ -107,60 +34,133 @@ def get_card_data():
         }
     ]
 
-# ✅ Logo Display
-col1, col2, col3 = st.columns((1, 0.5, 1))
-with col2:
-    st.image(Image.open("logo.png"), width=100)
+def show_home():
+    # ✅ CSS
+    st.markdown("""
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
 
-# ✅ Backend Setup
-restaurant_selector = RestaurantSelector()
-card_recommender = CardRecommender()
+        html, body, input, button, select, div {
+            font-family: 'Noto Sans Thai', sans-serif !important;
+        }
 
-if "selected_restaurant" not in st.session_state:
-    st.session_state["selected_restaurant"] = None
-if "search_query" not in st.session_state:
-    st.session_state["search_query"] = ""
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-# ✅ Search Section
-st.subheader("🔍 ค้นหาร้านอาหาร")
-search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
-all_restaurants = restaurant_selector.all_restaurants
-filtered_restaurants = all_restaurants if not search_query else [
-    r for r in all_restaurants if search_query.lower() in r.lower()
-]
-selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
+        .card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
 
-# ✅ Show Recommended Cards
-if selected_restaurant == "เลือกจากรายการ":
-    st.subheader("⭐ ร้านแนะนำ")
-    html = '<div class="card-grid">'
-    for r in get_card_data():
-        html += f"""
-        <div class="card">
-            <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
-            <div class="card-body">
-                <div class="card-title">{r['name']}</div>
-                <div class="card-category">{r['category']}</div>
-                <div class="card-rating">
-                    <span class="rating-badge">{r['rating']} ⭐</span>
-                    <span>{r['reviews']} รีวิว</span>
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 12px 16px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-category {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .rating-badge {
+            background-color: #d93025;
+            color: white;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # ✅ Logo
+    col1, col2, col3 = st.columns((1, 0.5, 1))
+    with col2:
+        st.image(Image.open("logo.png"), width=100)
+
+    # ✅ Backend
+    restaurant_selector = RestaurantSelector()
+    card_recommender = CardRecommender()
+
+    if "selected_restaurant" not in st.session_state:
+        st.session_state["selected_restaurant"] = None
+    if "search_query" not in st.session_state:
+        st.session_state["search_query"] = ""
+
+    # ✅ Search Section
+    st.subheader("🔍 ค้นหาร้านอาหาร")
+    search_query = st.text_input("พิมพ์ชื่อร้านอาหาร", st.session_state["search_query"]).strip()
+    all_restaurants = restaurant_selector.all_restaurants
+    filtered_restaurants = all_restaurants if not search_query else [
+        r for r in all_restaurants if search_query.lower() in r.lower()
+    ]
+    selected_restaurant = st.selectbox("เลือกร้านอาหาร", ["เลือกจากรายการ"] + filtered_restaurants)
+
+    # ✅ Recommended Cards
+    if selected_restaurant == "เลือกจากรายการ":
+        st.subheader("⭐ ร้านแนะนำ")
+        html = '<div class="card-grid">'
+        for r in get_card_data():
+            html += f"""
+            <div class="card">
+                <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
+                <div class="card-body">
+                    <div class="card-title">{r['name']}</div>
+                    <div class="card-category">{r['category']}</div>
+                    <div class="card-rating">
+                        <span class="rating-badge">{r['rating']} ⭐</span>
+                        <span>{r['reviews']} รีวิว</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        """
-    html += '</div>'
-    st.markdown(html, unsafe_allow_html=True)
+            """
+        html += '</div>'
+        st.markdown(html, unsafe_allow_html=True)
 
-# ✅ Credit Card Recommendation
-if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
-    st.session_state["selected_restaurant"] = selected_restaurant
-    st.session_state["search_query"] = search_query
-    st.success(f"✅ คุณเลือกร้าน {selected_restaurant}")
+    # ✅ Credit Card Recommendation
+    if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
+        st.session_state["selected_restaurant"] = selected_restaurant
+        st.session_state["search_query"] = search_query
+        st.success(f"✅ คุณเลือกร้าน {selected_restaurant}")
 
-    st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
-    recommended_card = card_recommender.recommend_cards(selected_restaurant)
-    if recommended_card:
-        st.markdown(f"""
+        st.subheader(f"💳 บัตรเครดิตที่แนะนำสำหรับ {selected_restaurant}")
+        recommended_card = card_recommender.recommend_cards(selected_restaurant)
+        if recommended_card:
+            st.markdown(f"""
 <div class="card">
     <div class="card-body">
         <h4>🎉 {recommended_card.card_name} ({recommended_card.bank})</h4>
@@ -173,11 +173,11 @@ if selected_restaurant and selected_restaurant != "เลือกจากร�
     </div>
 </div>
 """, unsafe_allow_html=True)
-    else:
-        st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
+        else:
+            st.warning("❌ ไม่มีบัตรเครดิตแนะนำสำหรับร้านนี้")
 
-# ✅ Reset Button
-if st.button("🔄 เลือกร้านใหม่"):
-    st.session_state["selected_restaurant"] = None
-    st.session_state["search_query"] = ""
-    st.rerun()
+    # ✅ Reset Button
+    if st.button("🔄 เลือกร้านใหม่"):
+        st.session_state["selected_restaurant"] = None
+        st.session_state["search_query"] = ""
+        st.rerun()
