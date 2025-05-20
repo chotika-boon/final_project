@@ -96,7 +96,6 @@ elif st.session_state.get("page") == "register":
 elif st.session_state.get("logged_in"):
     st.success("🎉 เข้าสู่ระบบเรียบร้อยแล้ว!")
     st.write("นี่คือหน้าหลังล็อกอิน (restaurant_app)")
-elif st.session_state.get("page") == "home":
     show_home()
 else:
     st.session_state.page = "login"
