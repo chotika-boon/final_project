@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import streamlit.components.v1 as components
 from engine import RestaurantSelector, CardRecommender
 
 def get_card_data():
@@ -53,7 +54,7 @@ def show_home():
             background: white;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transition: transform 0.2s ease;
-            padding-bottom: 10px;
+            cursor: pointer;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -85,7 +86,6 @@ def show_home():
             gap: 6px;
             font-size: 13px;
             color: #333;
-            margin-bottom: 10px;
         }
         .rating-badge {
             background-color: #d93025;
@@ -121,25 +121,41 @@ def show_home():
     if selected_restaurant == "เลือกจากรายการ":
         st.subheader("⭐ ร้านแนะนำ")
 
-        for i, r in enumerate(get_card_data()):
-            with st.container():
-                st.markdown("""
-                <div class="card">
-                    <img class="card-img" src="{}" alt="{}">
+        cards = get_card_data()
+        st.markdown('<div class="card-grid">', unsafe_allow_html=True)
+        for i, r in enumerate(cards):
+            js_trigger = f"""
+                <script>
+                    const card = document.getElementById("card{i}");
+                    if (card) {{
+                        card.onclick = () => {{
+                            fetch("/", {{method: "POST", headers: {{"Content-Type": "application/json"}}, body: JSON.stringify({{"selected_card": {i}}})}}).then(() => location.reload());
+                        }}
+                    }}
+                </script>
+            """
+            html = f'''
+                <div class="card" id="card{i}">
+                    <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
                     <div class="card-body">
-                        <div class="card-title">{}</div>
-                        <div class="card-category">{}</div>
+                        <div class="card-title">{r['name']}</div>
+                        <div class="card-category">{r['category']}</div>
                         <div class="card-rating">
-                            <span class="rating-badge">{} ⭐</span>
-                            <span>{} รีวิว</span>
+                            <span class="rating-badge">{r['rating']} ⭐</span>
+                            <span>{r['reviews']} รีวิว</span>
                         </div>
                     </div>
                 </div>
-                """.format(r['image_url'], r['name'], r['name'], r['category'], r['rating'], r['reviews']), unsafe_allow_html=True)
-                if st.button("ดูร้านนี้", key=f"select_{i}"):
-                    st.session_state.page = "detail"
-                    st.session_state.restaurant_detail = r
-                    st.rerun()
+                {js_trigger}
+            '''
+            components.html(html, height=280)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    if "selected_card" in st.session_state:
+        index = st.session_state.pop("selected_card")
+        st.session_state.page = "detail"
+        st.session_state.restaurant_detail = get_card_data()[index]
+        st.rerun()
 
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
