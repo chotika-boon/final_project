@@ -191,6 +191,7 @@ def show_login():
                 st.success("เข้าสู่ระบบสำเร็จ")
                 st.session_state.logged_in = True
                 st.session_state.username = email
+                st.session_state.page = "home"
                 st.rerun()
             else:
                 st.error("อีเมลหรือรหัสผ่านไม่ถูกต้อง")
