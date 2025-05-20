@@ -7,6 +7,7 @@ def show_home():
     st.markdown("""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600&display=swap');
+
         html, body, input, button, select, div {
             font-family: 'Noto Sans Thai', sans-serif !important;
         }
@@ -100,22 +101,25 @@ def show_home():
     # ✅ Card Display
     if selected_restaurant == "เลือกจากรายการ":
         st.subheader("⭐ ร้านแนะนำ")
+        html = '<div class="card-grid">'
         for r in get_card_data():
-            st.markdown(f"""
-<div class="card">
-    <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
-    <div class="card-body">
-        <div class="card-title">{r['name']}</div>
-        <div class="card-category">{r['category']}</div>
-        <div class="card-rating">
-            <span class="rating-badge">{r['rating']} ⭐</span>
-            <span>{r['reviews']} รีวิว</span>
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+            html += f"""
+            <div class="card">
+                <img class="card-img" src="{r['image_url']}" alt="{r['name']}">
+                <div class="card-body">
+                    <div class="card-title">{r['name']}</div>
+                    <div class="card-category">{r['category']}</div>
+                    <div class="card-rating">
+                        <span class="rating-badge">{r['rating']} ⭐</span>
+                        <span>{r['reviews']} รีวิว</span>
+                    </div>
+                </div>
+            </div>
+            """
+        html += '</div>'
+        st.markdown(html, unsafe_allow_html=True)
 
-    # ✅ Recommendation
+    # ✅ Credit Card Recommendation
     if selected_restaurant and selected_restaurant != "เลือกจากรายการ":
         st.session_state["selected_restaurant"] = selected_restaurant
         st.session_state["search_query"] = search_query
@@ -146,7 +150,7 @@ def show_home():
         st.session_state["search_query"] = ""
         st.rerun()
 
-# 🔄 Mock data function (keep outside the show_home() function)
+# ✅ Mock data
 def get_card_data():
     return [
         {
